@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{79B449FA-1429-49AD-9DE9-4A4CD33F6964}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "ReqnrollProject1\Tests.csproj", "{AAB2659E-2F4C-4163-88F9-270DACBC5890}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{812873B7-7628-452C-9428-C3E5401C2437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{79B449FA-1429-49AD-9DE9-4A4CD33F6964}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79B449FA-1429-49AD-9DE9-4A4CD33F6964}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79B449FA-1429-49AD-9DE9-4A4CD33F6964}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAB2659E-2F4C-4163-88F9-270DACBC5890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAB2659E-2F4C-4163-88F9-270DACBC5890}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAB2659E-2F4C-4163-88F9-270DACBC5890}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAB2659E-2F4C-4163-88F9-270DACBC5890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{812873B7-7628-452C-9428-C3E5401C2437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{812873B7-7628-452C-9428-C3E5401C2437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{812873B7-7628-452C-9428-C3E5401C2437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{812873B7-7628-452C-9428-C3E5401C2437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
