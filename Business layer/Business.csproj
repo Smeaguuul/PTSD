@@ -2,9 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>Business_layer</RootNamespace>
+    <RootNamespace>Business</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
 
 </Project>

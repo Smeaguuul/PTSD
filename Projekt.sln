@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{172DEC24-3C95-4B22-8EDA-0A2B5E0E0A88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business layer", "Business layer\Business layer.csproj", "{E868FA4E-77B2-4650-90F8-312DC1CF71B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business layer\Business.csproj", "{E868FA4E-77B2-4650-90F8-312DC1CF71B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{0302D14E-9522-4605-9FB5-1EB7C8BB5641}"
 EndProject

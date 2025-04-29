@@ -1,6 +1,6 @@
 ﻿namespace DTO
 {
-    enum Status
+    public enum Status
     {
         Scheduled,
         Ongoing,
