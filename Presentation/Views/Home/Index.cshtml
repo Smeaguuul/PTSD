@@ -1,8 +1,22 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Presentation.Models.Matches
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    @foreach (string score in @Model.Scores)
+    {
+        <div id="MatchOverviewDiv" class="d-flex justify-content-between align-items-center border p-3 mb-3 rounded">
+            <div id="HomeTeamDiv" class="text-center">
+                <h5>Home Team</h5>
+                <p>Sets: @score.Substring(0, 1)</p>
+                <p>Games in this Set: </p>
+                <p>Points in this game: </p>
+            </div>
+            <p class="mx-3">vs</p>
+            <div id="AwayTeamDiv" class="text-center">
+                <h5>Away Team</h5>
+                <p>Sets: @score.Substring(2, 1)</p>
+                <p>Games in this Set: </p>
+                <p>Points in this game: </p>
+            </div>
+        </div>
+    }
 </div>
