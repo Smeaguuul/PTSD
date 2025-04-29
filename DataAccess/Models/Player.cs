@@ -1,6 +1,6 @@
-﻿namespace Business.Models
+﻿namespace DataAccess.Models
 {
-    internal class Player
+    public class Player
     {
         private readonly int _id;
         public int Id { get { return _id; } }

@@ -1,7 +1,7 @@
 ﻿
-namespace Business.Models
+namespace DataAccess.Models
 {
-    internal class Score
+    public class Score
     {
         private List<Set> _sets; // TODO: Consider maybe array of length 3 - Mikkel
         public List<Set> Sets { get { return _sets; } }

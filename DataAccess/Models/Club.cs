@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace DataAccess.Models
 {
-    internal class Club
+    public class Club
     {
         private string _name;
         public string Name { get { return _name; } }

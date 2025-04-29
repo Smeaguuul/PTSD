@@ -1,9 +1,9 @@
 ﻿namespace DTO
 {
-    public class Game
+    public class Game(bool server, int number, List<bool> pointHistory)
     {
-        public bool Server { get; set; }
-        public int Number { get; set; }
-        public List<bool> PointHistory { get; set; }
+        public bool Server { get; set; } = server;
+        public int Number { get; set; } = number;
+        public List<bool> PointHistory { get; set; } = pointHistory;
     }
 }

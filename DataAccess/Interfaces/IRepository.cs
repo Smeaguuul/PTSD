@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace DataAccess.Interfaces
 {
     public interface IRepository<T>
-
     {
         /// <summary>
         /// Adds an entity of T type to the Database.

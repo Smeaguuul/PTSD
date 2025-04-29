@@ -1,6 +1,6 @@
-﻿namespace Business.Models
+﻿namespace DataAccess.Models
 {
-    internal class Team
+    public class Team
     {
         private string _name;
         private List<Player> _players;

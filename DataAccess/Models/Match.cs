@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Models
+namespace DataAccess.Models
 {
-    internal class Match
+    public class Match
     {
         private Score _score;
         public Score Score { get => _score; }

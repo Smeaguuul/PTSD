@@ -1,6 +1,6 @@
-﻿namespace Business.Models
+﻿namespace DataAccess.Models
 {
-    internal enum Status
+    public enum Status
     {
         Scheduled,
         Ongoing,

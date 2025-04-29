@@ -1,4 +1,4 @@
-﻿namespace Business.Models
+﻿namespace DataAccess.Models
 {
     public class Set
     {
