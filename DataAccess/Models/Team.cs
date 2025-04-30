@@ -4,27 +4,27 @@
     {
         public int Id { get; set; }
 
-        private string _name;
-        private List<Player> _players;
+        public string name;
+        public List<Player> players;
         public Team() { }
 
         public Team(int id, string name, List<Player> players)
         {
             Id = id;
-            _name = name;
-            _players = players;
+            this.name = name;
+            this.players = players;
         }
 
         public string Name
         {
-            get => _name;
-            set => _name = value;
+            get => name;
+            set => name = value;
         }
 
         public List<Player> Players
         {
-            get => _players;
-            set => _players = value ?? new List<Player>();
+            get => players;
+            set => players = value ?? new List<Player>();
         }
     }
 }

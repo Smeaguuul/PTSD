@@ -11,6 +11,6 @@ namespace DTO
         public string Name { get; set; }
         public List<Team> Teams { get; set; }
         public string Location { get; set; }
-        public string Abbriviation { get; set; }
+        public string Abbreviation { get; set; }
     }
 }
