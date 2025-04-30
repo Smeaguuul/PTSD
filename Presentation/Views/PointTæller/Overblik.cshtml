@@ -1,0 +1,18 @@
+﻿@model List<Presentation.Models.KampDTO>
+
+@{
+    ViewData["Title"] = "Kampoversigt";
+}
+
+<h2>Vælg en kamp</h2>
+
+<ul style="list-style: none; padding: 0; font-size: 20px;">
+    @foreach (var kamp in Model)
+    {
+        <li style="margin-bottom: 15px;">
+            <a href="@Url.Action("Index", "PointTæller", new { id = kamp.KampId })" style="text-decoration: none; color: #4caf50;">
+                @kamp.Hold1 vs @kamp.Hold2
+            </a>
+        </li>
+    }
+</ul>
