@@ -1,9 +1,30 @@
-﻿/*var builder = WebApplication.CreateBuilder(args);
+﻿using AutoMapper;
+using Business.Mappers;
+using Business.Services;
+using DataAccess.Context;
+using DataAccess.Interfaces;
+using DataAccess.Models;
+using DataAccess.Repositories;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<MapperProfile>();
+});
+
+var mapper = config.CreateMapper();
+
+//Dependency Injection
+builder.Services.AddScoped<IRepository<Match>, Repository<Match>>();
+builder.Services.AddScoped<MatchesService>();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,44 +44,24 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 
-app.Run();*/
-
-using AutoMapper;
-using Business.Mappers;
-using DataAccess.Context;
-using DataAccess.Interfaces;
-using DataAccess.Models;
-using DataAccess.Repositories;
-
-var config = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile<MapperProfile>();
-});
-
-var mapper = config.CreateMapper();
+app.Run();
 
 
-var playerDto = new DTO.Player
-{
-    Id = 1,
-    Name = "Test Player",
-    // other properties...
-};
-
-// Map it to the domain model
-var playerDomain = mapper.Map<Player>(playerDto);
-
-Console.WriteLine($"Mapped Player: {playerDomain.Name}, Id: {playerDomain.Id}");
 
 
-Club club = new Club("FC Barcelona", "BAR", "Barcelona");
-Team team = new Team(1, "FC Barcelona", new List<Player> { new Player(1, "Lionel Messi"), new Player(2, "Xavi Hernandez") });
-Game game = new Game(1, true, 1, new List<bool> { true, false, true });
-Set set = new Set(1, true, new List<Game> { game });
 
-//IRepository<Club> clubRepository = new Repository<Club>(new AppDBContext());
-//clubRepository.AddAsync(club).Wait();
 
+//var playerDto = new DTO.Player
+//{
+//    Id = 1,
+//    Name = "Test Player",
+//    // other properties...
+//};
+
+//// Map it to the domain model
+//var playerDomain = mapper.Map<Player>(playerDto);
+
+//Console.WriteLine($"Mapped Player: {playerDomain.Name}, Id: {playerDomain.Id}");
 
 
 

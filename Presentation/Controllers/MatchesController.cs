@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Business.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -7,6 +8,13 @@ namespace Presentation.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
+        private readonly MatchesService matchesService;
+
+        public MatchesController(MatchesService matchesService)
+        {
+            this.matchesService = matchesService;
+        }
+
         [HttpGet]
         public IActionResult GetMatches()
         {

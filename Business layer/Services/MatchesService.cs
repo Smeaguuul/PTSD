@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Business.Interfaces;
+using Business.Mappers;
 using DataAccess.Context;
 using DataAccess.Interfaces;
 using DataAccess.Repositories;
@@ -14,11 +16,13 @@ namespace Business.Services
 {
     public class MatchesService : IMatchesService
     {
-        private readonly IRepository<Match> repository;
+        private readonly IRepository<Match> Repository;
+        IMapper Mapper { get; set; }
 
-        public MatchesService()
+        public MatchesService(IMapper mapper, IRepository<Match> repository)
         {
-            repository = new Repository<Match>(new AppDBContext());
+            Mapper = mapper;
+            Repository = repository;
         }
 
         public async Task<IEnumerable<Match>> OngoingMatches()
@@ -30,7 +34,7 @@ namespace Business.Services
                 .ThenInclude(s => s.Sets)
                 .ThenInclude(s => s.Games)
                 );
-            return matches;
+            return Mapper.Map<List<DTO.Match>>(matches);
         }
     }
 }
