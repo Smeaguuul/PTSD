@@ -5,16 +5,13 @@ namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
+        Field[] fields = { new DTO.Field(1),  new DTO.Field(2),  new DTO.Field(3)};
         public AdminController()
         {
 
         }
-        public ActionResult Admin ()
+        public ActionResult Admin()
         {
-            var fields = new Field[3];
-            fields[0] = new DTO.Field(1);
-            fields[1] = new DTO.Field(2);
-            fields[2] = new DTO.Field(3);
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             fields[2].CurrentMatch = new DTO.Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Ongoing, 1);
@@ -23,10 +20,6 @@ namespace Presentation.Controllers
         }
         public ActionResult AdminBtn(int fieldId, int matchId)
         {
-            var fields = new Field[3];
-            fields[0] = new DTO.Field(1);
-            fields[1] = new DTO.Field(2);
-            fields[2] = new DTO.Field(3);
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             Club club = new Club();
@@ -35,15 +28,25 @@ namespace Presentation.Controllers
             Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             foreach (var match in matchesTest)
             {
-                if (match.Id == matchId) {
+                if (match.Id == matchId)
+                {
                     match.Status = Status.Ongoing;
-                    Field field = (Field)fields.Where(f => f.Id == fieldId);
-                    match.Field = field;
+                    foreach (var field in fields)
+                    {
+                        if (field.Id == fieldId)
+                        {
+                            match.Field = field;
+                            field.CurrentMatch = match;
+                           
+                            Console.WriteLine(match.Status + " " + match.Field);
+                        }
+                    }
                 }
             }
+
             return RedirectToAction("Admin");
         }
-        public ActionResult StartGame()
+        public ActionResult StartGame(int fieldId)
         {
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
@@ -52,11 +55,11 @@ namespace Presentation.Controllers
             team1.Club = club;
             Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             ViewBag.Matches = matchesTest;
-            //ViewBag.FieldId = fieldId;
+            ViewBag.FieldId = fieldId;
             //Console.WriteLine(fieldId);
             return View();
         }
 
-      
+
     }
 }

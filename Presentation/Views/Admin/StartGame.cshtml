@@ -9,7 +9,8 @@
 {
 	if (i.Status == Status.Scheduled)
 	{
-		<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Admin", new{fieldId=ViewBag.FieldId, matchId=i.Id})'">
+		<a asp-action="AdminBtn" asp-route-fieldId=@ViewBag.FieldId asp-route-matchId=@i.Id class="btn btn-primary">
+		
 			<table>
 				<tr>
 					<td>
@@ -45,6 +46,6 @@
 					</td>
 				</tr>
 			</table>
-		</button>
+		</a>
 	}
 }

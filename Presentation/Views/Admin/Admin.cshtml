@@ -11,7 +11,7 @@
 			@if (@i.CurrentMatch == null)
 			{
 				<p>Status: Ledig</p>
-				<a asp-action="StartGame" asp-route-id=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
+				<a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
 			} else {
 				<p>Status: Optaget</p>
 				<a asp-action="EndMatchBtn" id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
