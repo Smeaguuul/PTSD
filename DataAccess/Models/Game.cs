@@ -6,21 +6,24 @@ namespace DataAccess.Models
     {
         public int Id { get; set; }
         public bool Server { get; set; }
-        public int Number { get; }
-        private List<bool> _pointHistory;
-        public List<bool> PointHistory { get { return [.. _pointHistory]; } }
+        public int Number { get; set; }
+        public List<bool> PointHistory { get; set; } = new List<bool>(); // Initialize to avoid null reference
 
-        public Game(int number)
+        // Parameterless constructor
+        public Game() { }
+
+        public Game(int id, bool server, int number, List<bool> pointHistory)
         {
+            Id = id;
+            Server = server;
             Number = number;
-            _pointHistory = new List<bool>();
+            PointHistory = pointHistory;
         }
 
         public Game(bool server, int number, List<bool> pointHistory)
         {
-            Server = server;
             Number = number;
-            _pointHistory = pointHistory;
+            PointHistory = pointHistory ?? new List<bool>(); // Initialize to avoid null reference
         }
 
 
@@ -30,8 +33,8 @@ namespace DataAccess.Models
         /// </summary>
         public void AddPoint(bool winner)
         {
-            if (_pointHistory.Count >= 13) throw new InvalidOperationException("The game can't have any more points.");
-            _pointHistory.Add(winner);
+            if (PointHistory.Count >= 13) throw new InvalidOperationException("The game can't have any more points.");
+            PointHistory.Add(winner);
         }
 
         /// <summary>
@@ -39,8 +42,8 @@ namespace DataAccess.Models
         /// </summary>
         public void RemovePoint()
         {
-            if (_pointHistory.Count == 0) throw new InvalidOperationException("There are no points in the list.");
-            _pointHistory.RemoveAt(_pointHistory.Count - 1);
+            if (PointHistory.Count == 0) throw new InvalidOperationException("There are no points in the list.");
+            PointHistory.RemoveAt(PointHistory.Count - 1);
         }
 
 

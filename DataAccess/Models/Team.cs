@@ -6,6 +6,7 @@
 
         private string _name;
         private List<Player> _players;
+        public Team() { }
 
         public string Name
         {

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Context
 {
+    //Run these commands at the project root: (Only the second if the migrations are already there, and the database just needs initlization)
+    // dotnet ef migrations add InitialCreate --output-dir ./Context/Migrations
+    // dotnet ef database update
     internal class AppDBContext : DbContext
     {
         public AppDBContext()
@@ -19,7 +22,7 @@ namespace DataAccess.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Club>().HasKey(c => c.Abbriviation);
+            modelBuilder.Entity<Club>().HasKey(c => c.Abbreviation);
             modelBuilder.Entity<Game>().HasKey(g => g.Id);
             modelBuilder.Entity<Match>().HasKey(m => m.Id);
             modelBuilder.Entity<Player>().HasKey(p => p.Id);
@@ -37,7 +40,7 @@ namespace DataAccess.Context
 
             using (StreamReader r = new StreamReader("Connection.json"))
             {
-                connectionString = JsonDocument.Parse(r.ReadToEnd()).RootElement.GetProperty("ConnectionString").GetString() ?? "";
+                connectionString = JsonDocument.Parse(r.ReadToEnd()).RootElement.GetProperty("Database_Connection_String").GetString() ?? "";
 
             }
 

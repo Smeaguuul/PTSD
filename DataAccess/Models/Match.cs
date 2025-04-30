@@ -47,6 +47,17 @@ namespace DataAccess.Models
             }
         }
 
+        public Match() { }
+
+        public Match(Score score, Team opponent, DateOnly date, Status status, int field)
+        {
+            _score = score;
+            _opponent = opponent;
+            _date = date;
+            _status = status;
+            _field = field;
+        }
+
         public Match(Team opponent, DateOnly date, Status status, int field) 
             : this(opponent, date, status, field, new Score()) { }
 
