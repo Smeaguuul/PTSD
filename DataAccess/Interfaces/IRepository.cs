@@ -16,6 +16,7 @@ namespace DataAccess.Interfaces
         /// <returns>A task</returns>
         Task AddAsync(T entity);
 
+
         /// <summary>
         /// Removes and entity of T type that matches the paramenter given
         /// </summary>

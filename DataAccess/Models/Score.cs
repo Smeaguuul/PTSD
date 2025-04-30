@@ -8,6 +8,12 @@ namespace DataAccess.Models
         private List<Set> _sets; // TODO: Consider maybe array of length 3 - Mikkel
         public List<Set> Sets { get { return _sets; } }
 
+        public Score(int id, List<Set> sets)
+        {
+            Id = id;
+            _sets = sets;
+        }
+
         public Score()
         {
             _sets = new List<Set>();

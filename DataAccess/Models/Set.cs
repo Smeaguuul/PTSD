@@ -9,6 +9,13 @@
         private List<Game> _games;
         public List<Game> Games { get { return _games; } }
 
+        public Set(int id, bool? winner, List<Game> games)
+        {
+            Id = id;
+            _winner = winner;
+            _games = games;
+        }
+
         public Set()
         {
             _games = new List<Game>();
@@ -20,5 +27,6 @@
 
             _games.Add(game); //Calculate winner or something?
         }
+
     }
 }

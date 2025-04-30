@@ -12,7 +12,7 @@ namespace DataAccess.Context
     //Run these commands at the project root: (Only the second if the migrations are already there, and the database just needs initlization)
     // dotnet ef migrations add InitialCreate --output-dir ./Context/Migrations
     // dotnet ef database update
-    internal class AppDBContext : DbContext
+    public class AppDBContext : DbContext
     {
         public AppDBContext()
         {
@@ -33,16 +33,21 @@ namespace DataAccess.Context
             // Configure your entities here
             // modelBuilder.Entity<YourEntity>().ToTable("YourTableName");
         }
-        protected override void
- OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = "";
 
-            using (StreamReader r = new StreamReader("Connection.json"))
-            {
-                connectionString = JsonDocument.Parse(r.ReadToEnd()).RootElement.GetProperty("Database_Connection_String").GetString() ?? "";
+            string solutionDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\.."));
 
-            }
+            string filePath = Path.Combine(solutionDirectory, "DataAccess","Context", "Connection.json");
+            StreamReader reader = new(filePath);
+            connectionString = reader.ReadToEnd();
+            connectionString = JsonDocument.Parse(connectionString).RootElement.GetProperty("Database_Connection_String").GetString() ?? "";
+
+            //using (StreamReader r = new StreamReader("Connection.json"))
+            //{
+            //    connectionString = JsonDocument.Parse(r.ReadToEnd()).RootElement.GetProperty("Database_Connection_String").GetString() ?? "";
+            //}
 
             optionsBuilder.UseSqlServer(connectionString);
  }

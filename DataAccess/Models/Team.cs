@@ -8,6 +8,13 @@
         private List<Player> _players;
         public Team() { }
 
+        public Team(int id, string name, List<Player> players)
+        {
+            Id = id;
+            _name = name;
+            _players = players;
+        }
+
         public string Name
         {
             get => _name;
