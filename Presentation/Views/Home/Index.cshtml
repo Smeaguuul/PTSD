@@ -1,39 +1,36 @@
 ﻿@model Presentation.Models.Matches
 
-<div class="container mt-4">
-    @foreach (string score in @Model.Scores)
+<div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
+    @foreach (MatchScore score in @Model.MatchScores)
     {
-        <div id="MatchOverviewDiv" class="d-flex justify-content-between align-items-center border p-3 mb-3 rounded">
-            <div id="HomeTeamDiv" class="text-center">
-                <h5>Home Team</h5>
-                <p>Sets: @score.Substring(0, 1)</p>
-                <p>Games in this Set: </p>
-                <p>Points in this game: </p>
+        <div style="display: flex; justify-content: space-between; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <div style="text-align: center; width: 30%;">
+                <h5 style="font-size: 1.2em;">Pakhus77</h5>
+                <p style="font-size: 0.9em;">Sets: @score.SetsHome</p>
+                <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetHome</p>
+                <p style="font-size: 0.9em;">Points in this game: @score.PointsHome</p>
             </div>
-            <p class="mx-3">vs</p>
-            <div id="AwayTeamDiv" class="text-center">
-                <h5>Away Team</h5>
-                <p>Sets: @score.Substring(2, 1)</p>
-                <p>Games in this Set: </p>
-                <p>Points in this game: </p>
+            <div style="text-align: center; width: 30%;">
+                <h6 style="font-size: 1em;">Bane @score.FieldId</h6>
+                <p style="font-size: 0.9em;">vs</p>
+            </div>
+            <div style="text-align: center; width: 30%;">
+                <h5 style="font-size: 1.2em;">@score.NameAway</h5>
+                <p style="font-size: 0.9em;">Sets: @score.SetsAway</p>
+                <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetAway</p>
+                <p style="font-size: 0.9em;">Points in this game: @score.PointsAway</p>
             </div>
         </div>
     }
-
-    <script>
-        function fetchData() {
-            fetch('/api/matches')
-                .then(data => {
-                    // Update your UI with the new data
-                    console.log(data);
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-
-        // Fetch data every 5 seconds (5000 milliseconds)
-        // setInterval(fetchData, 5000);
-
-        // Optionally, fetch data immediately on page load
-        fetchData();
-    </script>
 </div>
+
+
+
+<script>
+    function refreshPage() {
+        location.reload(); // Reload the current page
+    }
+    // Refresh the page every 5 seconds (5000 milliseconds)
+    setInterval(refreshPage, 5000);
+
+</script>

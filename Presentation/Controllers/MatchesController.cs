@@ -2,6 +2,7 @@
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Models;
 
 namespace Presentation.Controllers
 {
@@ -17,11 +18,19 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<DTO.Match>> GetMatches()
+        public async Task<Matches> GetMatches()
         {
             //await matchesService.OngoingMatchesSeedData();
             //await matchesService.ScheduledGamesSeedData();
-            return await matchesService.OngoingMatches();
+
+            var ongoingMatches = await matchesService.OngoingMatches();
+
+            Matches matches = new Matches();
+            foreach (var match in ongoingMatches)
+            {
+                matches.MatchScores.Add(MatchScore.ConvertMatchToMatchScore(match));
+            }
+            return matches;
         }
     }
 }
