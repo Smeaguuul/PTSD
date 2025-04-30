@@ -2,6 +2,8 @@
 {
     public class Team
     {
+        public int Id { get; set; }
+
         private string _name;
         private List<Player> _players;
 

@@ -4,6 +4,7 @@ namespace DataAccess.Models
 {
     public class Game
     {
+        public int Id { get; set; }
         public bool Server { get; set; }
         public int Number { get; }
         private List<bool> _pointHistory;

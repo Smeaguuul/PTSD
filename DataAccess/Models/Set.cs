@@ -2,6 +2,8 @@
 {
     public class Set
     {
+        public int Id { get; set; }
+
         private bool? _winner;
         public bool? Winner { get { return _winner; } set { _winner = value; } }
         private List<Game> _games;

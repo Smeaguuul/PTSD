@@ -3,6 +3,8 @@ namespace DataAccess.Models
 {
     public class Score
     {
+        public int ID { get; set; }
+
         private List<Set> _sets; // TODO: Consider maybe array of length 3 - Mikkel
         public List<Set> Sets { get { return _sets; } }
 

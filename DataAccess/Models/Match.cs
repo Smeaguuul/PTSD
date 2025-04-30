@@ -8,6 +8,8 @@ namespace DataAccess.Models
 {
     public class Match
     {
+        public int Id { get; set; }
+
         private Score _score;
         public Score Score { get => _score; }
 
