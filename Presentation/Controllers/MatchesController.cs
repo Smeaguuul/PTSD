@@ -17,9 +17,9 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMatches()
+        public async Task<IEnumerable<DTO.Match>> GetMatches()
         {
-            return Ok();
+            return await matchesService.OngoingMatches();
         }
     }
 }

@@ -25,21 +25,6 @@ namespace DataAccess.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Match",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Field = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Match", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Score",
                 columns: table => new
                 {
@@ -90,6 +75,35 @@ namespace DataAccess.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Match",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScoreId = table.Column<int>(type: "int", nullable: false),
+                    OpponentId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Field = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Match", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Match_Score_ScoreId",
+                        column: x => x.ScoreId,
+                        principalTable: "Score",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Match_Team_OpponentId",
+                        column: x => x.OpponentId,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Player",
                 columns: table => new
                 {
@@ -133,6 +147,16 @@ namespace DataAccess.Context.Migrations
                 name: "IX_Game_SetId",
                 table: "Game",
                 column: "SetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_OpponentId",
+                table: "Match",
+                column: "OpponentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_ScoreId",
+                table: "Match",
+                column: "ScoreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_TeamId",

@@ -28,7 +28,6 @@ namespace Business.Services
         public async Task<IEnumerable<DTO.Match>> OngoingMatches()
         {
             var matches = await Repository.GetAllAsync(
-                predicate: m => m.Status == Status.Ongoing,
                 include: query => query
                 .Include(m => m.Score)
                 .ThenInclude(s => s.Sets)

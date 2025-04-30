@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Context.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250430080747_InitialCreate")]
+    [Migration("20250430110536_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,10 +85,20 @@ namespace DataAccess.Context.Migrations
                     b.Property<int>("Field")
                         .HasColumnType("int");
 
+                    b.Property<int>("OpponentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScoreId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OpponentId");
+
+                    b.HasIndex("ScoreId");
 
                     b.ToTable("Match");
                 });
@@ -176,6 +186,25 @@ namespace DataAccess.Context.Migrations
                     b.HasOne("DataAccess.Models.Set", null)
                         .WithMany("Games")
                         .HasForeignKey("SetId");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Match", b =>
+                {
+                    b.HasOne("DataAccess.Models.Team", "Opponent")
+                        .WithMany()
+                        .HasForeignKey("OpponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.Score", "Score")
+                        .WithMany()
+                        .HasForeignKey("ScoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Opponent");
+
+                    b.Navigation("Score");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Player", b =>

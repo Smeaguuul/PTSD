@@ -9,12 +9,8 @@ namespace DataAccess.Models
     public class Match
     {
         public int Id { get; set; }
-
-        public Score score;
-        public Score Score { get => score; }
-
-        public Team opponent;
-        public Team Opponent { get => opponent; }
+        public Score Score { get; set; }
+        public Team Opponent { get; set; }
 
         public DateOnly date;
         public DateOnly Date
@@ -26,25 +22,19 @@ namespace DataAccess.Models
                 date = value;
             }
         }
-        public Status status;
-        public Status Status {
-            get => status;
-            set
-            {
-                if (value == null) throw new ArgumentNullException (nameof(value), "Status cannot be null.");
-                status = value;
-            }
-        }
+        public Status Status { get; set; }
+   
+        
         public int Field { get ; set ; }
 
         public Match() { }
 
         public Match(Score score, Team opponent, DateOnly date, Status status, int field)
         {
-            this.score = score;
+            this.Score = score;
             opponent = opponent;
             this.date = date;
-            this.status = status;
+            this.Status = status;
             this.Field = field;
         }
 
@@ -55,9 +45,9 @@ namespace DataAccess.Models
         {
             opponent = opponent;
             this.date = date;
-            this.status = status;
+            this.Status = status;
             this.Field = field;
-            this.score = score;
+            this.Score = score;
         }
     }
 }
