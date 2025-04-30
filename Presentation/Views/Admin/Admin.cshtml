@@ -2,7 +2,16 @@
 @{
 	ViewData["Title"] = "Admin";
 }
-<div class="text-center">
-    <h1 class="display-4">Velkommen til admin siden</h1>
+<div>
+	<h1>Manage Matches</h1>
+	@foreach (int i in ViewBag.FieldIds)
+	{
+		<div style="margin-left: 40px; border: 1px solid gray; padding: 5px">
+			<h4>Field @i</h4>
+			<p>Status: Ongoing</p>
+			<button id="editMatchBtn+@i">Enter Match</button>
+			<button id="newMathcBtn+@i">Start New Match</button>
+		</div>
+	}
 </div>
 <a asp-action="StartGame" class="btn btn-primary">Start Kamp</a>
