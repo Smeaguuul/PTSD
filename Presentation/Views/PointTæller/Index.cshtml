@@ -1,0 +1,57 @@
+﻿@model Presentation.Models.KampDTO
+
+@{
+    ViewData["Title"] = "Pointtæller";
+}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/pointtaeller.css" />
+
+<div class="score-container">
+    <div class="team-columns">
+        <div class="team-block">
+            <div class="team-name">@Model.Hold1</div>
+            <div class="score-box-vertical">
+                <label>Sæt</label>
+                @Model.SætHold1
+            </div>
+            <div class="score-box-vertical">
+                <label>Games</label>
+                @Model.GamesHold1
+            </div>
+            <div class="score-box-vertical">
+                <label>Point</label>
+                @Model.PointHold1
+            </div>
+        </div>
+
+        <div class="vs-label">VS</div>
+
+        <div class="team-block">
+            <div class="team-name">@Model.Hold2</div>
+            <div class="score-box-vertical">
+                <label>Sæt</label>
+                @Model.SætHold2
+            </div>
+            <div class="score-box-vertical">
+                <label>Games</label>
+                @Model.GamesHold2
+            </div>
+            <div class="score-box-vertical">
+                <label>Point</label>
+                @Model.PointHold2
+            </div>
+        </div>
+    </div>
+
+
+    @if (Model.TieBreak)
+    {
+        <div class="special-note">Tie-break i gang!</div>
+    }
+    @if (Model.GoldenBallActive)
+    {
+        <div class="special-note golden">Golden Ball – afgørende point!</div>
+    }
+
+
+</div>
