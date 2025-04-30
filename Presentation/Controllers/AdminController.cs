@@ -10,6 +10,8 @@ namespace Presentation.Controllers
         }
         public ActionResult Admin()
         {
+            int[] fieldIds = { 1, 2, 3 };
+            ViewBag.FieldIds = fieldIds;
             return View();
         }
         public ActionResult StartGame()
