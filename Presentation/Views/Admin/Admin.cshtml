@@ -4,14 +4,19 @@
 }
 <div>
 	<h1>Manage Matches</h1>
-	@foreach (int i in ViewBag.FieldIds)
+	@foreach (var i in ViewBag.fields)
 	{
 		<div style="margin-left: 40px; border: 1px solid gray; padding: 5px">
-			<h4>Field @i</h4>
-			<p>Status: Ongoing</p>
-			<button id="editMatchBtn+@i">Enter Match</button>
-			<button id="newMathcBtn+@i">Start New Match</button>
+			<h4>Field @i.Id</h4>
+			@if (@i.CurrentMatch == null)
+			{
+				<p>Status: Ledig</p>
+				<a asp-action="StartGame" asp-route-id="1" id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
+			} else {
+				<p>Status: Optaget</p>
+				<a asp-action="EndMatchBtn" id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
+			}
+			
 		</div>
 	}
 </div>
-<a asp-action="StartGame" class="btn btn-primary">Start Kamp</a>
