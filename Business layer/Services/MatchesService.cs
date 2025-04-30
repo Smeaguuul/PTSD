@@ -8,8 +8,8 @@ using Business.Interfaces;
 using Business.Mappers;
 using DataAccess.Context;
 using DataAccess.Interfaces;
+using DataAccess.Models;
 using DataAccess.Repositories;
-using DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
@@ -17,7 +17,7 @@ namespace Business.Services
     public class MatchesService : IMatchesService
     {
         private readonly IRepository<Match> Repository;
-        IMapper Mapper { get; set; }
+        IMapper Mapper;
 
         public MatchesService(IMapper mapper, IRepository<Match> repository)
         {
@@ -25,9 +25,9 @@ namespace Business.Services
             Repository = repository;
         }
 
-        public async Task<IEnumerable<Match>> OngoingMatches()
+        public async Task<IEnumerable<DTO.Match>> OngoingMatches()
         {
-            var matches = await repository.GetAllAsync(
+            var matches = await Repository.GetAllAsync(
                 predicate: m => m.Status == Status.Ongoing,
                 include: query => query
                 .Include(m => m.Score)

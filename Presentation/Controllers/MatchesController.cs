@@ -1,4 +1,5 @@
 ﻿using Business.Services;
+using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,9 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMatches()
+        public async Task<IActionResult> GetMatches()
         {
-            string matches = "Matches";
-            return Ok(matches);
+            return Ok();
         }
     }
 }

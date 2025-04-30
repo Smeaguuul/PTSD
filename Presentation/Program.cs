@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
 
 var config = new MapperConfiguration(cfg =>
 {
@@ -21,10 +20,13 @@ var config = new MapperConfiguration(cfg =>
 var mapper = config.CreateMapper();
 
 //Dependency Injection
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+builder.Services.AddScoped<AppDBContext>();
 builder.Services.AddScoped<IRepository<Match>, Repository<Match>>();
 builder.Services.AddScoped<MatchesService>();
 
 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
