@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace DataAccess.Context
@@ -32,7 +33,15 @@ namespace DataAccess.Context
         protected override void
  OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=EAA-SH-KLBO - KU\\SQLEXPRESS; Initial Catalog = Biler1; IntegratedSecurity = SSPI; TrustServerCertificate = true");
+            string connectionString = "";
+
+            using (StreamReader r = new StreamReader("Connection.json"))
+            {
+                connectionString = JsonDocument.Parse(r.ReadToEnd()).RootElement.GetProperty("ConnectionString").GetString() ?? "";
+
+            }
+
+            optionsBuilder.UseSqlServer(connectionString);
  }
     }
 }
