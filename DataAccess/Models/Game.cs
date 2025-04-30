@@ -12,22 +12,7 @@ namespace DataAccess.Models
         // Parameterless constructor
         public Game() { }
 
-        public Game(int id, bool server, int number, List<bool> pointHistory)
-        {
-            Id = id;
-            Server = server;
-            Number = number;
-            PointHistory = pointHistory;
-        }
-
-        public Game(bool server, int number, List<bool> pointHistory)
-        {
-            Number = number;
-            PointHistory = pointHistory ?? new List<bool>(); // Initialize to avoid null reference
-        }
-
-
-
+        
         /// <summary>
         /// Adds a winner to the list of points.
         /// </summary>

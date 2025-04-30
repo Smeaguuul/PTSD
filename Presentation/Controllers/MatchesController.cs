@@ -19,6 +19,8 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<IEnumerable<DTO.Match>> GetMatches()
         {
+            //await matchesService.OngoingMatchesSeedData();
+            //await matchesService.ScheduledGamesSeedData();
             return await matchesService.OngoingMatches();
         }
     }
