@@ -9,7 +9,7 @@
 {
 	if (i.Status == Status.Scheduled)
 	{
-		<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Admin", new{fieldId=ViewBag.FieldId, matchId=@i.Id})'">
+		<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Admin", new{fieldId=ViewBag.FieldId, matchId=i.Id})'">
 			<table>
 				<tr>
 					<td>

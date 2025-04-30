@@ -43,7 +43,7 @@ namespace Presentation.Controllers
             }
             return RedirectToAction("Admin");
         }
-        public ActionResult StartGame(int fieldId)
+        public ActionResult StartGame()
         {
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
@@ -52,7 +52,8 @@ namespace Presentation.Controllers
             team1.Club = club;
             Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             ViewBag.Matches = matchesTest;
-            ViewBag.FieldId = fieldId;
+            //ViewBag.FieldId = fieldId;
+            //Console.WriteLine(fieldId);
             return View();
         }
 
