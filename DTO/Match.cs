@@ -2,6 +2,7 @@
 {
     public class Match
     {
+        public int Id { get; set; }
         public Score Score { get; set; }
         public Team Opponent { get; set; }
         public DateOnly Date { get; set; }

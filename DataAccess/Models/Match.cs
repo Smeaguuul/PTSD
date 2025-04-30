@@ -10,52 +10,42 @@ namespace DataAccess.Models
     {
         public int Id { get; set; }
 
-        private Score _score;
-        public Score Score { get => _score; }
+        public Score score;
+        public Score Score { get => score; }
 
-        private Team _opponent;
-        public Team Opponent { get => _opponent; }
+        public Team opponent;
+        public Team Opponent { get => opponent; }
 
-        private DateOnly _date;
+        public DateOnly date;
         public DateOnly Date
         {
-            get => _date;
+            get => date;
             set
             {
                 //TODO: Maybe don't allow to "set" past dates? + Nullcheck - Mikkel
-                _date = value;
+                date = value;
             }
         }
-        private Status _status;
+        public Status status;
         public Status Status {
-            get => _status;
+            get => status;
             set
             {
                 if (value == null) throw new ArgumentNullException (nameof(value), "Status cannot be null.");
-                _status = value;
+                status = value;
             }
         }
-        private int _field;
-        public int Field
-        {
-            get => _field;
-            set
-            {
-                if (value <= 0 || value >= 4)
-                    throw new ArgumentException("Field must be 1, 2 or 3.");
-                _field = value;
-            }
-        }
+        public int Field { get ; set ; }
 
         public Match() { }
 
         public Match(Score score, Team opponent, DateOnly date, Status status, int field)
         {
-            _score = score;
-            _opponent = opponent;
-            _date = date;
-            _status = status;
-            _field = field;
+            this.score = score;
+            opponent = opponent;
+            this.date = date;
+            this.status = status;
+            this.Field = field;
         }
 
         public Match(Team opponent, DateOnly date, Status status, int field) 
@@ -63,11 +53,11 @@ namespace DataAccess.Models
 
         public Match(Team opponent, DateOnly date, Status status, int field, Score score)
         {
-            _opponent = opponent;
-            _date = date;
-            _status = status;
-            _field = field;
-            _score = score;
+            opponent = opponent;
+            this.date = date;
+            this.status = status;
+            this.Field = field;
+            this.score = score;
         }
     }
 }

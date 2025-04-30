@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿/*var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,20 +23,44 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 
-app.Run();
+app.Run();*/
 
-//using DataAccess.Context;
-//using DataAccess.Interfaces;
-//using DataAccess.Models;
-//using DataAccess.Repositories;
+using AutoMapper;
+using Business.Mappers;
+using DataAccess.Context;
+using DataAccess.Interfaces;
+using DataAccess.Models;
+using DataAccess.Repositories;
 
-////Club club = new Club("FC Barcelona", "BAR", "Barcelona");
-//Team team = new Team(1, "FC Barcelona", new List<Player> { new Player(1, "Lionel Messi"), new Player(2, "Xavi Hernandez") });
-//Game game = new Game(1, true, 1, new List<bool> { true, false, true });
-//Set set = new Set(1, true, new List<Game> { game });
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<MapperProfile>();
+});
+
+var mapper = config.CreateMapper();
+
+
+var playerDto = new DTO.Player
+{
+    Id = 1,
+    Name = "Test Player",
+    // other properties...
+};
+
+// Map it to the domain model
+var playerDomain = mapper.Map<Player>(playerDto);
+
+Console.WriteLine($"Mapped Player: {playerDomain.Name}, Id: {playerDomain.Id}");
+
+
+Club club = new Club("FC Barcelona", "BAR", "Barcelona");
+Team team = new Team(1, "FC Barcelona", new List<Player> { new Player(1, "Lionel Messi"), new Player(2, "Xavi Hernandez") });
+Game game = new Game(1, true, 1, new List<bool> { true, false, true });
+Set set = new Set(1, true, new List<Game> { game });
 
 //IRepository<Club> clubRepository = new Repository<Club>(new AppDBContext());
-////clubRepository.AddAsync(club).Wait();
-//var club = await clubRepository.FirstOrDefaultAsync(c => c.Name == "FC Barcelona");
-//await clubRepository.RemoveAsync(club);
+//clubRepository.AddAsync(club).Wait();
+
+
+
 

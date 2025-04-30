@@ -10,17 +10,8 @@ namespace DataAccess.Models
     {
         public string Name { get; set; }
 
-        private string _abbreviation;
 
-        public string Abbreviation
-        {
-            get { return _abbreviation; }
-            set
-            {
-                if (value.Length > 3) throw new ArgumentException("The Abbreviation can't be more than 3 characters long");
-                _abbreviation = value;
-            }
-        }
+        public string Abbreviation { get; set; }
 
         public string Location { get; set; }
 
