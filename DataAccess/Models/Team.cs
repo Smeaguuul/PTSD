@@ -2,19 +2,28 @@
 {
     public class Team
     {
-        private string _name;
-        private List<Player> _players;
+        public int Id { get; set; }
 
+        public List<Player> players;
         public string Name
         {
-            get => _name;
-            set => _name = value;
+            get; set;
         }
 
+        public Team() { }
+
+        public Team(int id, string name, List<Player> players)
+        {
+            Id = id;
+            this.Name = name;
+            this.players = players;
+        }
+
+        
         public List<Player> Players
         {
-            get => _players;
-            set => _players = value ?? new List<Player>();
+            get => players;
+            set => players = value ?? new List<Player>();
         }
     }
 }

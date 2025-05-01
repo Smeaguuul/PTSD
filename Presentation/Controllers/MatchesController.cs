@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Business.Services;
+using DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Models;
 
 namespace Presentation.Controllers
 {
@@ -7,11 +10,27 @@ namespace Presentation.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetMatches()
+        private readonly MatchesService matchesService;
+
+        public MatchesController(MatchesService matchesService)
         {
-            string matches = "Matches";
-            return Ok(matches);
+            this.matchesService = matchesService;
+        }
+
+        [HttpGet]
+        public async Task<Matches> GetMatches()
+        {
+            //await matchesService.OngoingMatchesSeedData();
+            //await matchesService.ScheduledGamesSeedData();
+
+            var ongoingMatches = await matchesService.OngoingMatches();
+
+            Matches matches = new Matches();
+            foreach (var match in ongoingMatches)
+            {
+                matches.MatchScores.Add(MatchScore.ConvertMatchToMatchScore(match));
+            }
+            return matches;
         }
     }
 }
