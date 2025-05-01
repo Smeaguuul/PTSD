@@ -1,0 +1,59 @@
+﻿@model List<Presentation.Models.KampDTO>
+
+@{
+    ViewData["Title"] = "Pointtæller – Overblik";
+}
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="~/css/pointtaeller.css" />
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    var kamp = Model[i];
+    <div class="score-container">
+        <h2>Kamp @(i + 1)</h2>
+        <div class="team-columns">
+            <div class="team-block">
+                <div class="team-name">@kamp.Hold1</div>
+                <div class="score-box-vertical">
+                    <label>Sæt</label>
+                    @kamp.SætHold1
+                </div>
+                <div class="score-box-vertical">
+                    <label>Games</label>
+                    @kamp.GamesHold1
+                </div>
+                <div class="score-box-vertical">
+                    <label>Point</label>
+                    @kamp.PointHold1
+                </div>
+            </div>
+
+            <div class="vs-label">VS</div>
+
+            <div class="team-block">
+                <div class="team-name">@kamp.Hold2</div>
+                <div class="score-box-vertical">
+                    <label>Sæt</label>
+                    @kamp.SætHold2
+                </div>
+                <div class="score-box-vertical">
+                    <label>Games</label>
+                    @kamp.GamesHold2
+                </div>
+                <div class="score-box-vertical">
+                    <label>Point</label>
+                    @kamp.PointHold2
+                </div>
+            </div>
+        </div>
+
+        @if (kamp.TieBreak)
+        {
+            <div class="special-note">Tie-break i gang!</div>
+        }
+        @if (kamp.GoldenBallActive)
+        {
+            <div class="special-note golden">Golden Ball – afgørende point!</div>
+        }
+    </div>
+}
