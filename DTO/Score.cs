@@ -4,5 +4,7 @@
     {
         public int Id { get; set; }
         public List<Set> Sets { get; set; }
+
+        public Score() { }
     }
 }
