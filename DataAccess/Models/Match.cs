@@ -8,53 +8,23 @@ namespace DataAccess.Models
 {
     public class Match
     {
-        private Score _score;
-        public Score Score { get => _score; }
+        public int Id { get; set; }
+        public Score Score { get; set; }
+        public Team Opponent { get; set; }
+        public DateOnly Date { get; set; }
+        public Status Status { get; set; }
+        public int Field { get ; set ; }
 
-        private Team _opponent;
-        public Team Opponent { get => _opponent; }
+        public Match() { }
 
-        private DateOnly _date;
-        public DateOnly Date
+        public Match(int id, Score score, Team opponent, DateOnly date, Status status, int field)
         {
-            get => _date;
-            set
-            {
-                //TODO: Maybe don't allow to "set" past dates? + Nullcheck - Mikkel
-                _date = value;
-            }
-        }
-        private Status _status;
-        public Status Status {
-            get => _status;
-            set
-            {
-                if (value == null) throw new ArgumentNullException (nameof(value), "Status cannot be null.");
-                _status = value;
-            }
-        }
-        private int _field;
-        public int Field
-        {
-            get => _field;
-            set
-            {
-                if (value <= 0 || value >= 4)
-                    throw new ArgumentException("Field must be 1, 2 or 3.");
-                _field = value;
-            }
-        }
-
-        public Match(Team opponent, DateOnly date, Status status, int field) 
-            : this(opponent, date, status, field, new Score()) { }
-
-        public Match(Team opponent, DateOnly date, Status status, int field, Score score)
-        {
-            _opponent = opponent;
-            _date = date;
-            _status = status;
-            _field = field;
-            _score = score;
+            Id = id;
+            Score = score;
+            Opponent = opponent;
+            Date = date;
+            Status = status;
+            Field = field;
         }
     }
 }

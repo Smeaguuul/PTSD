@@ -4,33 +4,22 @@ namespace DataAccess.Models
 {
     public class Game
     {
+        public int Id { get; set; }
         public bool Server { get; set; }
-        public int Number { get; }
-        private List<bool> _pointHistory;
-        public List<bool> PointHistory { get { return [.. _pointHistory]; } }
+        public int Number { get; set; }
+        public List<bool> PointHistory { get; set; } = new List<bool>(); // Initialize to avoid null reference
 
-        public Game(int number)
-        {
-            Number = number;
-            _pointHistory = new List<bool>();
-        }
+        // Parameterless constructor
+        public Game() { }
 
-        public Game(bool server, int number, List<bool> pointHistory)
-        {
-            Server = server;
-            Number = number;
-            _pointHistory = pointHistory;
-        }
-
-
-
+        
         /// <summary>
         /// Adds a winner to the list of points.
         /// </summary>
         public void AddPoint(bool winner)
         {
-            if (_pointHistory.Count >= 13) throw new InvalidOperationException("The game can't have any more points.");
-            _pointHistory.Add(winner);
+            if (PointHistory.Count >= 13) throw new InvalidOperationException("The game can't have any more points.");
+            PointHistory.Add(winner);
         }
 
         /// <summary>
@@ -38,8 +27,8 @@ namespace DataAccess.Models
         /// </summary>
         public void RemovePoint()
         {
-            if (_pointHistory.Count == 0) throw new InvalidOperationException("There are no points in the list.");
-            _pointHistory.RemoveAt(_pointHistory.Count - 1);
+            if (PointHistory.Count == 0) throw new InvalidOperationException("There are no points in the list.");
+            PointHistory.RemoveAt(PointHistory.Count - 1);
         }
 
 
