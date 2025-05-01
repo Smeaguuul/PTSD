@@ -1,60 +1,66 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using DTO;
+using Business.Interfaces;
 using Presentation.Models;
+
 
 namespace Presentation.Controllers
 {
     public class PointTællerController : Controller
     {
-        public IActionResult Overblik()
-        {
-            // Testliste med tre kampe
-            var kampe = new List<KampDTO>
-    {
-        new KampDTO
-        {
-            KampId = 1,
-            Hold1 = "PadelKongerne",
-            Hold2 = "NetMasters",
-            PointHold1 = "30",
-            PointHold2 = "40",
-            GamesHold1 = 4,
-            GamesHold2 = 5,
-            SætHold1 = 1,
-            SætHold2 = 1,
-            TieBreak = false,
-            GoldenBallActive = true
-        },
-        new KampDTO
-        {
-            KampId = 2,
-            Hold1 = "Team Smash",
-            Hold2 = "VolleyBeasts",
-            PointHold1 = "15",
-            PointHold2 = "15",
-            GamesHold1 = 2,
-            GamesHold2 = 2,
-            SætHold1 = 0,
-            SætHold2 = 0,
-            TieBreak = false,
-            GoldenBallActive = false
-        },
-        new KampDTO
-        {
-            KampId = 3,
-            Hold1 = "AceBreakers",
-            Hold2 = "Smashers",
-            PointHold1 = "40",
-            PointHold2 = "40",
-            GamesHold1 = 3,
-            GamesHold2 = 3,
-            SætHold1 = 1,
-            SætHold2 = 2,
-            TieBreak = true,
-            GoldenBallActive = false
-        }
-    };
+        private readonly IMatchesService _matchesService;
 
-            return View(kampe);
+        public PointTællerController(IMatchesService matchesService)
+        {
+            _matchesService = matchesService;
+        }
+
+        // Overblik over alle planlagte kampe
+        public async Task<IActionResult> Overblik()
+        {
+            var kampe = await _matchesService.ScheduledMatches();
+            return View(kampe.ToList());
+        }
+
+        // Vis pointtæller for én kamp
+        public async Task<IActionResult> Index(int id)
+        {
+            var kampe = await _matchesService.ScheduledMatches();
+            var kamp = kampe.FirstOrDefault(k => k.Id == id);
+
+            if (kamp == null)
+                return NotFound();
+
+            var setScores = new List<(int TeamOneScore, int TeamTwoScore)>();
+
+            foreach (var set in kamp.Score.Sets)
+            {
+                int teamOneScore = 0;
+                int teamTwoScore = 0;
+
+                foreach (var game in set.Games)
+                {
+                    int teamOnePoints = game.PointHistory.Count(p => p);
+                    int teamTwoPoints = game.PointHistory.Count(p => !p);
+
+                    if (teamOnePoints > teamTwoPoints)
+                        teamOneScore++;
+                    else if (teamTwoPoints > teamOnePoints)
+                        teamTwoScore++;
+                    // Hvis lige, tæller vi ikke nogen (kan tilpasses)
+                }
+
+
+                setScores.Add((teamOneScore, teamTwoScore));
+            }
+
+            var viewModel = new MatchViewModel
+            {
+                Match = kamp,
+                SetScores = setScores
+            };
+
+            return View(viewModel);
         }
     }
 }

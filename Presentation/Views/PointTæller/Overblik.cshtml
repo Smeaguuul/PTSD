@@ -1,59 +1,31 @@
-﻿@model List<Presentation.Models.KampDTO>
+﻿@model List<DTO.Match>
 
 @{
-    ViewData["Title"] = "Pointtæller – Overblik";
+    ViewData["Title"] = "Kampoversigt";
 }
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="~/css/pointtaeller.css" />
 
-@for (int i = 0; i < Model.Count; i++)
-{
-    var kamp = Model[i];
-    <div class="score-container">
-        <h2>Kamp @(i + 1)</h2>
-        <div class="team-columns">
-            <div class="team-block">
-                <div class="team-name">@kamp.Hold1</div>
-                <div class="score-box-vertical">
-                    <label>Sæt</label>
-                    @kamp.SætHold1
-                </div>
-                <div class="score-box-vertical">
-                    <label>Games</label>
-                    @kamp.GamesHold1
-                </div>
-                <div class="score-box-vertical">
-                    <label>Point</label>
-                    @kamp.PointHold1
-                </div>
-            </div>
+<h2 style="margin-bottom: 20px;">Aktive kampe</h2>
 
-            <div class="vs-label">VS</div>
-
-            <div class="team-block">
-                <div class="team-name">@kamp.Hold2</div>
-                <div class="score-box-vertical">
-                    <label>Sæt</label>
-                    @kamp.SætHold2
-                </div>
-                <div class="score-box-vertical">
-                    <label>Games</label>
-                    @kamp.GamesHold2
-                </div>
-                <div class="score-box-vertical">
-                    <label>Point</label>
-                    @kamp.PointHold2
-                </div>
-            </div>
-        </div>
-
-        @if (kamp.TieBreak)
+<table style="width: 100%; max-width: 600px; margin: auto; border-collapse: collapse; font-size: 18px;">
+    <thead>
+        <tr style="background-color: #f0f0f0;">
+            <th style="padding: 10px; text-align: left;">Modstander</th>
+            <th style="padding: 10px; text-align: left;">Bane</th>
+            <th style="padding: 10px; text-align: left;">Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kamp in Model)
         {
-            <div class="special-note">Tie-break i gang!</div>
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">@kamp.Opponent.Name</td>
+                <td style="padding: 10px;">@kamp.Field</td>
+                <td style="padding: 10px;">
+                    <a href="@Url.Action("Index", "PointTæller", new { id = kamp.Id })">
+                        Se pointtæller
+                    </a>
+                </td>
+            </tr>
         }
-        @if (kamp.GoldenBallActive)
-        {
-            <div class="special-note golden">Golden Ball – afgørende point!</div>
-        }
-    </div>
-}
+    </tbody>
+</table>

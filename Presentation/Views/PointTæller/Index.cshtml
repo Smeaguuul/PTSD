@@ -1,57 +1,51 @@
-﻿@model Presentation.Models.KampDTO
+﻿@model Presentation.Models.MatchViewModel
 
 @{
     ViewData["Title"] = "Pointtæller";
 }
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="~/css/pointtaeller.css" />
 
 <div class="score-container">
+    <h2>Bane @Model.Match.Field</h2>
+
     <div class="team-columns">
         <div class="team-block">
-            <div class="team-name">@Model.Hold1</div>
+            <div class="team-name">Hjemmehold</div>
             <div class="score-box-vertical">
-                <label>Sæt</label>
-                @Model.SætHold1
-            </div>
-            <div class="score-box-vertical">
-                <label>Games</label>
-                @Model.GamesHold1
-            </div>
-            <div class="score-box-vertical">
-                <label>Point</label>
-                @Model.PointHold1
+                <label>Navn</label>
+                Hent fra backend
             </div>
         </div>
 
         <div class="vs-label">VS</div>
 
         <div class="team-block">
-            <div class="team-name">@Model.Hold2</div>
+            <div class="team-name">@Model.Match.Opponent.Name</div>
             <div class="score-box-vertical">
-                <label>Sæt</label>
-                @Model.SætHold2
-            </div>
-            <div class="score-box-vertical">
-                <label>Games</label>
-                @Model.GamesHold2
-            </div>
-            <div class="score-box-vertical">
-                <label>Point</label>
-                @Model.PointHold2
+                <label>Spillere</label>
+                @foreach (var player in Model.Match.Opponent.Players)
+                {
+                    <div>@player.Name</div>
+                }
             </div>
         </div>
     </div>
 
+    <div style="margin-top: 30px;">
+        <h4>Sætscore</h4>
+        @for (int i = 0; i < Model.SetScores.Count; i++)
+        {
+            var sæt = Model.SetScores[i];
+            <div class="score-line">
+                Sæt @(i + 1): @sæt.TeamOneScore - @sæt.TeamTwoScore
+            </div>
+        }
+    </div>
 
-    @if (Model.TieBreak)
-    {
-        <div class="special-note">Tie-break i gang!</div>
-    }
-    @if (Model.GoldenBallActive)
-    {
-        <div class="special-note golden">Golden Ball – afgørende point!</div>
-    }
-
-
+    <div style="margin-top: 40px;">
+        <p>Scan for at følge denne kamp:</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://dinurl.dk/PointTæller/Index?id=@Model.Match.Id&size=150x150" alt="QR-kode" />
+    </div>
 </div>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Interfaces;
 using Business.Mappers;
 using Business.Services;
 using DataAccess.Context;
@@ -24,6 +25,7 @@ builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddDbContext<AppDBContext>();
 builder.Services.AddScoped<IRepository<Match>, Repository<Match>>();
 builder.Services.AddScoped<MatchesService>();
+builder.Services.AddScoped<IMatchesService, MatchesService>();
 
 
 

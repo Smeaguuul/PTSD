@@ -2,5 +2,7 @@
 {
     public interface IMatchesService
     {
+        Task<IEnumerable<DTO.Match>> ScheduledMatches();
+
     }
 }
