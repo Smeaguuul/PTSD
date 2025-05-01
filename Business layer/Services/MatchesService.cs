@@ -25,7 +25,7 @@ namespace Business.Services
             Repository = repository;
         }
         /// <summary>
-        /// Returns all matches that are scheduledm and sorts after date.
+        /// Returns all matches that are scheduled and sorts after date.
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<DTO.Match>> ScheduledMatches()
