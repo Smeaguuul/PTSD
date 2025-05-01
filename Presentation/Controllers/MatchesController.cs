@@ -2,7 +2,7 @@
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Models;
+using DTO;
 
 namespace Presentation.Controllers
 {
