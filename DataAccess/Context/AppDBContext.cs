@@ -20,6 +20,7 @@ namespace DataAccess.Context
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Club>().HasKey(c => c.Abbreviation);
@@ -33,6 +34,11 @@ namespace DataAccess.Context
             // Configure your entities here
             // modelBuilder.Entity<YourEntity>().ToTable("YourTableName");
         }
+
+        /// <summary>
+        /// This method is called when the context is being configured. It is used to set up the database connection string.
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString = "";

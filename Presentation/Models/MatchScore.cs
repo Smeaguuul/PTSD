@@ -41,7 +41,7 @@ namespace Presentation.Models
             }
 
             matchScore.NameAway = match.Opponent.Name;
-            matchScore.FieldId = match.Field;
+            matchScore.FieldId = match.Field.Id;
 
             return matchScore;
         }

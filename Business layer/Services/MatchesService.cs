@@ -24,7 +24,10 @@ namespace Business.Services
             Mapper = mapper;
             Repository = repository;
         }
-
+        /// <summary>
+        /// Returns all matches that are scheduled and sorts after date.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<DTO.Match>> ScheduledMatches()
         {
             var matches = await Repository.GetAllAsync(
@@ -38,6 +41,10 @@ namespace Business.Services
                 );
             return Mapper.Map<List<DTO.Match>>(matches);
         }
+        /// <summary>
+        /// Returns all matches that are ongoing.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<DTO.Match>> OngoingMatches()
         {
             var matches = await Repository.GetAllAsync(
@@ -51,6 +58,10 @@ namespace Business.Services
             return Mapper.Map<List<DTO.Match>>(matches);
         }
 
+        /// <summary>
+        /// Seed data for scheduled games. Creates 6 matches with 3 sets each, and 6 games per set.
+        /// </summary>
+        /// <returns></returns>
         public async Task ScheduledGamesSeedData()
         {
             for (int i = 0; i < 6; i++)
@@ -101,6 +112,10 @@ namespace Business.Services
                 await Repository.AddAsync(match);
             }
         }
+        /// <summary>
+        /// Seed data for ongoing games. Creates 3 matches with 1 or 2 sets each, and 6 games per set.
+        /// </summary>
+        /// <returns></returns>
         public async Task OngoingMatchesSeedData()
         {
             for (int i = 0; i < 3; i++) // Only create 3 ongoing games

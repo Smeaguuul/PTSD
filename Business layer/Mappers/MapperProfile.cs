@@ -10,6 +10,10 @@ namespace Business.Mappers
 {
     public class MapperProfile : Profile
     {
+
+        /// <summary>
+        /// Mapper profile for mapping between DataAccess models and DTOs.
+        /// </summary>
         public MapperProfile()
         {
             CreateMap<Club, DTO.Club>();
