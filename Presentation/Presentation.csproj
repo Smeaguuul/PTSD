@@ -14,5 +14,5 @@
     <ProjectReference Include="..\Business layer\Business.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
-  <ProjectReference Include="..\DTO\DTO.csproj" />
+
 </Project>

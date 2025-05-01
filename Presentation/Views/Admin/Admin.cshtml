@@ -1,23 +1,8 @@
-﻿@{
+﻿
+@{
 	ViewData["Title"] = "Admin";
 }
-<div>
-	<h1>Redigér kampe</h1>
-	@foreach (var i in ViewBag.fields)
-	{
-		<div style="margin-left: 40px; border: 1px solid gray; padding: 5px">
-			<h4>Bane @i.Id</h4>
-			@if (@i.CurrentMatch == null)
-			{
-				<p>Status: Ledig</p>
-				<a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
-			}
-			else
-			{
-				<p>Status: Optaget</p>
-				<a asp-action="EndMatchBtn" id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
-			}
-
-		</div>
-	}
+<div class="text-center">
+    <h1 class="display-4">Velkommen til admin siden</h1>
 </div>
+<a asp-action="StartGame" class="btn btn-primary">Start Kamp</a>
