@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DTO;
+using Business.Services;
 
 namespace Presentation.Controllers
 {
@@ -7,9 +8,11 @@ namespace Presentation.Controllers
     {
         //testdata
         Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
-        public AdminController()
+
+        private readonly MatchesService matchesService;
+        public AdminController(MatchesService matchesService)
         {
-            
+            this.matchesService = matchesService;
         }
         public ActionResult Admin()
         {
@@ -21,16 +24,11 @@ namespace Presentation.Controllers
             return View();
         }
 
-        public ActionResult AdminBtn(int fieldId, int matchId)
-        {
-            //testdata
-            Team team1 = new Team();
-            team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
-            Club club = new Club();
-            club.Name = "Pakhus77";
-            team1.Club = club;
-            Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
-            foreach (var match in matchesTest)
+        public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
+        {            
+            var ongoingMatches = await matchesService.OngoingMatches();
+       
+            foreach (var match in ongoingMatches)
             {
                 if (match.Id == matchId)
                 {
