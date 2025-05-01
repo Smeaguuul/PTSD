@@ -1,50 +1,30 @@
-﻿@using DTO
+﻿
 @{
-	ViewData["Title"] = "Start kamp";
+	ViewBag["Title"] = "Start Kamp";
 }
 <div class="text-center">
-	<h1 class="display-4">Start kamp på bane @ViewBag.FieldId</h1>
+	<h1 class="display-4">Velkommen til admin siden</h1>
 </div>
-@foreach (var i in ViewBag.Matches)
-{
-	if (i.Status == Status.Scheduled)
-	{
-		<a asp-action="AdminBtn" asp-route-fieldId=@ViewBag.FieldId asp-route-matchId=@i.Id class="btn btn-primary">
-			<table>
-				<tr>
-					<td>
-						@i.Team1.Club.Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.Team2.Club.Name
-					</td>
-				</tr>
-				<tr>
-					<td>
-						@i.Team1.Players[0].Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.Team2.Players[0].Name
-					</td>
-				</tr>
-				<tr>
-					<td>
-						@i.Team1.Players[1].Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.Team2.Players[1].Name
-					</td>
-				</tr>
-			</table>
-		</a>
-	}
-}
+
+
+<form asp-action="StartGameForm" asp-controller="Admin" method="post">
+	<input id="Text1" type="text" />
+	<input id="Radio1" type="radio" />
+	<input id="Text2" type="text" />
+	<input id="Radio2" type="radio" />
+	<input id="Text3" type="text" />
+	<input id="Radio3" type="radio" />
+	<input id="Text4" type="text" />
+	<input id="Radio4" type="radio" />
+	<input id="Text5" type="text" />
+	<input id="Radio5" type="radio" />
+	<input id="Text6" type="text" />
+	<input id="Radio6" type="radio" />
+	<input id="Text7" type="text" />
+	<input id="Radio7" type="radio" />
+	<input id="Text8" type="text" />
+	<input id="Radio8" type="radio" />
+	<input id="Text9" type="text" />
+	<input id="Radio9" type="radio" />
+    <button class="btn btn-primary mt-4" type="submit">Start dette game</button>
+</form>
