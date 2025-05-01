@@ -14,21 +14,28 @@ namespace Presentation.Controllers
         {
             this.matchesService = matchesService;
         }
-        public ActionResult Admin()
+        public async Task<ActionResult> Admin()
         {
-            //testdata
-            Team team1 = new Team();
-            team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
-            fields[2].CurrentMatch = new DTO.Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Ongoing, 1);
+            Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
+            var ongoingMatches = await matchesService.OngoingMatches();
+            foreach (var field in fields)
+            {
+                foreach (var match in ongoingMatches)
+                {
+                    if(field.Id == match.Field.Id)
+                        field.CurrentMatch = match;
+                }
+            }
             ViewBag.Fields = fields;
             return View();
         }
 
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
-        {            
-            var ongoingMatches = await matchesService.OngoingMatches();
-       
-            foreach (var match in ongoingMatches)
+        {
+
+            var scheduledMatches = await matchesService.ScheduledMatches();
+            // TODO Opdater i DB
+            foreach (var match in scheduledMatches)
             {
                 if (match.Id == matchId)
                 {
@@ -47,16 +54,18 @@ namespace Presentation.Controllers
             return RedirectToAction("Admin");
         }
 
-        public ActionResult StartGame(int fieldId)
+        public async Task<ActionResult> StartGame(int fieldId)
         {
-            //testdata
-            Team team1 = new Team();
-            team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
-            Club club = new Club();
-            club.Name = "Pakhus77";
-            team1.Club = club;
-            Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
-            ViewBag.Matches = matchesTest;
+            var scheduledMatches = await matchesService.ScheduledMatches();
+
+            
+            //Team team1 = new Team();
+            //team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
+            //Club club = new Club();
+            //club.Name = "Pakhus77";
+            //team1.Club = club;
+            //Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
+            ViewBag.Matches = scheduledMatches;
             ViewBag.FieldId = fieldId;
             return View();
         }
