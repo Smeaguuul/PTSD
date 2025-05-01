@@ -5,6 +5,7 @@ namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
+        //testdata
         Field[] fields = { new DTO.Field(1),  new DTO.Field(2),  new DTO.Field(3)};
         public AdminController()
         {
@@ -12,6 +13,7 @@ namespace Presentation.Controllers
         }
         public ActionResult Admin()
         {
+            //testdata
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             fields[2].CurrentMatch = new DTO.Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Ongoing, 1);
@@ -20,6 +22,7 @@ namespace Presentation.Controllers
         }
         public ActionResult AdminBtn(int fieldId, int matchId)
         {
+            //testdata
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             Club club = new Club();
@@ -37,8 +40,6 @@ namespace Presentation.Controllers
                         {
                             match.Field = field;
                             field.CurrentMatch = match;
-                           
-                            Console.WriteLine(match.Status + " " + match.Field);
                         }
                     }
                 }
@@ -48,6 +49,7 @@ namespace Presentation.Controllers
         }
         public ActionResult StartGame(int fieldId)
         {
+            //testdata
             Team team1 = new Team();
             team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             Club club = new Club();
@@ -56,7 +58,6 @@ namespace Presentation.Controllers
             Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             ViewBag.Matches = matchesTest;
             ViewBag.FieldId = fieldId;
-            //Console.WriteLine(fieldId);
             return View();
         }
 
