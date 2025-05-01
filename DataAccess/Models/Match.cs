@@ -17,6 +17,14 @@ namespace DataAccess.Models
 
         public Match() { }
 
-
+        public Match(int id, Score score, Team opponent, DateOnly date, Status status, int field)
+        {
+            Id = id;
+            Score = score;
+            Opponent = opponent;
+            Date = date;
+            Status = status;
+            Field = field;
+        }
     }
 }

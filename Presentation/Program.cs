@@ -21,7 +21,7 @@ var mapper = config.CreateMapper();
 
 //Dependency Injection
 builder.Services.AddAutoMapper(typeof(MapperProfile));
-builder.Services.AddScoped<AppDBContext>();
+builder.Services.AddDbContext<AppDBContext>();
 builder.Services.AddScoped<IRepository<Match>, Repository<Match>>();
 builder.Services.AddScoped<MatchesService>();
 
