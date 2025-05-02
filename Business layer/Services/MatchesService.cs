@@ -36,7 +36,7 @@ namespace Business.Services
                 .Include(m => m.Score)
                 .ThenInclude(s => s.Sets)
                 .ThenInclude(s => s.Games)
-                .Include(m => m.Opponent),
+                .Include(m => m.Opponent).ThenInclude(o=>o.Players),
                 orderBy: query => query.OrderBy(m => m.Date)
                 );
             return Mapper.Map<List<DTO.Match>>(matches);
