@@ -76,13 +76,16 @@ namespace DataAccess.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AwayTeamId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
                     b.Property<int>("Field")
                         .HasColumnType("int");
 
-                    b.Property<int>("OpponentId")
+                    b.Property<int>("HomeTeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("ScoreId")
@@ -93,7 +96,9 @@ namespace DataAccess.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OpponentId");
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("HomeTeamId");
 
                     b.HasIndex("ScoreId");
 
@@ -165,6 +170,7 @@ namespace DataAccess.Context.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClubAbbreviation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -187,10 +193,16 @@ namespace DataAccess.Context.Migrations
 
             modelBuilder.Entity("DataAccess.Models.Match", b =>
                 {
-                    b.HasOne("DataAccess.Models.Team", "Opponent")
+                    b.HasOne("DataAccess.Models.Team", "AwayTeam")
                         .WithMany()
-                        .HasForeignKey("OpponentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.Team", "HomeTeam")
+                        .WithMany()
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataAccess.Models.Score", "Score")
@@ -199,7 +211,9 @@ namespace DataAccess.Context.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Opponent");
+                    b.Navigation("AwayTeam");
+
+                    b.Navigation("HomeTeam");
 
                     b.Navigation("Score");
                 });
@@ -220,9 +234,13 @@ namespace DataAccess.Context.Migrations
 
             modelBuilder.Entity("DataAccess.Models.Team", b =>
                 {
-                    b.HasOne("DataAccess.Models.Club", null)
+                    b.HasOne("DataAccess.Models.Club", "Club")
                         .WithMany("Teams")
-                        .HasForeignKey("ClubAbbreviation");
+                        .HasForeignKey("ClubAbbreviation")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Club");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Club", b =>

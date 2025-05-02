@@ -40,7 +40,8 @@ namespace Presentation.Models
                 }
             }
 
-            matchScore.NameAway = match.Opponent.Name;
+            matchScore.NameAway = match.AwayTeam.Club.Name;
+            matchScore.NameHome = match.HomeTeam.Club.Name;
             matchScore.FieldId = match.Field.Id;
 
             return matchScore;

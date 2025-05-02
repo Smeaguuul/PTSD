@@ -36,7 +36,10 @@ namespace Business.Services
                 .Include(m => m.Score)
                 .ThenInclude(s => s.Sets)
                 .ThenInclude(s => s.Games)
-                .Include(m => m.Opponent).ThenInclude(o=>o.Players),
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club),
                 orderBy: query => query.OrderBy(m => m.Date)
                 );
             return Mapper.Map<List<DTO.Match>>(matches);
@@ -53,7 +56,10 @@ namespace Business.Services
                 .Include(m => m.Score)
                 .ThenInclude(s => s.Sets)
                 .ThenInclude(s => s.Games)
-                .Include(m => m.Opponent)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club)
                 );
             return Mapper.Map<List<DTO.Match>>(matches);
         }
@@ -62,8 +68,55 @@ namespace Business.Services
         /// Seed data for scheduled games. Creates 6 matches with 3 sets each, and 6 games per set.
         /// </summary>
         /// <returns></returns>
-        public async Task ScheduledGamesSeedData()
+        public async Task SeedMatchData()
         {
+            var pakhus77 = new Club()
+            {
+                Abbreviation = "P77",
+                Name = "Pakhus77",
+                Location = "Pakhus77",
+                Teams = new List<Team>()
+                {
+
+                }
+            };
+
+            var team1 = new Team()
+            {
+                Club = pakhus77,
+                Name = "Team 1",
+                Players = new List<Player>()
+                {
+                    new Player() { Name = "Peter" },
+                    new Player() { Name = "Jonathan" }
+                }
+            };
+            var team2 = new Team()
+            {
+                Club = pakhus77,
+                Name = "Team 2",
+                Players = new List<Player>()
+                {
+                    new Player() { Name = "Anton" },
+                    new Player() { Name = "Oliver" }
+                }
+            };
+            var team3 = new Team()
+            {
+                Club = pakhus77,
+                Name = "Team 3",
+                Players = new List<Player>()
+                {
+                    new Player() { Name = "Louise" },
+                    new Player() { Name = "Asbjørn" }
+                }
+            };
+
+            pakhus77.Teams.Add(team1);
+            pakhus77.Teams.Add(team2);
+            pakhus77.Teams.Add(team3);
+
+            var københavnPakhus = new Club() { Abbreviation = "KHP", Location = "København ", Name = "København Pakhus" };
             for (int i = 0; i < 6; i++)
             {
                 // Makes some opponents
@@ -72,7 +125,8 @@ namespace Business.Services
                         new Player { Name = "Player" + (i * 2) },
                         new Player { Name = "Player" + (i * 2 + 1) }
                     };
-                Team opponentTeam = new Team { Name = "Opponent", Players = opponentPlayers };
+                Team opponentTeam = new Team { Name = "Opponent", Players = opponentPlayers, Club = københavnPakhus };
+                københavnPakhus.Teams.Add(opponentTeam);
 
                 // Makes Score
                 // Makes three sets
@@ -104,20 +158,15 @@ namespace Business.Services
                 var match = new Match
                 {
                     Score = score,
-                    Opponent = opponentTeam,
+                    HomeTeam = pakhus77.Teams[i % 3],
+                    AwayTeam = opponentTeam,
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(6 % 2)),
                     Status = Status.Scheduled,
                     Field = i % 3
                 };
                 await Repository.AddAsync(match);
             }
-        }
-        /// <summary>
-        /// Seed data for ongoing games. Creates 3 matches with 1 or 2 sets each, and 6 games per set.
-        /// </summary>
-        /// <returns></returns>
-        public async Task OngoingMatchesSeedData()
-        {
+
             for (int i = 0; i < 3; i++) // Only create 3 ongoing games
             {
                 // Create some players for the match
@@ -126,7 +175,8 @@ namespace Business.Services
                         new Player { Name = "OpponentPlayer" + (i * 2) },
                         new Player { Name = "OpponentPlayer" + (i * 2 + 1) }
                     };
-                Team opponentTeam = new Team { Name = "Opponent", Players = opponentPlayers };
+                Team opponentTeam = new Team { Name = "Opponent", Players = opponentPlayers, Club = københavnPakhus };
+                københavnPakhus.Teams.Add(opponentTeam);
 
                 // Determine the number of sets (1 or 2)
                 int numberOfSets = new Random().Next(1, 3); // Randomly choose between 1 and 2 sets
@@ -160,8 +210,9 @@ namespace Business.Services
                 var match = new Match
                 {
                     Score = score,
-                    Opponent = opponentTeam,
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(i)), // Assign a different date for each match
+                    HomeTeam = pakhus77.Teams[i],
+                    AwayTeam = opponentTeam,
+                    Date = DateOnly.FromDateTime(DateTime.Now),
                     Status = Status.Ongoing,
                     Field = i // Assign to one of the three fields
                 };
