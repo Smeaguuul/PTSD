@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public bool? Winner { get; set; }
-        public List<Game> Games { get; set; }
+        public List<Game> Games { get; set; } //Maximum of 13, right?
 
         public Set(int id, bool? winner, List<Game> games)
         {

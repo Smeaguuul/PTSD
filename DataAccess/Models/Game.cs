@@ -12,26 +12,6 @@ namespace DataAccess.Models
         // Parameterless constructor
         public Game() { }
 
-        
-        /// <summary>
-        /// Adds a winner to the list of points.
-        /// </summary>
-        public void AddPoint(bool winner)
-        {
-            if (PointHistory.Count >= 13) throw new InvalidOperationException("The game can't have any more points.");
-            PointHistory.Add(winner);
-        }
-
-        /// <summary>
-        /// Removes the last point.
-        /// </summary>
-        public void RemovePoint()
-        {
-            if (PointHistory.Count == 0) throw new InvalidOperationException("There are no points in the list.");
-            PointHistory.RemoveAt(PointHistory.Count - 1);
-        }
-
-
 
     }
 }

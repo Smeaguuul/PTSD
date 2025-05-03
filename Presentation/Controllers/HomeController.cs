@@ -27,7 +27,8 @@ namespace Presentation.Controllers
             Matches matches = new Matches();
             foreach (var match in ongoingMatches)
             {
-                matches.MatchScores.Add(MatchScore.ConvertMatchToMatchScore(match));
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                matches.MatchScores.Add(matchScore);
             }
 
             return View(matches);

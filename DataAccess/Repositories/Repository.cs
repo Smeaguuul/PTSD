@@ -26,10 +26,20 @@ namespace DataAccess.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null)
+        public async Task UpdateAndSaveAsync(T entity)
+        {
+            _dbSet.Update(entity); // Mark the entity as modified
+            await _context.SaveChangesAsync(); // Save changes to the database
+        }
+
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IQueryable<T>>? include = null)
         {
             IQueryable<T> query = _dbSet;
 
+            if (include != null)
+            {
+                query = include(query);
+            }
             if (predicate != null)
             {
                 query = query.Where(predicate);

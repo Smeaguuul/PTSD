@@ -1,7 +1,7 @@
 ﻿@model Presentation.Models.Matches
 
 <div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
-    @foreach (MatchScore score in @Model.MatchScores)
+    @foreach (DTO.MatchScore score in @Model.MatchScores)
     {
         <div style="display: flex; justify-content: space-between; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
             <div style="text-align: center; width: 30%;">
