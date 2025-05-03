@@ -118,5 +118,67 @@ namespace Presentation.Controllers
 
         }
 
+        public ActionResult UploadAd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadAd(IFormFile file)
+        {
+            try
+            {
+                if (file != null && file.Length > 0)
+                {
+                    string fileExtension = Path.GetExtension(file.FileName);
+                    string[] allowedExtensions = { ".jpg", ".png" };
+
+                    if (allowedExtensions.Contains(fileExtension))
+                    {
+                        var maxFileSize = 20 * 1024 * 1024;
+                        if (file.Length > maxFileSize)
+                        {
+                            ViewBag.Message = "File size exceeds the maximum limit of 20MB.";
+                            return View();
+                        }
+
+                        // Define the path to save the uploaded file
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+                        // Ensure the uploads directory exists
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        // Save the file to the server
+                        //var fileName = Path.GetFileName(file.FileName);
+                        var path = Path.Combine(uploadsFolder, "Ad" + fileExtension);
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Display success message
+                        ViewBag.Message = "File uploaded successfully!";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Only jpg, and png files are allowed.";
+                    }
+                }
+                else
+                {
+                    // Display error message
+                    ViewBag.Message = "Please select a file to upload.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+            }
+
+            return View();
+        }
     }
 }

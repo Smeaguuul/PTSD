@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "File Upload";
+}
+
+<h2>File Upload</h2>
+
+<form asp-controller="admin" asp-action="UploadAd" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Select a file to upload:</label>
+        <input type="file" name="file" id="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}

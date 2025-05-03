@@ -1,28 +1,32 @@
 ﻿@model Presentation.Models.Matches
 
-<div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
-    @foreach (DTO.MatchScore score in @Model.MatchScores)
-    {
-        <div style="display: flex; justify-content: space-between; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-            <div style="text-align: center; width: 30%;">
-                <h5 style="font-size: 1.2em;">@score.NameHome</h5>
-                <p style="font-size: 0.9em;">Sets: @score.SetsHome</p>
-                <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetHome</p>
-                <p style="font-size: 0.9em;">Points in this game: @score.PointsHome</p>
+<div style="display: flex; justify-content: space-around; align-items: flex-start;">
+    <div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
+        @foreach (DTO.MatchScore score in @Model.MatchScores)
+        {
+            <div style="display: flex; justify-content: space-between; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <div style="text-align: center; width: 30%;">
+                    <h5 style="font-size: 1.2em;">@score.NameHome</h5>
+                    <p style="font-size: 0.9em;">Sets: @score.SetsHome</p>
+                    <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetHome</p>
+                    <p style="font-size: 0.9em;">Points in this game: @score.PointsHome</p>
+                </div>
+                <div style="text-align: center; width: 30%;">
+                    <h6 style="font-size: 1em;">Bane @score.FieldId</h6>
+                    <p style="font-size: 0.9em;">vs</p>
+                </div>
+                <div style="text-align: center; width: 30%;">
+                    <h5 style="font-size: 1.2em;">@score.NameAway</h5>
+                    <p style="font-size: 0.9em;">Sets: @score.SetsAway</p>
+                    <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetAway</p>
+                    <p style="font-size: 0.9em;">Points in this game: @score.PointsAway</p>
+                </div>
             </div>
-            <div style="text-align: center; width: 30%;">
-                <h6 style="font-size: 1em;">Bane @score.FieldId</h6>
-                <p style="font-size: 0.9em;">vs</p>
-            </div>
-            <div style="text-align: center; width: 30%;">
-                <h5 style="font-size: 1.2em;">@score.NameAway</h5>
-                <p style="font-size: 0.9em;">Sets: @score.SetsAway</p>
-                <p style="font-size: 0.9em;">Games in this Set: @score.GamesThisSetAway</p>
-                <p style="font-size: 0.9em;">Points in this game: @score.PointsAway</p>
-            </div>
-        </div>
-    }
+        }
+    </div>
+    <img src="@Url.Content("~/images/Ad.png")" alt="An Ad!" style="margin: 10px;" />
 </div>
+
 
 
 
