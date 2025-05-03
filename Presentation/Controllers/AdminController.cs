@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DTO;
 using Business.Services;
+using Microsoft.EntityFrameworkCore;
+using Presentation.Models;
 
 namespace Presentation.Controllers
 {
@@ -10,9 +12,11 @@ namespace Presentation.Controllers
         Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
 
         private readonly MatchesService matchesService;
-        public AdminController(MatchesService matchesService)
+        private readonly ClubsService clubsService;
+        public AdminController(MatchesService matchesService, ClubsService clubsService)
         {
             this.matchesService = matchesService;
+            this.clubsService = clubsService;
         }
         public async Task<ActionResult> Admin()
         {
@@ -22,7 +26,7 @@ namespace Presentation.Controllers
             {
                 foreach (var match in ongoingMatches)
                 {
-                    if(field.Id == match.Field.Id)
+                    if (field.Id == match.Field.Id)
                         field.CurrentMatch = match;
                 }
             }
@@ -58,7 +62,7 @@ namespace Presentation.Controllers
         {
             var scheduledMatches = await matchesService.ScheduledMatches();
 
-            
+
             //Team team1 = new Team();
             //team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
             //Club club = new Club();
@@ -69,9 +73,50 @@ namespace Presentation.Controllers
             ViewBag.FieldId = fieldId;
             return View();
         }
-        public ActionResult StartGameForm() {
+        public ActionResult StartGameForm()
+        {
 
             return RedirectToAction("Admin");
         }
+
+        public async Task<ActionResult> AddMatch()
+        {
+            var clubs = await clubsService.GetAll();
+            foreach (var club in clubs)
+            {
+                club.Teams.ForEach(t => t.Club = null);
+            }
+            List<Field> fields = [new DTO.Field(1), new DTO.Field(2), new DTO.Field(3)];
+            var viewModel = new AddMatchModel()
+            {
+                Clubs = clubs.ToList(), // Fetch clubs and their teams
+                Fields = fields
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMatch(AddMatchModel model)
+        {
+            if (model.SelectedHomeTeamId <= 0 || model.SelectedAwayTeamId <= 0 || model.Date == default || string.IsNullOrEmpty(model.Status.ToString()))
+            {
+                // If model state is invalid, repopulate the ViewModel
+                var clubs = await clubsService.GetAll();
+                List<Field> fields = [new DTO.Field(1), new DTO.Field(2), new DTO.Field(3)];
+                var viewModel = new AddMatchModel()
+                {
+                    Clubs = clubs.ToList(), // Fetch clubs and their teams
+                    Fields = fields
+                };
+
+                return View(viewModel);
+            }
+            await matchesService.CreateMatch(model.SelectedHomeTeamId, model.SelectedAwayTeamId, model.Date, model.Status);
+
+            return RedirectToAction("StartGame"); // Redirect to a suitable action
+
+        }
+
     }
 }

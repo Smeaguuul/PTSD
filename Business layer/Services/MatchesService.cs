@@ -16,21 +16,47 @@ namespace Business.Services
 {
     public class MatchesService : IMatchesService
     {
-        private readonly IRepository<Match> Repository;
+        private readonly IRepository<Match> Matches;
+        private readonly IRepository<Team> Teams;
         IMapper Mapper;
 
-        public MatchesService(IMapper mapper, IRepository<Match> repository)
+        public MatchesService(IMapper mapper, IRepository<Match> repository, IRepository<Team> teamRepository)
         {
             Mapper = mapper;
-            Repository = repository;
+            Matches = repository;
+            Teams = teamRepository;
         }
+
+        public async Task CreateMatch(int homeTeamId, int awayTeamId, DateOnly date, DTO.Status status)
+        {
+            var homeTeam = await Teams.FirstOrDefaultAsync(t => t.Id == homeTeamId);
+            var awayTeam = await Teams.FirstOrDefaultAsync(t => t.Id == awayTeamId);
+
+            // Check if both teams exist
+            if (homeTeam == null || awayTeam == null)
+            {
+                throw new ArgumentException("One or both teams do not exist.");
+            }
+
+            var match = new Match
+            {
+                HomeTeam = homeTeam,
+                AwayTeam = awayTeam,
+                Date = date,
+                Status = Mapper.Map<Status>(status),
+                Score = new Score()
+            };
+
+            await Matches.AddAsync(match);
+        }
+
         /// <summary>
         /// Returns all matches that are scheduled and sorts after date.
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<DTO.Match>> ScheduledMatches()
         {
-            var matches = await Repository.GetAllAsync(
+            var matches = await Matches.GetAllAsync(
                 predicate: m => m.Status == Status.Scheduled,
                 include: query => query
                 .Include(m => m.Score)
@@ -50,7 +76,7 @@ namespace Business.Services
         /// <returns></returns>
         public async Task<IEnumerable<DTO.Match>> OngoingMatches()
         {
-            var matches = await Repository.GetAllAsync(
+            var matches = await Matches.GetAllAsync(
                 predicate: m => m.Status == Status.Ongoing,
                 include: query => query
                 .Include(m => m.Score)
@@ -164,7 +190,7 @@ namespace Business.Services
                     Status = Status.Scheduled,
                     Field = i % 3
                 };
-                await Repository.AddAsync(match);
+                await Matches.AddAsync(match);
             }
 
             for (int i = 0; i < 3; i++) // Only create 3 ongoing games
@@ -218,7 +244,7 @@ namespace Business.Services
                 };
 
                 // Add the match to the repository
-                await Repository.AddAsync(match);
+                await Matches.AddAsync(match);
             }
         }
     }
