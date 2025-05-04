@@ -14,9 +14,11 @@ namespace Presentation.Controllers
         {
             this.matchesService = matchesService;
         }
+
+        // Overblik over hvilke baner der er ledige samt igangværende
         public async Task<ActionResult> Admin()
         {
-            Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
+            Field[] fields = { new Field(1), new Field(2), new Field(3) };
             var ongoingMatches = await matchesService.OngoingMatches();
             foreach (var field in fields)
             {
@@ -30,9 +32,9 @@ namespace Presentation.Controllers
             return View();
         }
 
+        // Ændrer status på kamp fra Scheduled til Ongoing
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
-
             var scheduledMatches = await matchesService.ScheduledMatches();
             // TODO Opdater i DB
             foreach (var match in scheduledMatches)
@@ -54,17 +56,11 @@ namespace Presentation.Controllers
             return RedirectToAction("Admin");
         }
 
+        // Overblik over planlagte kampe
         public async Task<ActionResult> StartGame(int fieldId)
         {
             var scheduledMatches = await matchesService.ScheduledMatches();
 
-            
-            //Team team1 = new Team();
-            //team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
-            //Club club = new Club();
-            //club.Name = "Pakhus77";
-            //team1.Club = club;
-            //Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             ViewBag.Matches = scheduledMatches;
             ViewBag.FieldId = fieldId;
             return View();
