@@ -1,0 +1,91 @@
+﻿@model AddMatchModel
+@{
+	ViewData["Title"] = "AddMatch";
+}
+
+
+<form asp-action="AddMatch" method="post" class="container mt-4">
+    <div class="mb-3">
+        <label for="club" class="form-label">Select Opponent Team Club:</label>
+        <select id="club" name="SelectedClubAbbreviation" class="form-select" onchange="updateAwayTeams()">
+            <option value="">Select Opponent Team Club</option>
+            @foreach (var club in Model.Clubs.FindAll(club => !club.Name.Equals("Pakhus77")))
+            {
+                <option value="@club.Abbreviation">@club.Abbreviation</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="awayTeam" class="form-label">Select Away Team:</label>
+        <select id="awayTeam" name="SelectedAwayTeamId" class="form-select" disabled>
+            <option value="">Select Away Team</option>
+            @* Will be populated based on the selected Club *@
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="homeTeam" class="form-label">Select Home Team:</label>
+        <select id="homeTeam" name="SelectedHomeTeamId" class="form-select">
+            <option value="">Select Home Team</option>
+            @foreach (var club in Model.Clubs)
+            {
+                if (club.Name.Equals("Pakhus77"))
+                {
+                    foreach (var team in club.Teams)
+                    {
+                        <option value="@team.Id">@team.Name: @team.Players[0].Name, @team.Players[1].Name</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="matchDate" class="form-label">Match Date:</label>
+        <input type="date" id="matchDate" name="Date" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="status" class="form-label">Match Status:</label>
+        <select id="status" name="Status" class="form-select" required>
+            <option value="">Select Status</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Ongoing">Ongoing</option>
+            <option value="Finished">Finished</option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Create Match</button>
+    </div>
+</form>
+
+<script>
+    const clubs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Clubs));
+
+    function updateAwayTeams() {
+        const clubSelect = document.getElementById('club');
+        const awayTeamSelect = document.getElementById('awayTeam');
+        const selectedClubAbbreviation = clubSelect.value;
+
+        // Clear previous options
+        awayTeamSelect.innerHTML = '<option value="">Select Away Team</option>';
+
+        // Enable away team dropdown if a club is selected
+        if (selectedClubAbbreviation) {
+            const selectedClub = clubs.find(club => club.Abbreviation === selectedClubAbbreviation);
+
+            // Populate away teams
+            selectedClub.Teams.forEach(team => {
+                awayTeamSelect.innerHTML += `<option value="${team.Id}">${selectedClub.Abbreviation}, ${team.Name}: ${team.Players[0].Name}, ${team.Players[1].Name}</option>`;
+            });
+
+            // Enable the away team dropdown
+            awayTeamSelect.disabled = false;
+        } else {
+            // Disable the away team dropdown if no club is selected
+            awayTeamSelect.disabled = true;
+        }
+    }
+</script>

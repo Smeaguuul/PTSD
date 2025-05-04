@@ -18,10 +18,17 @@ namespace Presentation.Controllers
         {
             var ongoingMatches = await matchesService.OngoingMatches();
 
+            if (ongoingMatches.ToList().Count == 0)
+            {
+                await matchesService.SeedMatchData();
+                ongoingMatches = await matchesService.OngoingMatches();
+            }
+
             Matches matches = new Matches();
             foreach (var match in ongoingMatches)
             {
-                matches.MatchScores.Add(MatchScore.ConvertMatchToMatchScore(match));
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                matches.MatchScores.Add(matchScore);
             }
 
             return View(matches);

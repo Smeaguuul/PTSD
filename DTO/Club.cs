@@ -12,7 +12,6 @@ namespace DTO
         public List<Team> Teams { get; set; }
         public string Location { get; set; }
         public string Abbreviation { get; set; }
-
         public Club() { }
     }
 }

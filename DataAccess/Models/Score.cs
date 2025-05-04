@@ -17,12 +17,5 @@ namespace DataAccess.Models
         {
             Sets = new List<Set>();
         }
-
-        public void AddSet(Set set) //Remove needed? - Mikkel
-        {
-            if (set == null) throw new ArgumentNullException(nameof(set), "Set cannot be null.");
-
-            Sets.Add(set);
-        }
     }
 }

@@ -3,27 +3,18 @@
     public class Team
     {
         public int Id { get; set; }
-
-        public List<Player> players;
-        public string Name
-        {
-            get; set;
-        }
+        public List<Player> Players { get; set; }
+        public string Name { get; set; }
+        public Club Club { get; set; }
 
         public Team() { }
 
-        public Team(int id, string name, List<Player> players)
+        public Team(int id, List<Player> players, string name, Club club)
         {
             Id = id;
-            this.Name = name;
-            this.players = players;
-        }
-
-        
-        public List<Player> Players
-        {
-            get => players;
-            set => players = value ?? new List<Player>();
+            Players = players;
+            Name = name;
+            Club = club;
         }
     }
 }

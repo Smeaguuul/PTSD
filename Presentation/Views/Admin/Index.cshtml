@@ -1,0 +1,80 @@
+﻿@model AdminHomepage
+
+<div class="admin-links">
+    <a class="admin-link" href="@Url.Action("Admin", "Admin")">Game Admin</a>
+    <a class="admin-link" href="@Url.Action("AddMatch", "Admin")">Add new Match</a>
+    <a class="admin-link" href="@Url.Action("UploadAd", "Admin")">Upload new Ad</a>
+</div>
+
+<div class="match-overview">
+    <h2>Match Overview</h2>
+
+    @if (Model != null && Model.Matches.Any())
+    {
+        // Group matches by date
+        var groupedMatches = Model.Matches.GroupBy(m => m.Date).ToList();
+
+        foreach (var group in groupedMatches)
+        {
+            <div class="match-list">
+                <h3>@group.Key.ToString("MMMM dd, yyyy")</h3>
+                <div class="match-row">
+                    @foreach (var match in group)
+                    {
+                        <div class="match-item">
+                            <div class="match-date">
+                                <strong>Date:</strong> @match.Date.ToString("MMMM dd, yyyy")
+                            </div>
+                            <div class="match-details">
+                                <div class="team-info">
+                                    <h4>@match.HomeTeam.Name</h4>
+                                </div>
+                                <div class="vs-text">vs</div>
+                                <div class="team-info">
+                                    <h4>@match.AwayTeam.Name</h4>
+                                </div>
+                            </div>
+                            <div class="match-status">
+                                <strong>Status:</strong> @match.Status.ToString()
+                            </div>
+                            <div class="players-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Home Team Players</th>
+                                            <th>Away Team Players</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="home-team-players">
+                                                    @foreach (var player in match.HomeTeam.Players)
+                                                    {
+                                                        <div>@player.Name</div>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="away-team-players">
+                                                    @foreach (var player in match.AwayTeam.Players)
+                                                    {
+                                                        <div>@player.Name</div>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No matches available.</p>
+    }
+</div>

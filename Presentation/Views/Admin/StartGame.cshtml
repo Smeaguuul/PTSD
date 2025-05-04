@@ -10,44 +10,44 @@
 
 @foreach (var i in ViewBag.Matches)
 {
-	if (i.Status == Status.Scheduled)
-	{
+	
 		<a asp-action="AdminBtn" asp-route-fieldId=@ViewBag.FieldId asp-route-matchId=@i.Id class="btn btn-primary">
 			<table>
 				<tr>
 					<td>
-						@i.Team1.Club.Name
+						
+						club 2
 					</td>
 					<td>
 						-
 					</td>
 					<td>
-						@i.Team2.Club.Name
+						
+						club 1
 					</td>
 				</tr>
 				<tr>
 					<td>
-						@i.Team1.Players[0].Name
+						@i.Opponent.Players[0].Name
 					</td>
 					<td>
 						-
 					</td>
 					<td>
-						@i.Team2.Players[0].Name
+						@i.Opponent.Players[0].Name
 					</td>
 				</tr>
 				<tr>
 					<td>
-						@i.Team1.Players[1].Name
+						@i.Opponent.Players[1].Name
 					</td>
 					<td>
 						-
 					</td>
 					<td>
-						@i.Team2.Players[1].Name
+						@i.Opponent.Players[1].Name
 					</td>
 				</tr>
 			</table>
 		</a>
-	}
 }

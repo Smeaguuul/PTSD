@@ -16,6 +16,12 @@ namespace DataAccess.Interfaces
         /// <returns>A task</returns>
         Task AddAsync(T entity);
 
+        /// <summary>
+        /// Marks the entity as updated, and saves changes.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task UpdateAndSaveAsync(T entity);
 
         /// <summary>
         /// Removes and entity of T type that matches the paramenter given
@@ -29,7 +35,7 @@ namespace DataAccess.Interfaces
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>Task of type T?. So it can return null if no matches are found. This includes if the list is empty. </returns>
-        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null);
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IQueryable<T>>? include = null);
 
         /// <summary>
         /// Retrieves a collection of entities from the database based on optional filtering, ordering, and inclusion criteria.

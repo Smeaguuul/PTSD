@@ -9,10 +9,7 @@ namespace DataAccess.Models
     public class Club
     {
         public string Name { get; set; }
-
-
         public string Abbreviation { get; set; }
-
         public string Location { get; set; }
 
         public List<Team> Teams { get; set; } = new List<Team>();

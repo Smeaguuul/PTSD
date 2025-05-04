@@ -1,0 +1,95 @@
+﻿.admin-links {
+    margin: 20px; 
+}
+
+.admin-link {
+    display: inline-block; 
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    transition: background-color 0.3s;
+}
+
+.admin-link:hover {
+    background-color: #0056b3;
+}
+
+.match-overview {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.match-list {
+    margin-bottom: 20px;
+}
+
+.match-row {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+    gap: 15px;
+}
+
+.match-item {
+    min-width: 200px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fff;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.match-date {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.match-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.team-info {
+    margin: 0 10px;
+}
+
+.vs-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.match-status {
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+.players-table {
+    margin-top: 15px;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}

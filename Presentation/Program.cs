@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Business.Interfaces;
 using Business.Mappers;
 using Business.Services;
 using DataAccess.Context;
@@ -24,8 +23,10 @@ var mapper = config.CreateMapper();
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 builder.Services.AddDbContext<AppDBContext>();
 builder.Services.AddScoped<IRepository<Match>, Repository<Match>>();
+builder.Services.AddScoped<IRepository<Club>, Repository<Club>>();
+builder.Services.AddScoped<IRepository<Team>, Repository<Team>>();
 builder.Services.AddScoped<MatchesService>();
-builder.Services.AddScoped<IMatchesService, MatchesService>();
+builder.Services.AddScoped<ClubsService>();
 
 
 

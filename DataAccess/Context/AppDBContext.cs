@@ -26,6 +26,16 @@ namespace DataAccess.Context
             modelBuilder.Entity<Club>().HasKey(c => c.Abbreviation);
             modelBuilder.Entity<Game>().HasKey(g => g.Id);
             modelBuilder.Entity<Match>().HasKey(m => m.Id);
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.HomeTeam)
+                .WithMany() 
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+            modelBuilder.Entity<Match>()
+                .HasOne(m => m.AwayTeam)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict) // Prevent cascading deletes
+                .IsRequired();
             modelBuilder.Entity<Player>().HasKey(p => p.Id);
             modelBuilder.Entity<Score>().HasKey(s => s.Id);
             modelBuilder.Entity<Set>().HasKey(s => s.Id);
@@ -45,7 +55,7 @@ namespace DataAccess.Context
 
             string solutionDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\.."));
 
-            string filePath = Path.Combine(solutionDirectory, "DataAccess","Context", "Connection.json");
+            string filePath = Path.Combine(solutionDirectory, "DataAccess", "Context", "Connection.json");
             StreamReader reader = new(filePath);
             connectionString = reader.ReadToEnd();
             connectionString = JsonDocument.Parse(connectionString).RootElement.GetProperty("Database_Connection_String").GetString() ?? "";
@@ -56,6 +66,6 @@ namespace DataAccess.Context
             //}
 
             optionsBuilder.UseSqlServer(connectionString);
- }
+        }
     }
 }

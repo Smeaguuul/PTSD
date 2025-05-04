@@ -20,15 +20,15 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<Matches> GetMatches()
         {
-            //await matchesService.OngoingMatchesSeedData();
-            //await matchesService.ScheduledGamesSeedData();
+            //await matchesService.SeedMatchData();
 
             var ongoingMatches = await matchesService.OngoingMatches();
 
             Matches matches = new Matches();
             foreach (var match in ongoingMatches)
             {
-                matches.MatchScores.Add(MatchScore.ConvertMatchToMatchScore(match));
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                matches.MatchScores.Add(matchScore);
             }
             return matches;
         }
