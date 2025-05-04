@@ -84,6 +84,7 @@ namespace Business
                 }
             }
         }
+
         public static Match UndoPoint(Match match)
         {
             // Gets the current set and game
@@ -97,6 +98,7 @@ namespace Business
             {
                 match.Score.Sets.Remove(latestSet);
                 latestSet = match.Score.Sets.OrderByDescending(set => set.Id).ToList()[0];
+                latestSet.Winner = null;
                 latestGame = latestSet.Games.OrderByDescending(game => game.Number).ToList()[0];
                 latestGame.PointHistory.RemoveAt(latestGame.PointHistory.Count - 1);  // Can be assumed not to be empty
             }

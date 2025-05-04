@@ -18,6 +18,13 @@ namespace Presentation.Controllers
             this.matchesService = matchesService;
             this.clubsService = clubsService;
         }
+
+        public async Task<ActionResult> Index()
+        {
+            var matches = await matchesService.ScheduledMatches();
+            AdminHomepage model = new AdminHomepage() { Matches = [.. matches] };
+            return View(model);
+        }
         public async Task<ActionResult> Admin()
         {
             Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
