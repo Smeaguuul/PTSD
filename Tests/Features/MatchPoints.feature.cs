@@ -116,15 +116,15 @@ namespace Tests.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Start Game")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Team A Wins Two Points")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MatchPoints")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("tag1")]
-        public async global::System.Threading.Tasks.Task StartGame()
+        public async global::System.Threading.Tasks.Task TeamAWinsTwoPoints()
         {
             string[] tagsOfScenario = new string[] {
                     "tag1"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Start Game", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Team A Wins Two Points", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -149,6 +149,87 @@ namespace Tests.Features
 #line hidden
 #line 12
     await testRunner.AndAsync("The point count for Team B should be 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Both Go To 40 Points")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MatchPoints")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("tag1")]
+        public async global::System.Threading.Tasks.Task BothGoTo40Points()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "tag1"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Both Go To 40 Points", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 15
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 16
+    await testRunner.GivenAsync("Team A has 0 points won", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 17
+    await testRunner.AndAsync("Team B has 0 points won", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 18
+    await testRunner.WhenAsync("Team A wins the next 3 points", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 19
+    await testRunner.AndAsync("Team B wins the next 3 points", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 20
+    await testRunner.ThenAsync("The point count for Team A should be 40", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 21
+    await testRunner.AndAsync("The point count for Team B should be 40", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Both Have 40 Points, And a Team Scores")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MatchPoints")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("tag1")]
+        public async global::System.Threading.Tasks.Task BothHave40PointsAndATeamScores()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "tag1"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Both Have 40 Points, And a Team Scores", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 24
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 25
+    await testRunner.GivenAsync("Team A has 3 points won", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 26
+    await testRunner.AndAsync("Team B has 3 points won", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 27
+    await testRunner.WhenAsync("Team A wins the next 1 points", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 28
+    await testRunner.ThenAsync("The point count for Team A should be Advantage", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 29
+    await testRunner.AndAsync("The point count for Team B should be 40", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

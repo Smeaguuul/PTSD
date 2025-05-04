@@ -60,7 +60,7 @@ namespace Tests.StepDefinitions
         }
 
         [Then(@"The point count for Team (A|B) should be (.*)")]
-        public async Task ThenTheSetCountForTeamAShouldRemainAsync(string teamLetter, int expectedPoints)
+        public async Task ThenTheSetCountForTeamAShouldRemainAsync(string teamLetter, string expectedPoints)
         {
             var matchScore =  await _matchService.GetMatchScore(_currentMatch.Id);
             var actualPoints = (teamLetter == "A") ? matchScore.PointsHome : matchScore.PointsAway;

@@ -24,5 +24,12 @@ namespace Presentation.Controllers
             await _matchesService.UpdateMatchScore(matchId, pointScorer);
             return Redirect($"/PointManager?Id={matchId}");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Undo(int matchId)
+        {
+            await _matchesService.UndoMatchPoint(matchId);
+            return Redirect($"/PointManager?Id={matchId}");
+        }
     }
 }

@@ -58,6 +58,12 @@
 					<button type="submit" class="scoreButton" name="pointScorer" value="false">Away Team Scored</button>
 				</div>
 			</form>
+			<form method="post" action="@Url.Action("Undo", "PointManager")">
+				<input type="hidden" name="matchId" value="@id" />
+				<div class="buttonsDiv">
+					<button type="submit" class="scoreButton">Undo Point</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
