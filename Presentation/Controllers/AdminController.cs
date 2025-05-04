@@ -3,6 +3,11 @@ using DTO;
 using Business.Services;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
 
 namespace Presentation.Controllers
 {
@@ -14,6 +19,23 @@ namespace Presentation.Controllers
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
+        }
+
+        public ActionResult Generate(string url)
+        {
+            var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new PngByteQRCode(qrCodeData);
+            byte[] qrCodeAsPng = qrCode.GetGraphic(20);
+
+            return File(qrCodeAsPng, "image/png");
+        }
+        public ActionResult Qr()
+        {
+            string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url });
+            ViewBag.OriginalUrl = url;
+            return View();
         }
 
         public async Task<ActionResult> Index()
