@@ -3,7 +3,6 @@ using DTO;
 using Business.Interfaces;
 using Presentation.Models;
 
-
 namespace Presentation.Controllers
 {
     public class PointTællerController : Controller
@@ -15,17 +14,50 @@ namespace Presentation.Controllers
             _matchesService = matchesService;
         }
 
-        // Overblik over alle planlagte kampe
-        public async Task<IActionResult> Overblik()
+        // 👉 NYT: Viser ALLE aktive kampe
+        public async Task<IActionResult> Index()
         {
-            var kampe = await _matchesService.ScheduledMatches();
-            return View(kampe.ToList());
+            var kampe = await _matchesService.OngoingMatches();
+
+            var viewModels = new List<MatchViewModel>();
+
+            foreach (var kamp in kampe)
+            {
+                var setScores = new List<(int TeamOneScore, int TeamTwoScore)>();
+
+                foreach (var set in kamp.Score.Sets)
+                {
+                    int teamOneScore = 0;
+                    int teamTwoScore = 0;
+
+                    foreach (var game in set.Games)
+                    {
+                        int teamOnePoints = game.PointHistory.Count(p => p);
+                        int teamTwoPoints = game.PointHistory.Count(p => !p);
+
+                        if (teamOnePoints > teamTwoPoints)
+                            teamOneScore++;
+                        else if (teamTwoPoints > teamOnePoints)
+                            teamTwoScore++;
+                    }
+
+                    setScores.Add((teamOneScore, teamTwoScore));
+                }
+
+                viewModels.Add(new MatchViewModel
+                {
+                    Match = kamp,
+                    SetScores = setScores
+                });
+            }
+
+            return View(viewModels); // Går til Index.cshtml med flere kampe
         }
 
-        // Vis pointtæller for én kamp
-        public async Task<IActionResult> Index(int id)
+        // 👉 Tilføj denne for enkelt kamp-visning (fx ved QR-scan)
+        public async Task<IActionResult> Details(int id)
         {
-            var kampe = await _matchesService.ScheduledMatches();
+            var kampe = await _matchesService.OngoingMatches();
             var kamp = kampe.FirstOrDefault(k => k.Id == id);
 
             if (kamp == null)
@@ -47,9 +79,7 @@ namespace Presentation.Controllers
                         teamOneScore++;
                     else if (teamTwoPoints > teamOnePoints)
                         teamTwoScore++;
-                    // Hvis lige, tæller vi ikke nogen (kan tilpasses)
                 }
-
 
                 setScores.Add((teamOneScore, teamTwoScore));
             }
@@ -60,7 +90,7 @@ namespace Presentation.Controllers
                 SetScores = setScores
             };
 
-            return View(viewModel);
+            return View("Details", viewModel);
         }
     }
 }

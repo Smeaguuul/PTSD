@@ -1,52 +1,58 @@
-﻿@model Presentation.Models.MatchViewModel
+﻿@model IEnumerable<Presentation.Models.MatchViewModel>
 
 @{
-    ViewData["Title"] = "Pointtæller";
+    ViewData["Title"] = "Aktive kampe";
 }
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="~/css/pointtaeller.css" />
 
-<div class="score-container">
-    <h2>Bane @Model.Match.Field</h2>
+<h2 style="text-align: center; margin-top: 20px;">Aktive kampe</h2>
 
-    <div class="team-columns">
-        <div class="team-block">
-            <div class="team-name">Hjemmehold</div>
-            <div class="score-box-vertical">
-                <label>Navn</label>
-                Hent fra backend
+<div class="kamp-container">
+    @foreach (var match in Model)
+    {
+        <div class="score-container">
+            <h3 style="margin-bottom: 20px;">Bane @match.Match.Field?.Id</h3>
+
+            <!-- Hold og VS layout -->
+            <div class="team-columns">
+                <div class="team-block">
+                    <div class="team-name">@match.Match.HomeTeam?.Name</div>
+                    @foreach (var player in match.Match.HomeTeam?.Players ?? new List<DTO.Player>())
+                    {
+                        <div>@player.Name</div>
+                    }
+                </div>
+
+                <div class="vs-label">VS</div>
+
+                <div class="team-block">
+                    <div class="team-name">@match.Match.AwayTeam?.Name</div>
+                    @foreach (var player in match.Match.AwayTeam?.Players ?? new List<DTO.Player>())
+                    {
+                        <div>@player.Name</div>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div class="vs-label">VS</div>
-
-        <div class="team-block">
-            <div class="team-name">@Model.Match.Opponent.Name</div>
-            <div class="score-box-vertical">
-                <label>Spillere</label>
-                @foreach (var player in Model.Match.Opponent.Players)
+            <!-- Score -->
+            <div style="margin-top: 20px;">
+                <h4>Sætscore</h4>
+                @for (int i = 0; i < match.SetScores.Count; i++)
                 {
-                    <div>@player.Name</div>
+                    var sæt = match.SetScores[i];
+                    <div class="score-line">
+                        Sæt @(i + 1): @sæt.TeamOneScore - @sæt.TeamTwoScore
+                    </div>
                 }
             </div>
         </div>
-    </div>
+    }
+</div>
 
-    <div style="margin-top: 30px;">
-        <h4>Sætscore</h4>
-
-        @for (int i = 0; i < Model.SetScores.Count; i++)
-        {
-            var sæt = Model.SetScores[i];
-            <div class="score-line">
-                Sæt @(i + 1): @sæt.TeamOneScore - @sæt.TeamTwoScore
-            </div>
-        }
-    </div>
-
-    <div style="margin-top: 40px;">
-        <p>Scan for at følge denne kamp:</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://dinurl.dk/PointTæller/Index?id=@Model.Match.Id&size=150x150" alt="QR-kode" />
-    </div>
+<!-- QR-kode til hele siden -->
+<div class="qr-footer">
+    <p>Scan for at åbne denne pointtællerside:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=@Context.Request.Scheme://@Context.Request.Host@Url.Action("Index", "PointTæller")&size=130x130" alt="QR-kode" />
 </div>

@@ -3,6 +3,8 @@
     public interface IMatchesService
     {
         Task<IEnumerable<DTO.Match>> ScheduledMatches();
+        Task<IEnumerable<DTO.Match>> OngoingMatches();
+
 
     }
 }

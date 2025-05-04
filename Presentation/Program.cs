@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Interfaces;
 using Business.Mappers;
 using Business.Services;
 using DataAccess.Context;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IRepository<Club>, Repository<Club>>();
 builder.Services.AddScoped<IRepository<Team>, Repository<Team>>();
 builder.Services.AddScoped<MatchesService>();
 builder.Services.AddScoped<ClubsService>();
+builder.Services.AddScoped<IMatchesService, MatchesService>();
 
 
 
