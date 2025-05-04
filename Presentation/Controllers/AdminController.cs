@@ -3,6 +3,7 @@ using DTO;
 using Business.Services;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Presentation.Controllers
 {
@@ -125,6 +126,30 @@ namespace Presentation.Controllers
 
         }
 
+        public async Task<ActionResult> GameEditor()
+        {
+            var matches = await matchesService.FinishedMatches();
+            var model = new FinishedGames() { Matches = matches.ToList() };
+            return View(model);
+        }
+
+        [Route("Admin/GameEditor/{id}")]
+        public async Task<IActionResult> GameEditor(int Id)
+        {
+            Match match;
+            try
+            {
+                match = await matchesService.GetMatch(Id);
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                var model = new MatchInfo() { Match = match, MatchScore = matchScore };
+                return View("GameEditorIndividual", model);
+            }
+            catch
+            {
+                ViewBag.Message = "Something went wrong :(";
+                return View("GameEditorIndividual");
+            }
+        }
         public ActionResult UploadAd()
         {
             return View();

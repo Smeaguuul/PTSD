@@ -1,0 +1,12 @@
+﻿@model MatchInfo
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+else if (Model != null)
+{
+    @Model.MatchScore.NameHome
+}

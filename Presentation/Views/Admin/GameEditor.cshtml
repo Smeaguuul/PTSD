@@ -1,0 +1,54 @@
+﻿@model FinishedGames
+
+<div class="match-overview">
+    <h2>Match Overview</h2>
+
+    @if (Model != null && Model.Matches.Any())
+    {
+        var groupedMatches = Model.Matches.GroupBy(m => m.Date).ToList();
+
+        foreach (var group in groupedMatches)
+        {
+            <div class="match-list">
+                <h3>@group.Key.ToString("MMMM dd, yyyy")</h3>
+                <div class="match-row">
+                    @foreach (var match in group)
+                    {
+                        var homeTeamWins = match.Score.Sets.Count(s => s.Winner == true);
+                        var winner = (homeTeamWins == 2) ? match.HomeTeam.Name : match.AwayTeam.Name;
+                        <button class="match-button">
+                            <div class="match-info">
+                                <div class="team-info">
+                                    <strong>@match.HomeTeam.Name</strong> vs <strong>@match.AwayTeam.Name</strong>
+                                </div>
+                                <div class="player-info">
+                                    <span>
+                                        Home Players:
+                                        @foreach (var player in match.HomeTeam.Players)
+                                        {
+                                            @player.Name @(player != match.HomeTeam.Players.Last() ? ", " : "")
+                                        }
+                                    </span>
+                                    <span>
+                                        Away Players:
+                                        @foreach (var player in match.AwayTeam.Players)
+                                        {
+                                            @player.Name @(player != match.AwayTeam.Players.Last() ? ", " : "")
+                                        }
+                                    </span>
+                                </div>
+                                <div class="winner-info">
+                                    <strong>Winner:</strong> @winner
+                                </div>
+                            </div>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No matches available.</p>
+    }
+</div>
