@@ -6,9 +6,6 @@ namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        //testdata
-        Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
-
         private readonly MatchesService matchesService;
         public AdminController(MatchesService matchesService)
         {
@@ -36,22 +33,7 @@ namespace Presentation.Controllers
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
             var scheduledMatches = await matchesService.ScheduledMatches();
-            // TODO Opdater i DB
-            foreach (var match in scheduledMatches)
-            {
-                if (match.Id == matchId)
-                {
-                    match.Status = Status.Ongoing;
-                    foreach (var field in fields)
-                    {
-                        if (field.Id == fieldId)
-                        {
-                            match.Field = field;
-                            field.CurrentMatch = match;
-                        }
-                    }
-                }
-            }
+            await matchesService.StartMatch(matchId, true, fieldId);
 
             return RedirectToAction("Admin");
         }
