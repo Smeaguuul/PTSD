@@ -4,5 +4,13 @@
 @{
 }
 
-<h2>QR Code til baner</h2>
+<h2>QR med ID</h2>
+<form method="get", action="@Url.Action("Qr","Admin")">
+    <label for="id">Indtast ID:</label>
+    <input type="number" id="id" name="id" required/>
+    <button type="submit">Lav QR Kode</button>
+</form>
+
+@if(ViewBag.QrImageUrl != null){
 <img src="@ViewBag.QrImageUrl" alt="QR Code" />
+}
