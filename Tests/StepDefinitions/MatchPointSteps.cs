@@ -173,7 +173,7 @@ namespace Tests.StepDefinitions
 
 
 
-        [AfterScenario]
+        [AfterScenario("@tag1")]
         public async Task AfterScenarioAsync()
         {
             //TODO: implement logic that has to run after executing each scenario

@@ -117,11 +117,11 @@ namespace Tests.Features
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create giveaway")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Giveaway")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("tag1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("GiveawayTag")]
         public async global::System.Threading.Tasks.Task CreateGiveaway()
         {
             string[] tagsOfScenario = new string[] {
-                    "tag1"};
+                    "GiveawayTag"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create giveaway", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6

@@ -2,7 +2,7 @@
 
 A short summary of the feature
 
-@tag1
+@GiveawayTag
 Scenario: Create giveaway
 	Given name is testGA 
 	And a description is testGADesc

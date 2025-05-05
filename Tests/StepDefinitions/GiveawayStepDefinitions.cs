@@ -61,7 +61,7 @@ namespace Tests.StepDefinitions
             Assert.IsTrue(giveaways.Count(giveaway => giveaway.Name == name) == 1);
         }
 
-        [AfterScenario]
+        [AfterScenario("@GiveawayTag")]
         public async Task AfterScenarioAsync()
         {
             await giveawayService.DeleteGiveaway(id);
