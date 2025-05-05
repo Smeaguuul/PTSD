@@ -9,6 +9,7 @@ using Business.Services;
 using DataAccess.Context;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using DataAccess.Models.Giveaways;
 using DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Reqnroll.Assist;
@@ -38,8 +39,12 @@ namespace Tests
             services.AddScoped<IRepository<Match>, Repository<Match>>();
             services.AddScoped<IRepository<Club>, Repository<Club>>();
             services.AddScoped<IRepository<Team>, Repository<Team>>();
+            services.AddScoped<IRepository<Giveaway>, Repository<Giveaway>>();
+            services.AddScoped<IRepository<Contestant>, Repository<Contestant>>();
+            services.AddScoped<IRepository<GiveawayContestant>, Repository<GiveawayContestant>>();
             services.AddScoped<MatchesService>();
             services.AddScoped<ClubsService>();
+            services.AddScoped<GiveawayService>();
 
             return services;
         }
