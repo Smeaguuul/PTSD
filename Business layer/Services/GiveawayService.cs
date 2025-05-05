@@ -26,6 +26,8 @@ namespace Business.Services
             GiveawayContestantRepository = gcrep;
         }
 
+
+
         public async Task<Giveaway> CreateGiveawayAsync(string name, string description, DateTime start, DateTime end)
         {
             //check if start and end date are valid
@@ -66,11 +68,35 @@ namespace Business.Services
 
 
 
-        public async Task deleteGiveaway(int giveawayID)
+        public async Task DeleteGiveaway(int giveawayID)
         {
-            
-        }
 
+            //check if giveaway exists
+            var giveaway = await GiveawayRepository.FirstOrDefaultAsync(g => g.Id == giveawayID);
+            if (giveaway == null)
+                throw new ArgumentException("Giveaway not found.");
+
+            //check if giveaway is active
+            if (giveaway.Status == GiveawayStatus.Ongoing)
+                throw new InvalidOperationException("Giveaway is ongoing. Deletion must be confirmed.");
+
+
+
+            //Get all previosusly linked contestants
+            var links = await GiveawayContestantRepository.GetAllAsync(gc => gc.GiveawayId == giveawayID);
+
+
+            //Remove the contestants
+            foreach (var link in links)
+            {
+                await RemoveContestantFromGiveawayAsync(giveawayID, link.ContestantId);
+            }
+
+
+            //delete giveaway
+            await GiveawayRepository.RemoveAsync(giveaway);
+
+        }
 
 
 
@@ -146,22 +172,26 @@ namespace Business.Services
 
 
 
-        public List<string> GetContestants()
+        public async Task<IEnumerable<DTO.Giveaway.ContestantDto>> GetContestants()
         {
-            //return list of contestants
-            throw new NotImplementedException();
+            var contestants = await ContestantRepository.GetAllAsync();
+
+            return Mapper.Map<IEnumerable<DTO.Giveaway.ContestantDto>>(contestants);
         }
 
-        public List<Contestant> PickWinner(int amountOfWinners)
+        public async Task<IEnumerable<Contestant>> PickWinner(int amountOfWinners)
         {
-            //pick winner from list of contestants
-            throw new NotImplementedException();
+           
+           var contestants = await GetContestants();
+
+            //pick random winners from list of contestants
+            var winners = contestants.OrderBy(x => Guid.NewGuid()).Take(amountOfWinners).ToList();
+            return winners;
         }
 
-        public Contestant PickWinner()
+        public async Task<Contestant> PickWinner()
         {
-            //pick winner from list of contestants
-            throw new NotImplementedException();
+            return await PickWinner(1).ContinueWith(t => t.Result.FirstOrDefault());
         }
 
 

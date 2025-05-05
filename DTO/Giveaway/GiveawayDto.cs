@@ -10,10 +10,11 @@ namespace DTO.Giveaway
     public class GiveawayDto
     {
         public int Id { get; set; }
-        private string Name { get; set; }
-        private string Description { get; set; }
-        private DateTime StartDate { get; set; }
-        private DateTime EndDate { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public GiveawayStatus Status;
 
         private List<ContestantDto> Contestants = new List<ContestantDto>();
     }
