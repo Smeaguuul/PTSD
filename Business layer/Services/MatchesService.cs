@@ -58,6 +58,45 @@ namespace Business.Services
             await Matches.AddAsync(match);
         }
 
+        public async Task<DTO.Match> GetMatch(int matchId)
+        {
+            var match = await Matches.FirstOrDefaultAsync(
+                predicate: m => m.Id == matchId,
+                include: query => query
+                .Include(m => m.Score)
+                .ThenInclude(s => s.Sets)
+                .ThenInclude(s => s.Games)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+
+            return Mapper.Map<DTO.Match>(match);
+        }
+
+        /// <summary>
+        /// Returns all matches that are finished and sorts after date.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<DTO.Match>> FinishedMatches()
+        {
+            var matches = await Matches.GetAllAsync(
+                predicate: m => m.Status == Status.Finished,
+                include: query => query
+                .Include(m => m.Score)
+                .ThenInclude(s => s.Sets)
+                .ThenInclude(s => s.Games)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club),
+                orderBy: query => query.OrderBy(m => m.Date)
+                );
+
+            return Mapper.Map<List<DTO.Match>>(matches);
+        }
+
         /// <summary>
         /// Returns all matches that are scheduled and sorts after date.
         /// </summary>
@@ -135,7 +174,7 @@ namespace Business.Services
             if (match == null) throw new ArgumentException("Match does not exist!");
 
             match = MatchScoreController.UpdateScore(match, pointWinner);
-            
+
             await Matches.UpdateAndSaveAsync(match);
         }
 

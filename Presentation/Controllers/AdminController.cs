@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-
 namespace Presentation.Controllers
 {
     public class AdminController : Controller
@@ -122,6 +121,47 @@ namespace Presentation.Controllers
 
         }
 
+        public async Task<ActionResult> GameEditor()
+        {
+            var matches = await matchesService.FinishedMatches();
+            var model = new FinishedGames() { Matches = matches.ToList() };
+            return View(model);
+        }
+
+        [Route("Admin/GameEditor/{id}")]
+        public async Task<IActionResult> GameEditor(int Id)
+        {
+            Match match;
+            try
+            {
+                match = await matchesService.GetMatch(Id);
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                var model = new MatchInfo() { Match = match, MatchScore = matchScore };
+                return View("GameEditorIndividual", model);
+            }
+            catch
+            {
+                ViewBag.Message = "Something went wrong :(";
+                return View("GameEditorIndividual");
+            }
+        }
+
+        public async Task<IActionResult> EditGame(int Id)
+        {
+            Match match;
+            try
+            {
+                match = await matchesService.GetMatch(Id);
+                var matchScore = await matchesService.GetMatchScore(match.Id);
+                var model = new MatchInfo() { Match = match, MatchScore = matchScore };
+                return View("GameEditorIndividual", model);
+            }
+            catch
+            {
+                ViewBag.Message = "Something went wrong :(";
+                return View("GameEditorIndividual");
+            }
+        }
         public ActionResult UploadAd()
         {
             return View();

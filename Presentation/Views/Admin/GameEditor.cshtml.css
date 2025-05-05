@@ -1,0 +1,38 @@
+﻿.match-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+    width: 200px; /* Set a fixed width for buttons */
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+    .match-button:hover {
+        background-color: #f0f0f0; /* Change background on hover */
+    }
+
+.match-info {
+    width: 100%;
+}
+
+.team-info {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.player-info {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.winner-info {
+    font-weight: bold;
+    color: green; /* Change color for winner */
+}

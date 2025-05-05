@@ -1,0 +1,61 @@
+﻿@model MatchInfo
+
+@if (ViewBag.Message != null)
+{
+	<div class="alert alert-info">
+		@ViewBag.Message
+	</div>
+}
+else if (Model != null)
+{
+	var winner = (Model.MatchScore.SetsHome > Model.MatchScore.SetsAway) ? Model.Match.HomeTeam.Name : Model.Match.AwayTeam.Name;
+	<div class="match-overview-div">
+		<div class="team-name-div">
+			<h2 class="team-name">@Model.Match.HomeTeam.Club.Name: @Model.Match.HomeTeam.Name</h2>
+			<h2 class="vs">VS</h2>
+			<h2 class="team-name">@Model.Match.AwayTeam.Club.Name: @Model.Match.AwayTeam.Name</h2>
+		</div>
+		<div class="winner-div">
+			<h2 class="winner>Winner: @winner</h2>
+	</div>
+	<div class="players-table">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>@Model.Match.HomeTeam.Players[0].Name</td>
+					<td>@Model.Match.AwayTeam.Players[0].Name</td>
+				</tr>
+				<tr>
+					<td>@Model.Match.HomeTeam.Players[1].Name</td>
+					<td>@Model.Match.AwayTeam.Players[1].Name</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+		<div class="match-date-div">
+			<h2 class="match-date">Date: @Model.Match.Date.ToString("dd/MM/yyyy")</h2>
+		</div>
+		<div class="sets-won-div">
+			<h2 class="set-count">Sets won home: @Model.MatchScore.SetsHome</h2>
+			<h2 class="set-count">Sets won away: @Model.MatchScore.SetsAway</h2>
+		</div>
+		<div>
+			@using (Html.BeginForm("EditGame", "Admin", FormMethod.Post))
+			{
+				<input type="hidden" name="matchId" value="@Model.Match.Id" />
+				<textBox>
+					<b>Sets Home: </b> @Html.TextBoxFor(m => m.MatchScore.SetsHome, new { @class = "form-control", @placeholder = "Sets Home" })
+				</textBox>
+				<textBox>
+					<b>Sets Away: </b> @Html.TextBoxFor(m => m.MatchScore.SetsAway, new { @class = "form-control", @placeholder = "Sets Away" })
+				</textBox>
+			}
+		</div>
+	</div>
+}
