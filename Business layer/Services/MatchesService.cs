@@ -188,6 +188,34 @@ namespace Business.Services
             await Matches.UpdateAndSaveAsync(match);
         }
 
+        public async Task ChangeFinishedGameScore(int matchId, int setsHome, int setsAway)
+        {
+            if (setsHome < 0 || setsAway < 0) throw new ArgumentException("Sets cannot be negative.");
+            if (setsHome > 2 || setsAway > 2) throw new ArgumentException("Sets won cannot be above 2.");
+            if (setsHome + setsAway > 3) throw new ArgumentException("Number of sets cannot be more that 3.");
+
+            var match = await Matches.FirstOrDefaultAsync(m => m.Id == matchId, query => query.Include(m => m.Score).ThenInclude(s => s.Sets).ThenInclude(s => s.Games));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+
+            // Check if the match is already finished
+            if (match.Status == Status.Ongoing) throw new ArgumentException("Match is not finished.");
+
+            var score = match.Score;
+            match.Score.Sets.Clear();
+            for (int i = 0; i < setsHome; i++)
+            {
+                var set = new Set() { Winner = true };
+                score.Sets.Add(set);
+            }
+            for (int i = 0; i < setsAway; i++)
+            {
+                var set = new Set() { Winner = false };
+                score.Sets.Add(set);
+            }
+
+            await Matches.UpdateAndSaveAsync(match);
+        }
+
 
         public async Task<DTO.MatchScore> GetMatchScore(int matchId)
         {
