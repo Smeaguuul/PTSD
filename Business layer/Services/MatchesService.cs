@@ -198,7 +198,7 @@ namespace Business.Services
             if (match == null) throw new ArgumentException("Match does not exist!");
 
             // Check if the match is already finished
-            if (match.Status == Status.Ongoing) throw new ArgumentException("Match is not finished.");
+            if (match.Status != Status.Finished) throw new ArgumentException("Match is not finished.");
 
             var score = match.Score;
             match.Score.Sets.Clear();
