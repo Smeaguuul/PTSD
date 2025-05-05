@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using DTO.Giveaway;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
@@ -311,6 +312,30 @@ namespace Presentation.Controllers
             
             await matchesService.EndMatch(matchId);
             return RedirectToAction("Admin");
+        }
+
+        public async Task<IActionResult> Clubs()
+        {
+            var TeamMessage = TempData["TeamMessage"] as string;
+            var ClubMessage = TempData["ClubMessage"] as string;
+            ViewBag.ClubMessage = ClubMessage;
+            ViewBag.TeamMessage = TeamMessage;
+            var clubs = await clubsService.GetAll();
+            return View(clubs);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        {
+            TempData["TeamMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
+        }
+
+        [HttpPost]
+        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
+        {
+            TempData["ClubMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
         }
     }
 }
