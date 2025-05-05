@@ -179,7 +179,7 @@ namespace Business
                     var newSet = new Set();
                     newSet.Games.Add(new Game() { Server = latestGame.Server, Number = 20 });
                     match.Score.Sets.Add(newSet);
-                }
+                } else match.Status = Status.Finished;
             }
             return match;
         }

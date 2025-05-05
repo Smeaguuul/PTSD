@@ -67,6 +67,112 @@ namespace Tests.StepDefinitions
             Assert.AreEqual(expectedPoints.ToString(), actualPoints);
         }
 
+        [Then("the match should move to a new game")]
+        public async Task ThenTheMatchShouldMoveToANewGame()
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual("0", matchScore.PointsAway);
+            Assert.AreEqual("0", matchScore.PointsHome);
+        }
+
+        [Then("the set count for Team A should be {int}")]
+        public async Task ThenTheSetCountForTeamAShouldBeAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(p0, matchScore.GamesThisSetHome);
+        }
+
+        [Then("the set count for Team B should be {int}")]
+        public async Task ThenTheSetCountForTeamBShouldBeAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(p0, matchScore.GamesThisSetAway);
+        }
+
+        [Given("Team A has {int} set won")]
+        public async Task GivenTeamAHasSetWonAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            for (int i = 0; i < p0; i++)
+            {
+                while (matchScore.SetsHome < p0)
+                {
+                    await _matchService.UpdateMatchScore(_currentMatch.Id, true);
+                    matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+                }
+            }
+        }
+
+        [Given("Team B has {int} set won")]
+        public async Task GivenTeamBHasSetWonAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            for (int i = 0; i < p0; i++)
+            {
+                while (matchScore.SetsAway < p0)
+                {
+                    await _matchService.UpdateMatchScore(_currentMatch.Id, false);
+                    matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+                }
+            }
+        }
+
+        [Given("the current set score is {int}-{int} in favor of Team A")]
+        public async Task GivenTheCurrentSetScoreIsInFavorOfTeamAAsync(int p0, int p1)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            for (int i = 0; i < p0; i++)
+            {
+                while (matchScore.GamesThisSetHome < p0)
+                {
+                    await _matchService.UpdateMatchScore(_currentMatch.Id, true);
+                    matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+                }
+            }
+            for (int i = 0; i < p0; i++)
+            {
+                while (matchScore.GamesThisSetAway < p1)
+                {
+                    await _matchService.UpdateMatchScore(_currentMatch.Id, false);
+                    matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+                }
+            }
+        }
+
+        [Then("the match should move to the next set")]
+        public async Task ThenTheMatchShouldMoveToTheNextSetAsync()
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(0, matchScore.GamesThisSetAway + matchScore.GamesThisSetHome);
+            Assert.AreEqual("0", matchScore.PointsAway);
+            Assert.AreEqual("0", matchScore.PointsHome);
+        }
+
+        [Then("the current set score should be reset to {int}-{int}")]
+        public async Task ThenTheCurrentSetScoreShouldBeResetToAsync(int p0, int p1)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(p0, matchScore.GamesThisSetHome);
+            Assert.AreEqual(p1, matchScore.GamesThisSetAway);
+        }
+
+        [Then("the won set count for Team A should be {int}")]
+        public async Task ThenTheWonSetCountForTeamAShouldBeAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(p0, matchScore.SetsHome);
+        }
+
+        [Then("the won set count for Team B should be {int}")]
+        public async Task ThenTheWonSetCountForTeamBShouldBeAsync(int p0)
+        {
+            var matchScore = await _matchService.GetMatchScore(_currentMatch.Id);
+            Assert.AreEqual(p0, matchScore.SetsAway);
+        }
+
+
+
+
         [AfterScenario]
         public async Task AfterScenarioAsync()
         {

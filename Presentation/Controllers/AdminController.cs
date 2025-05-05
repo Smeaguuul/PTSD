@@ -3,20 +3,39 @@ using DTO;
 using Business.Services;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+
 
 namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        //testdata
-        Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
-
         private readonly MatchesService matchesService;
         private readonly ClubsService clubsService;
         public AdminController(MatchesService matchesService, ClubsService clubsService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
+        }
+
+        public ActionResult Generate(string url)
+        {
+            var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new PngByteQRCode(qrCodeData);
+            byte[] qrCodeAsPng = qrCode.GetGraphic(20);
+
+            return File(qrCodeAsPng, "image/png");
+        }
+        public ActionResult Qr()
+        {
+            string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url });
+            ViewBag.OriginalUrl = url;
+            return View();
         }
 
         public async Task<ActionResult> Index()
@@ -27,7 +46,7 @@ namespace Presentation.Controllers
         }
         public async Task<ActionResult> Admin()
         {
-            Field[] fields = { new DTO.Field(1), new DTO.Field(2), new DTO.Field(3) };
+            Field[] fields = { new Field(1), new Field(2), new Field(3) };
             var ongoingMatches = await matchesService.OngoingMatches();
             foreach (var field in fields)
             {
@@ -45,22 +64,7 @@ namespace Presentation.Controllers
         {
 
             var scheduledMatches = await matchesService.ScheduledMatches();
-            // TODO Opdater i DB
-            foreach (var match in scheduledMatches)
-            {
-                if (match.Id == matchId)
-                {
-                    match.Status = Status.Ongoing;
-                    foreach (var field in fields)
-                    {
-                        if (field.Id == fieldId)
-                        {
-                            match.Field = field;
-                            field.CurrentMatch = match;
-                        }
-                    }
-                }
-            }
+            await matchesService.StartMatch(matchId, true, fieldId);
 
             return RedirectToAction("Admin");
         }
@@ -69,13 +73,6 @@ namespace Presentation.Controllers
         {
             var scheduledMatches = await matchesService.ScheduledMatches();
 
-
-            //Team team1 = new Team();
-            //team1.Players = new List<Player>() { new Player("Ole", 1), new Player("Kim", 2) };
-            //Club club = new Club();
-            //club.Name = "Pakhus77";
-            //team1.Club = club;
-            //Match[] matchesTest = { new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 2), new Match(team1, team1, DateOnly.FromDateTime(DateTime.Today), Status.Scheduled, 1) };
             ViewBag.Matches = scheduledMatches;
             ViewBag.FieldId = fieldId;
             return View();
