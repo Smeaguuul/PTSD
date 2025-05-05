@@ -56,7 +56,7 @@ namespace Presentation.Controllers
                 // You can return the same page with current model to show errors
                 var model = new AdminGiveawayPageViewModel
                 {
-                    Giveaways = giveawayService.GetGiveaways().Result.ToList(), 
+                    Giveaways = giveawayService.GetGiveaways().Result.ToList(),
                     NewGiveaway = newGiveaway
                 };
                 return View("AdminGiveaway", model);
@@ -308,8 +308,9 @@ namespace Presentation.Controllers
 
             return View();
         }
-        public async Task<ActionResult> EndMatchBtn(int matchId) {
-            
+        public async Task<ActionResult> EndMatchBtn(int matchId)
+        {
+
             await matchesService.EndMatch(matchId);
             return RedirectToAction("Admin");
         }
@@ -318,22 +319,42 @@ namespace Presentation.Controllers
         {
             var TeamMessage = TempData["TeamMessage"] as string;
             var ClubMessage = TempData["ClubMessage"] as string;
+            var TeamErrorMessage = TempData["TeamErrorMessage"] as string;
+            var ClubErrorMessage = TempData["ClubErrorMessage"] as string;
             ViewBag.ClubMessage = ClubMessage;
             ViewBag.TeamMessage = TeamMessage;
+            ViewBag.TeamErrorMessage = TeamErrorMessage;
+            ViewBag.ClubErrorMessage = ClubErrorMessage;
             var clubs = await clubsService.GetAll();
             return View(clubs);
         }
 
         [HttpPost]
-        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        public async Task<ActionResult> AddTeamToClubAsync(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
         {
+            try
+            {
+                await clubsService.AddTeamToClub(TeamName, ClubAbbreviation, Player1Name, Player2Name, ClubAbbreviation);
+            }
+            catch (Exception ex)
+            {
+                TempData["TeamErrorMessage"] = ex.Message;
+            }
             TempData["TeamMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
 
         [HttpPost]
-        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
+        public async Task<ActionResult> CreateClub(string ClubName, string Location, string Abbreviation)
         {
+            try
+            {
+                await clubsService.CreateClub(ClubName, Abbreviation, Location);
+            }
+            catch (Exception ex)
+            {
+                TempData["ClubErrorMessage"] = ex.Message;
+            }
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }

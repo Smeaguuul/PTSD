@@ -75,3 +75,8 @@ label {
         background-color: #e7f9e7;
         border: 1px solid #c3e6cb;
     }
+    .message.error {
+        color: red; /* Text color for error messages */
+        background-color: #f8d7da; /* Light red background */
+        border: 1px solid #f5c6cb; /* Border color for error messages */
+    }
