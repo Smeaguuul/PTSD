@@ -10,6 +10,7 @@ namespace DataAccess.Models.Giveaways
     {
         public int Id { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
 
         public List<GiveawayContestant> GiveawayContestants { get; set; } = new List<GiveawayContestant>();
 

@@ -8,10 +8,11 @@ namespace Presentation.Controllers
     public class HomeController : Controller
     {
         private readonly MatchesService matchesService;
-
-        public HomeController(MatchesService matchesService)
+        private readonly GiveawayService giveawayService;
+        public HomeController(MatchesService matchesService, GiveawayService giveawayService)
         {
             this.matchesService = matchesService;
+            this.giveawayService = giveawayService;
         }
 
         public async Task<IActionResult> Index()
@@ -21,6 +22,8 @@ namespace Presentation.Controllers
             if (ongoingMatches.ToList().Count == 0)
             {
                 await matchesService.SeedMatchData();
+                await giveawayService.SeedData();
+                
                 ongoingMatches = await matchesService.OngoingMatches();
             }
 
