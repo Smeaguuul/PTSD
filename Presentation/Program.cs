@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Interfaces;
 using Business.Mappers;
 using Business.Services;
 using DataAccess.Context;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IRepository<GiveawayContestant>, Repository<GiveawayC
 builder.Services.AddScoped<MatchesService>();
 builder.Services.AddScoped<ClubsService>();
 builder.Services.AddScoped<GiveawayService>();
+builder.Services.AddScoped<IMatchesService, MatchesService>();
 
 
 
