@@ -74,6 +74,15 @@ namespace Business.Services
 
             return Mapper.Map<DTO.Match>(match);
         }
+        public async Task<IEnumerable<DTO.Match>> GetTodaysMatchesWithScore() {
+            var matches = await Matches.GetAllAsync(
+                predicate: m => m.Date == DateOnly.FromDateTime(DateTime.Now),
+                include: query => query
+                .Include(m => m.Score)
+                .ThenInclude(s => s.Sets));
+            return Mapper.Map<List<DTO.Match>>(matches);
+        }
+        
 
         /// <summary>
         /// Returns all matches that are finished and sorts after date.

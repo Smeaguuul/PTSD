@@ -55,7 +55,7 @@ namespace Presentation.Controllers
                 // You can return the same page with current model to show errors
                 var model = new AdminGiveawayPageViewModel
                 {
-                    Giveaways = giveawayService.GetGiveaways().Result.ToList(), 
+                    Giveaways = giveawayService.GetGiveaways().Result.ToList(),
                     NewGiveaway = newGiveaway
                 };
                 return View("AdminGiveaway", model);
@@ -126,6 +126,7 @@ namespace Presentation.Controllers
         }
         public async Task<ActionResult> Admin()
         {
+           
             Field[] fields = { new Field(1), new Field(2), new Field(3) };
             var ongoingMatches = await matchesService.OngoingMatches();
             foreach (var field in fields)
@@ -307,10 +308,12 @@ namespace Presentation.Controllers
 
             return View();
         }
-        public async Task<ActionResult> EndMatchBtn(int matchId) {
-            
+        public async Task<ActionResult> EndMatchBtn(int matchId)
+        {
+
             await matchesService.EndMatch(matchId);
             return RedirectToAction("Admin");
         }
+        
     }
 }
