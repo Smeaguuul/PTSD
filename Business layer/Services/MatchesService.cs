@@ -153,11 +153,24 @@ namespace Business.Services
             if (match.Status != Status.Scheduled || match.Score.Sets.Count != 0) throw new ArgumentException("Match already ongoing!");
             match.Status = Status.Ongoing;
             match.Field = fieldId;
-
             var firstSet = new Set();
             firstSet.AddGame(new Game() { Server = server, Number = 0 }); // Count from 0
             match.Score.Sets.Add(firstSet);
 
+            await Matches.UpdateAndSaveAsync(match);
+        }
+        /// <summary>
+        /// Ends the match.
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task EndMatch(int matchId)
+        {
+            var match = await Matches.FirstOrDefaultAsync(m => m.Id == matchId, query => query.Include(m => m.Score).ThenInclude(s => s.Sets).ThenInclude(s => s.Games));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+            if (match.Status != Status.Ongoing) throw new ArgumentException("Match not ongoing!" + match.Status);
+            match.Status = Status.Finished;
             await Matches.UpdateAndSaveAsync(match);
         }
 

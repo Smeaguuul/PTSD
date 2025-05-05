@@ -62,7 +62,8 @@ namespace Presentation.Controllers
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
 
-            var scheduledMatches = await matchesService.ScheduledMatches();
+            //var scheduledMatches = await matchesService.ScheduledMatches();
+
             await matchesService.StartMatch(matchId, true, fieldId);
 
             return RedirectToAction("Admin");
@@ -223,6 +224,11 @@ namespace Presentation.Controllers
             }
 
             return View();
+        }
+        public async Task<ActionResult> EndMatchBtn(int matchId) {
+            
+            await matchesService.EndMatch(matchId);
+            return RedirectToAction("Admin");
         }
     }
 }
