@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Business.Interfaces;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
-    public class ClubsService
+    public class ClubsService : IClubsService
     {
         private readonly IRepository<Club> Clubs;
         IMapper Mapper;
@@ -32,7 +33,7 @@ namespace Business.Services
 
         public async Task CreateClub(string Name, string Abbreviation, string Location)
         {
-            var Club = new Club() { Name = Name, Abbreviation = Abbreviation, Location = Location, Teams = []};
+            var Club = new Club() { Name = Name, Abbreviation = Abbreviation, Location = Location, Teams = [] };
             await Clubs.AddAsync(Club);
         }
 
@@ -43,7 +44,7 @@ namespace Business.Services
             var playerList = new List<Player>();
             playerList.Add(new Player() { Name = Player1Name });
             playerList.Add(new Player() { Name = Player2Name });
-            var team = new Team() { Club = club, Name = TeamName,  Players = playerList };
+            var team = new Team() { Club = club, Name = TeamName, Players = playerList };
             club.Teams.Add(Mapper.Map<Team>(team));
             await Clubs.UpdateAndSaveAsync(club);
         }

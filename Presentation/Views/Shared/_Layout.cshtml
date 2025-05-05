@@ -10,28 +10,28 @@
 	<link rel="stylesheet" href="~/Presentation.styles.css" asp-append-version="true" />
 </head>
 <body>
-	<div id="divContent">
-		<header>
-			@{
-				var isAdminController = ViewContext.RouteData.Values["controller"].ToString().ToLower() == "admin";
+	@{
+		var isAdminController = ViewContext.RouteData.Values["controller"].ToString().ToLower() == "admin";
 
-				// Define a list of endpoints for the Admin controller
-				var adminEndpoints = new (string Action, string DisplayName)[]
-				{
-			("Index", "Home"),
-			("AddMatch", "Add Future Matches"),
-			("GameEditor", "Edit Past Matches"),
-			("UploadAd", "Upload New Ad"),
-			("Qr", "Generate QR Codes for Point Manager"),
-			("Clubs", "Make new Clubs and Teams"),
-			("Admin", "Start Matches"),
-			("AdminGiveAway", "Giveaways"),
-			// Add more endpoints as needed
-				};
-			}
+		// Define a list of endpoints for the Admin controller
+		var adminEndpoints = new (string Action, string DisplayName)[]
+		{
+	("Index", "Home"),
+	("AddMatch", "Add Future Matches"),
+	("GameEditor", "Edit Past Matches"),
+	("UploadAd", "Upload New Ad"),
+	("Qr", "Generate QR Codes for Point Manager"),
+	("Clubs", "Make new Clubs and Teams"),
+	("Admin", "Start Matches"),
+	("AdminGiveAway", "Giveaways"),
+				// Add more endpoints as needed
+		};
+	}
+	@if (isAdminController)
+	{
+		<div id="divContent">
+			<header>
 
-			@if (isAdminController)
-			{
 				<nav>
 					<ul>
 						@foreach (var endpoint in adminEndpoints)
@@ -42,17 +42,23 @@
 						}
 					</ul>
 				</nav>
-			}
-		</header>
+			</header>
 
-		<div class="container">
-			@RenderBody()
+			<div class="container">
+				@RenderBody()
+			</div>
+
+			<footer>
+				<p>© 2023 PTSD a/s</p>
+			</footer>
 		</div>
 
-		<footer>
-			<p>© 2023 PTSD a/s</p>
-		</footer>
-	</div>
+	}
+	else
+	{
+		@RenderBody()
+	}
+
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

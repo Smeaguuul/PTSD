@@ -22,9 +22,9 @@ footer {
     background-color: #2B2E34;
 }
 
-footer p {
-    margin: 15px;
-}
+    footer p {
+        margin: 15px;
+    }
 
 nav {
     flex-grow: 1;
@@ -44,15 +44,16 @@ nav {
         }
 
             nav ul li a {
-                color: white;
+                color: rgb(228, 237, 219);
+                font-family: "Blender", sans-serif;
                 text-decoration: none;
                 font-weight: bold;
                 transition: color 0.3s;
             }
 
-                nav ul li a:hover {
-                    color: #FFD700;
-                }
+            nav ul li a:hover {
+                color: #FFD700;
+            }
 
 .container {
     flex-grow: 1;
