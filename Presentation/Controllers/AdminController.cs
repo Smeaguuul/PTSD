@@ -147,19 +147,20 @@ namespace Presentation.Controllers
             }
         }
 
-        public async Task<IActionResult> EditGame(int Id)
+        public async Task<IActionResult> EditGame(int matchId, int setsHome, int setsAway)
         {
-            Match match;
             try
             {
-                match = await matchesService.GetMatch(Id);
+                await matchesService.ChangeFinishedGameScore(matchId, setsHome, setsAway);
+                ViewBag.Result = "Game score updated successfully!";
+                var match = await matchesService.GetMatch(matchId);
                 var matchScore = await matchesService.GetMatchScore(match.Id);
                 var model = new MatchInfo() { Match = match, MatchScore = matchScore };
                 return View("GameEditorIndividual", model);
             }
-            catch
+            catch (Exception e)
             {
-                ViewBag.Message = "Something went wrong :(";
+                ViewBag.Message = "Something went wrong: " + e.Message;
                 return View("GameEditorIndividual");
             }
         }
