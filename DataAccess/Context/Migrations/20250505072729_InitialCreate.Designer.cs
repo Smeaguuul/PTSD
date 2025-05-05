@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Context.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20250502090903_InitialCreate")]
+    [Migration("20250505072729_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -69,6 +69,69 @@ namespace DataAccess.Context.Migrations
                     b.HasIndex("SetId");
 
                     b.ToTable("Game");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Giveaways.Contestant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contestant");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Giveaways.Giveaway", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Giveaway");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Giveaways.GiveawayContestant", b =>
+                {
+                    b.Property<int>("GiveawayId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContestantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GiveawayId", "ContestantId");
+
+                    b.HasIndex("ContestantId");
+
+                    b.ToTable("GiveawayContestant");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Match", b =>
@@ -194,6 +257,25 @@ namespace DataAccess.Context.Migrations
                         .HasForeignKey("SetId");
                 });
 
+            modelBuilder.Entity("DataAccess.Models.Giveaways.GiveawayContestant", b =>
+                {
+                    b.HasOne("DataAccess.Models.Giveaways.Contestant", "contestant")
+                        .WithMany("GiveawayContestants")
+                        .HasForeignKey("ContestantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Models.Giveaways.Giveaway", "giveaway")
+                        .WithMany("GiveawayContestants")
+                        .HasForeignKey("GiveawayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("contestant");
+
+                    b.Navigation("giveaway");
+                });
+
             modelBuilder.Entity("DataAccess.Models.Match", b =>
                 {
                     b.HasOne("DataAccess.Models.Team", "AwayTeam")
@@ -249,6 +331,16 @@ namespace DataAccess.Context.Migrations
             modelBuilder.Entity("DataAccess.Models.Club", b =>
                 {
                     b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Giveaways.Contestant", b =>
+                {
+                    b.Navigation("GiveawayContestants");
+                });
+
+            modelBuilder.Entity("DataAccess.Models.Giveaways.Giveaway", b =>
+                {
+                    b.Navigation("GiveawayContestants");
                 });
 
             modelBuilder.Entity("DataAccess.Models.Score", b =>

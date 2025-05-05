@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using DataAccess.Models.Giveaways;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,22 @@ namespace DataAccess.Context
             modelBuilder.Entity<Score>().HasKey(s => s.Id);
             modelBuilder.Entity<Set>().HasKey(s => s.Id);
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
+            
+            modelBuilder.Entity<GiveawayContestant>()
+    .HasKey(gc => new { gc.GiveawayId, gc.ContestantId });
+
+            modelBuilder.Entity<GiveawayContestant>()
+                .HasOne(gc => gc.giveaway)
+                .WithMany(g => g.GiveawayContestants)
+                .HasForeignKey(gc => gc.GiveawayId);
+
+            modelBuilder.Entity<GiveawayContestant>()
+                .HasOne(gc => gc.contestant)
+                .WithMany(c => c.GiveawayContestants)
+                .HasForeignKey(gc => gc.ContestantId);
+
+            modelBuilder.Entity<Contestant>().HasKey(c => c.Id);
+            modelBuilder.Entity<Giveaway>().HasKey(g => g.Id);
 
             // Configure your entities here
             // modelBuilder.Entity<YourEntity>().ToTable("YourTableName");
