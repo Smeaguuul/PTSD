@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DataAccess.Models;
+using DataAccess.Models.Giveaways;
+using DTO.Giveaway;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Business.Mappers
 {
@@ -39,7 +42,19 @@ namespace Business.Mappers
 
             CreateMap<Team, DTO.Team>();
             CreateMap<DTO.Team, Team>();
+
+            CreateMap<ContestantDto, Contestant>();
+            CreateMap<Contestant, ContestantDto>();
+
+            CreateMap<Giveaway, GiveawayDto>();
+            CreateMap<GiveawayDto, Giveaway>();
+
+            CreateMap<DataAccess.Models.Giveaways.GiveawayStatus, DTO.Giveaway.GiveawayStatus>();
+            CreateMap<DTO.Giveaway.GiveawayStatus, DataAccess.Models.Giveaways.GiveawayStatus>();
         }
+
+      
+
     }
 
 }
