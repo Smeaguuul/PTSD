@@ -58,6 +58,45 @@ namespace Business.Services
             await Matches.AddAsync(match);
         }
 
+        public async Task<DTO.Match> GetMatch(int matchId)
+        {
+            var match = await Matches.FirstOrDefaultAsync(
+                predicate: m => m.Id == matchId,
+                include: query => query
+                .Include(m => m.Score)
+                .ThenInclude(s => s.Sets)
+                .ThenInclude(s => s.Games)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+
+            return Mapper.Map<DTO.Match>(match);
+        }
+
+        /// <summary>
+        /// Returns all matches that are finished and sorts after date.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<DTO.Match>> FinishedMatches()
+        {
+            var matches = await Matches.GetAllAsync(
+                predicate: m => m.Status == Status.Finished,
+                include: query => query
+                .Include(m => m.Score)
+                .ThenInclude(s => s.Sets)
+                .ThenInclude(s => s.Games)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Players)
+                .Include(m => m.AwayTeam).ThenInclude(o => o.Club)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Players)
+                .Include(m => m.HomeTeam).ThenInclude(h => h.Club),
+                orderBy: query => query.OrderBy(m => m.Date)
+                );
+
+            return Mapper.Map<List<DTO.Match>>(matches);
+        }
+
         /// <summary>
         /// Returns all matches that are scheduled and sorts after date.
         /// </summary>
@@ -114,11 +153,24 @@ namespace Business.Services
             if (match.Status != Status.Scheduled || match.Score.Sets.Count != 0) throw new ArgumentException("Match already ongoing!");
             match.Status = Status.Ongoing;
             match.Field = fieldId;
-
             var firstSet = new Set();
             firstSet.AddGame(new Game() { Server = server, Number = 0 }); // Count from 0
             match.Score.Sets.Add(firstSet);
 
+            await Matches.UpdateAndSaveAsync(match);
+        }
+        /// <summary>
+        /// Ends the match.
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task EndMatch(int matchId)
+        {
+            var match = await Matches.FirstOrDefaultAsync(m => m.Id == matchId, query => query.Include(m => m.Score).ThenInclude(s => s.Sets).ThenInclude(s => s.Games));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+            if (match.Status != Status.Ongoing) throw new ArgumentException("Match not ongoing!" + match.Status);
+            match.Status = Status.Finished;
             await Matches.UpdateAndSaveAsync(match);
         }
 
@@ -135,7 +187,7 @@ namespace Business.Services
             if (match == null) throw new ArgumentException("Match does not exist!");
 
             match = MatchScoreController.UpdateScore(match, pointWinner);
-            
+
             await Matches.UpdateAndSaveAsync(match);
         }
 
@@ -145,6 +197,34 @@ namespace Business.Services
             if (match == null) throw new ArgumentException("Match does not exist!");
 
             match = MatchScoreController.UndoPoint(match);
+
+            await Matches.UpdateAndSaveAsync(match);
+        }
+
+        public async Task ChangeFinishedGameScore(int matchId, int setsHome, int setsAway)
+        {
+            if (setsHome < 0 || setsAway < 0) throw new ArgumentException("Sets cannot be negative.");
+            if (setsHome > 2 || setsAway > 2) throw new ArgumentException("Sets won cannot be above 2.");
+            if (setsHome + setsAway > 3) throw new ArgumentException("Number of sets cannot be more that 3.");
+
+            var match = await Matches.FirstOrDefaultAsync(m => m.Id == matchId, query => query.Include(m => m.Score).ThenInclude(s => s.Sets).ThenInclude(s => s.Games));
+            if (match == null) throw new ArgumentException("Match does not exist!");
+
+            // Check if the match is already finished
+            if (match.Status != Status.Finished) throw new ArgumentException("Match is not finished.");
+
+            var score = match.Score;
+            match.Score.Sets.Clear();
+            for (int i = 0; i < setsHome; i++)
+            {
+                var set = new Set() { Winner = true };
+                score.Sets.Add(set);
+            }
+            for (int i = 0; i < setsAway; i++)
+            {
+                var set = new Set() { Winner = false };
+                score.Sets.Add(set);
+            }
 
             await Matches.UpdateAndSaveAsync(match);
         }
