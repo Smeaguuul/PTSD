@@ -179,22 +179,54 @@ namespace Business.Services
             return Mapper.Map<IEnumerable<DTO.Giveaway.ContestantDto>>(contestants);
         }
 
-        public async Task<IEnumerable<Contestant>> PickWinner(int amountOfWinners)
+        public async Task<IEnumerable<DTO.Giveaway.ContestantDto>> PickWinner(int amountOfWinners)
         {
            
            var contestants = await GetContestants();
 
             //pick random winners from list of contestants
-            var winners = contestants.OrderBy(x => Guid.NewGuid()).Take(amountOfWinners).ToList();
+            var winners = contestants.OrderBy(x => Guid.NewGuid()).Take(amountOfWinners);
             return winners;
         }
 
-        public async Task<Contestant> PickWinner()
+        public async Task<DTO.Giveaway.ContestantDto> PickWinner()
         {
             return await PickWinner(1).ContinueWith(t => t.Result.FirstOrDefault());
         }
 
+        public async Task SeedData()
+        {
+            var giveaway1 = new Giveaway
+            {
+                Name = "Spring Giveaway",
+                Description = "Win cool spring prizes!",
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(30)
+            };
 
+            var giveaway2 = new Giveaway
+            {
+                Name = "Summer Giveaway",
+                Description = "Win cool summer prizes!",
+                StartDate = DateTime.Now.AddDays(31),
+                EndDate = DateTime.Now.AddDays(45)
+            };
+
+            var contestant1 = new Contestant { Name = "Alice", Email = "alice@example.com" };
+            var contestant2 = new Contestant { Name = "Bob", Email = "bob@example.com" };
+            var contestant3 = new Contestant { Name = "Charlie", Email = "charlie@example.com" };
+
+            var giveawayContestant1 = new GiveawayContestant { contestant = contestant1, giveaway = giveaway1 };
+            var giveawayContestant2 = new GiveawayContestant { contestant = contestant2, giveaway = giveaway1 };
+            var giveawayContestant3 = new GiveawayContestant { contestant = contestant3, giveaway = giveaway2 };
+
+            giveaway1.GiveawayContestants.Add(giveawayContestant1);
+            giveaway1.GiveawayContestants.Add(giveawayContestant2);
+            giveaway2.GiveawayContestants.Add(giveawayContestant3);
+
+            await GiveawayRepository.AddAsync(giveaway1);
+            await GiveawayRepository.AddAsync(giveaway2);
+        }
 
     }
 }
