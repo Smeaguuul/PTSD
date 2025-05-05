@@ -7,6 +7,7 @@ using QRCoder;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using DTO.Giveaway;
 using System.Net;
 
 namespace Presentation.Controllers
@@ -15,10 +16,12 @@ namespace Presentation.Controllers
     {
         private readonly MatchesService matchesService;
         private readonly ClubsService clubsService;
-        public AdminController(MatchesService matchesService, ClubsService clubsService)
+        private readonly GiveawayService giveawayService;
+        public AdminController(MatchesService matchesService, ClubsService clubsService, GiveawayService giveawayService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
+            this.giveawayService = giveawayService;
         }
 
         public ActionResult Generate(string url, string password, int id)
@@ -43,6 +46,76 @@ namespace Presentation.Controllers
             ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url, id = id, password = password });
             ViewBag.OriginalUrl = url;
             return View();
+        }
+        [HttpPost]
+        public ActionResult CreateGiveaway(CreateGiveawayDto newGiveaway)
+        {
+            if (!ModelState.IsValid)
+            {
+                // You can return the same page with current model to show errors
+                var model = new AdminGiveawayPageViewModel
+                {
+                    Giveaways = giveawayService.GetGiveaways().Result.ToList(), 
+                    NewGiveaway = newGiveaway
+                };
+                return View("AdminGiveaway", model);
+            }
+
+            giveawayService.CreateGiveawayAsync(newGiveaway);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContestant(int giveawayId, string name, string email)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email))
+            {
+                TempData["Error"] = "Name and Email are required.";
+                return RedirectToAction("AdminGiveaway");
+            }
+
+            await giveawayService.AddContestantToGiveawayAsync(giveawayId, name, email);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+
+        public async Task<IActionResult> ViewContestants(int giveawayId)
+        {
+            var giveaway = (await giveawayService.GetGiveaways()).FirstOrDefault(g => g.Id == giveawayId);
+            if (giveaway == null)
+            {
+                return NotFound();
+            }
+
+            return View(giveaway); // Pass GiveawayDto which includes Contestants
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EndGiveaway(int giveawayId)
+        {
+            await giveawayService.DeleteGiveaway(giveawayId);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PickWinners(int giveawayId, int numberOfWinners)
+        {
+            await giveawayService.PickWinner(giveawayId, numberOfWinners);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+
+        public async Task<ActionResult> AdminGiveaway()
+        {
+            var giveaways = await giveawayService.GetGiveaways();
+
+            var model = new AdminGiveawayPageViewModel
+            {
+                Giveaways = giveaways.ToList() // Ensure this is not null
+            };
+
+            return View(model); // strongly typed
         }
 
         public async Task<ActionResult> Index()
