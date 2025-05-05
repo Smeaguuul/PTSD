@@ -51,6 +51,15 @@ namespace Business.Mappers
 
             CreateMap<DataAccess.Models.Giveaways.GiveawayStatus, DTO.Giveaway.GiveawayStatus>();
             CreateMap<DTO.Giveaway.GiveawayStatus, DataAccess.Models.Giveaways.GiveawayStatus>();
+
+            CreateMap<GiveawayDto, Giveaway>();
+            CreateMap<CreateGiveawayDto, Giveaway>();
+
+
+            CreateMap<Giveaway, GiveawayDto>()
+                .ForMember(dest => dest.Contestants, opt => opt.MapFrom(src => src.GiveawayContestants.Select(gc => gc.contestant)))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+
         }
 
       

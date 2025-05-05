@@ -1,0 +1,89 @@
+﻿@model AdminGiveawayPageViewModel
+
+<div class="admin-links">
+    <a class="admin-link" href="@Url.Action("Admin", "Admin")">Game Admin</a>
+    <a class="admin-link" href="@Url.Action("AddMatch", "Admin")">Add new Match</a>
+    <a class="admin-link" href="@Url.Action("UploadAd", "Admin")">Upload new Ad</a>
+    <a class="admin-link" href="@Url.Action("AdminGiveaway", "Admin")">Giveaway Admin</a>
+</div>
+
+<div class="giveaway-admin">
+    <h2>Create New Giveaway</h2>
+    <form asp-action="CreateGiveaway" method="post">
+        <div>
+            <label>Name</label>
+            <input asp-for="NewGiveaway.Name" required />
+        </div>
+        <div>
+            <label>Description</label>
+            <textarea asp-for="NewGiveaway.Description" required></textarea>
+        </div>
+        <div>
+            <label>Start Date</label>
+            <input asp-for="NewGiveaway.StartDate" type="date" required />
+        </div>
+        <div>
+            <label>End Date</label>
+            <input asp-for="NewGiveaway.EndDate" type="date" required />
+        </div>
+        <button type="submit">Create Giveaway</button>
+    </form>
+</div>
+
+@if (Model.Giveaways?.Any() == true)
+{
+    <div class="giveaway-list">
+        <h2>Existing Giveaways</h2>
+        @foreach (var giveaway in Model.Giveaways)
+        {
+            <div class="giveaway-item" style="border:1px solid #ccc; padding:10px; margin-bottom:20px;">
+                <h3>@giveaway.Name (@giveaway.Status)</h3>
+                <p>@giveaway.Description</p>
+                <p>From: @giveaway.StartDate.ToShortDateString() To: @giveaway.EndDate.ToShortDateString()</p>
+                <p>Participants: @giveaway.Contestants.Count</p>
+
+                <div style="margin-top: 10px;">
+                    <form asp-action="ViewContestants" method="get" style="display:inline;">
+                        <input type="hidden" name="giveawayId" value="@giveaway.Id" />
+                        <button type="submit">View Contestants</button>
+                    </form>
+
+                    <form asp-action="EndGiveaway" method="post" style="display:inline;">
+                        <input type="hidden" name="giveawayId" value="@giveaway.Id" />
+                        <button type="submit">End Giveaway</button>
+                    </form>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <h4>Add Contestant</h4>
+                    <form asp-action="AddContestant" method="post">
+                        <input type="hidden" name="giveawayId" value="@giveaway.Id" />
+                        <div>
+                            <label>Name</label>
+                            <input type="text" name="name" required />
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" name="email" required />
+                        </div>
+                        <button type="submit">Add</button>
+                    </form>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <h4>Pick Winner(s)</h4>
+                    <form asp-action="PickWinners" method="post">
+                        <input type="hidden" name="giveawayId" value="@giveaway.Id" />
+                        <label>Number of Winners:</label>
+                        <input type="number" name="numberOfWinners" min="1" max="@giveaway.Contestants.Count" required />
+                        <button type="submit">Pick</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No giveaways created yet.</p>
+}
