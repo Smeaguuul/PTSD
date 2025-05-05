@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using DTO.Giveaway;
+using System.Net;
 
 namespace Presentation.Controllers
 {
@@ -23,8 +24,13 @@ namespace Presentation.Controllers
             this.giveawayService = giveawayService;
         }
 
-        public ActionResult Generate(string url)
+        public ActionResult Generate(string url, string password, int id)
         {
+            //if (password != "Johans sista")
+            //{
+            //    return Forbid();
+            //}
+
             var qrGenerator = new QRCodeGenerator();
             var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
             var qrCode = new PngByteQRCode(qrCodeData);
@@ -32,10 +38,12 @@ namespace Presentation.Controllers
 
             return File(qrCodeAsPng, "image/png");
         }
-        public ActionResult Qr()
+        public ActionResult Qr(int id)
         {
-            string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url });
+
+            string url = $"http://localhost:5023/pointmanager?Id={id}";
+            string password = "Johans sista";
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url, id = id, password = password });
             ViewBag.OriginalUrl = url;
             return View();
         }
