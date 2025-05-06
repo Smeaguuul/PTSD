@@ -11,14 +11,14 @@
             {
                 <p>Status: Ledig</p>
                 <div class="button-container">
-                    <button asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn" style="background-color: #003A29; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">Start Kamp</button>
+                    <a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
                 </div>
             }
             else
             {
                 <p>Status: Optaget</p>
                 <div class="button-container">
-                    <button asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn" style="background-color: #003A29; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">Slut Kamp</button>
+                    <a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
                 </div>
             }
         </div>
