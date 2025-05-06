@@ -15,10 +15,10 @@ namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly MatchesService matchesService;
-        private readonly ClubsService clubsService;
-        private readonly GiveawayService giveawayService;
-        public AdminController(MatchesService matchesService, ClubsService clubsService, GiveawayService giveawayService)
+        private readonly IMatchesService matchesService;
+        private readonly IClubsService clubsService;
+        private readonly IGiveawayService giveawayService;
+        public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
