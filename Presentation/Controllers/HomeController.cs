@@ -20,14 +20,6 @@ namespace Presentation.Controllers
 
             var ongoingMatches = await matchesService.OngoingMatches();
 
-            if (ongoingMatches.ToList().Count == 0)
-            {
-                await matchesService.SeedMatchData();
-                await giveawayService.SeedData();
-                
-                ongoingMatches = await matchesService.OngoingMatches();
-            }
-
             Matches matches = new Matches();
             foreach (var match in ongoingMatches)
             {

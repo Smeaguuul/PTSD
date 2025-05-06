@@ -229,40 +229,5 @@ namespace Business.Services
             return (await PickWinner(1, giveawayId)).FirstOrDefault();
         }
 
-
-        public async Task SeedData()
-        {
-            var giveaway1 = new Giveaway
-            {
-                Name = "Spring Giveaway",
-                Description = "Win cool spring prizes!",
-                StartDate = DateTime.Now.AddDays(2),
-                EndDate = DateTime.Now.AddDays(30)
-            };
-
-            var giveaway2 = new Giveaway
-            {
-                Name = "Summer Giveaway",
-                Description = "Win cool summer prizes!",
-                StartDate = DateTime.Now.AddDays(31),
-                EndDate = DateTime.Now.AddDays(45)
-            };
-
-            var contestant1 = new Contestant { Name = "Alice", Email = "alice@example.com" };
-            var contestant2 = new Contestant { Name = "Bob", Email = "bob@example.com" };
-            var contestant3 = new Contestant { Name = "Charlie", Email = "charlie@example.com" };
-
-            var giveawayContestant1 = new GiveawayContestant { contestant = contestant1, giveaway = giveaway1 };
-            var giveawayContestant2 = new GiveawayContestant { contestant = contestant2, giveaway = giveaway1 };
-            var giveawayContestant3 = new GiveawayContestant { contestant = contestant3, giveaway = giveaway2 };
-
-            giveaway1.GiveawayContestants.Add(giveawayContestant1);
-            giveaway1.GiveawayContestants.Add(giveawayContestant2);
-            giveaway2.GiveawayContestants.Add(giveawayContestant3);
-
-            await GiveawayRepository.AddAsync(giveaway1);
-            await GiveawayRepository.AddAsync(giveaway2);
-        }
-
     }
 }

@@ -13,7 +13,6 @@ namespace Business.Interfaces
         Task<MatchScore> GetMatchScore(int matchId);
         Task<IEnumerable<Match>> OngoingMatches();
         Task<IEnumerable<Match>> ScheduledMatches();
-        Task SeedMatchData();
         Task StartMatch(int matchId, bool server, int fieldId);
         Task UndoMatchPoint(int matchId);
         Task UpdateMatchScore(int matchId, bool pointWinner);

@@ -14,6 +14,6 @@ namespace Business.Interfaces
         Task<ContestantDto> PickWinner(int giveawayId);
         Task<IEnumerable<ContestantDto>> PickWinner(int amountOfWinners, int giveawayId);
         Task<bool> RemoveContestantFromGiveawayAsync(int giveawayId, int contestantId);
-        Task SeedData();
+        
     }
 }
