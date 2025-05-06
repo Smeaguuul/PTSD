@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Models;
 
-namespace Business
+namespace Business.Models
 {
     internal static class MatchScoreController
     {

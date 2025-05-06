@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Business.Interfaces;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Services
 {
-    public class ClubsService
+    public class ClubsService : IClubsService
     {
         private readonly IRepository<Club> Clubs;
         IMapper Mapper;
@@ -32,14 +33,18 @@ namespace Business.Services
 
         public async Task CreateClub(string Name, string Abbreviation, string Location)
         {
-            var Club = new Club() { Name = Name, Abbreviation = Abbreviation, Location = Location, Teams = []};
+            var Club = new Club() { Name = Name, Abbreviation = Abbreviation, Location = Location, Teams = [] };
             await Clubs.AddAsync(Club);
         }
 
-        public async Task AddTeamToClub(DTO.Team team, string clubAbbreviation)
+        public async Task AddTeamToClub(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name, string clubAbbreviation)
         {
             var club = await Clubs.FirstOrDefaultAsync(c => c.Abbreviation.Equals(clubAbbreviation));
             if (club == null) throw new ArgumentException("Club doesn't exist.");
+            var playerList = new List<Player>();
+            playerList.Add(new Player() { Name = Player1Name });
+            playerList.Add(new Player() { Name = Player2Name });
+            var team = new Team() { Club = club, Name = TeamName, Players = playerList };
             club.Teams.Add(Mapper.Map<Team>(team));
             await Clubs.UpdateAndSaveAsync(club);
         }

@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using DataAccess.Models.Giveaways;
 using Microsoft.EntityFrameworkCore;
 using DTO.Giveaway;
+using Business.Interfaces;
 
 namespace Business.Services
 {
-    public class GiveawayService
+    public class GiveawayService : IGiveawayService
     {
 
         private readonly IRepository<Giveaway> GiveawayRepository;
