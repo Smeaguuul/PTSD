@@ -5,6 +5,6 @@ namespace Business.Interfaces
     public interface IAdminUserService
     {
         Task<AdminUser> getAdminUser(string username);
-        public Task changePassword(string username, string password);
+        public Task changePassword(string username, string oldPassword, string newPassword);
     }
 }
