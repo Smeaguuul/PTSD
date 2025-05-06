@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Models;
 
 namespace Presentation.Controllers
 {
@@ -16,6 +17,19 @@ namespace Presentation.Controllers
         {
             var matchScore = await _matchesService.GetMatchScore(Id);
             return View(matchScore);
+        }
+
+        public async Task<IActionResult> StartMatch(int matchId, bool server, int fieldId)
+        {
+            await _matchesService.StartMatch(matchId, server, fieldId);
+            return Redirect($"/PointManager?Id={matchId}");
+        }
+
+        public async Task<IActionResult> PickServer(int matchId, int fieldId)
+        {
+            var match = await _matchesService.GetMatch(matchId);
+            var model = new PickServerViewModel { Match = match, FieldId = fieldId };
+            return View(model);
         }
 
         [HttpPost]
