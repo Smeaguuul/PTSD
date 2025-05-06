@@ -354,9 +354,7 @@ namespace Presentation.Controllers
             await matchesService.EndMatch(matchId);
             return RedirectToAction("Admin");
         }
-<<<<<<< HEAD
-        
-=======
+
 
         public async Task<IActionResult> Clubs()
         {
@@ -381,6 +379,5 @@ namespace Presentation.Controllers
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
->>>>>>> master
     }
 }
