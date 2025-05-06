@@ -7,6 +7,7 @@ using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Models.Giveaways;
 using DataAccess.Repositories;
+using DataAccess.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,11 @@ builder.Services.AddScoped<IRepository<AdminUser>, Repository<AdminUser>>();
 builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<IClubsService, ClubsService>();
 builder.Services.AddScoped<IGiveawayService, GiveawayService>();
+builder.Services.AddScoped<AdminUserService>();
 builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+builder.Services.AddScoped<Seeder>();
+
+
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
@@ -45,8 +50,13 @@ builder.Services.AddAuthentication("Cookies")
 builder.Services.AddAuthorization();
 
 
-
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var seedData = scope.ServiceProvider.GetRequiredService<DataAccess.SeedData.Seeder>();
+    await seedData.SeedGenerator();  // Call the method to seed data
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
