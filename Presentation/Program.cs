@@ -34,6 +34,14 @@ builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<IClubsService, ClubsService>();
 builder.Services.AddScoped<IGiveawayService, GiveawayService>();
 
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Admin/Login";
+    });
+
+builder.Services.AddAuthorization();
+
 
 
 var app = builder.Build();
@@ -46,6 +54,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -54,7 +64,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
 

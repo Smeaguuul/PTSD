@@ -9,7 +9,12 @@ using System.Drawing.Imaging;
 using System.IO;
 using DTO.Giveaway;
 using System.Net;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace Presentation.Controllers
 {
@@ -23,6 +28,37 @@ namespace Presentation.Controllers
             this.matchesService = matchesService;
             this.clubsService = clubsService;
             this.giveawayService = giveawayService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            if (username == "admin" && password == "password") // Replace with real validation
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return RedirectToAction("Index", "admin");
+            }
+
+            ViewBag.Error = "Invalid credentials";
+            return View();
+        }
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Generate(string url, string password, int id)
@@ -119,14 +155,18 @@ namespace Presentation.Controllers
             return View(model); // strongly typed
         }
 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var matches = await matchesService.ScheduledMatches();
             AdminHomepage model = new AdminHomepage() { Matches = [.. matches] };
             return View(model);
         }
+
+        [Authorize]
         public async Task<ActionResult> Admin()
         {
+           
             Field[] fields = { new Field(1), new Field(2), new Field(3) };
             var ongoingMatches = await matchesService.OngoingMatches();
             foreach (var field in fields)
@@ -315,46 +355,27 @@ namespace Presentation.Controllers
             return RedirectToAction("Admin");
         }
 
+
         public async Task<IActionResult> Clubs()
         {
             var TeamMessage = TempData["TeamMessage"] as string;
             var ClubMessage = TempData["ClubMessage"] as string;
-            var TeamErrorMessage = TempData["TeamErrorMessage"] as string;
-            var ClubErrorMessage = TempData["ClubErrorMessage"] as string;
             ViewBag.ClubMessage = ClubMessage;
             ViewBag.TeamMessage = TeamMessage;
-            ViewBag.TeamErrorMessage = TeamErrorMessage;
-            ViewBag.ClubErrorMessage = ClubErrorMessage;
             var clubs = await clubsService.GetAll();
             return View(clubs);
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddTeamToClubAsync(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
         {
-            try
-            {
-                await clubsService.AddTeamToClub(TeamName, ClubAbbreviation, Player1Name, Player2Name, ClubAbbreviation);
-            }
-            catch (Exception ex)
-            {
-                TempData["TeamErrorMessage"] = ex.Message;
-            }
             TempData["TeamMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateClub(string ClubName, string Location, string Abbreviation)
+        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
         {
-            try
-            {
-                await clubsService.CreateClub(ClubName, Abbreviation, Location);
-            }
-            catch (Exception ex)
-            {
-                TempData["ClubErrorMessage"] = ex.Message;
-            }
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }

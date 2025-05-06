@@ -12,22 +12,24 @@
 <body>
 	@{
 		var isAdminController = ViewContext.RouteData.Values["controller"].ToString().ToLower() == "admin";
+		var isLoginAction = ViewContext.RouteData.Values["action"].ToString().ToLower() == "login";
 
 		// Define a list of endpoints for the Admin controller
 		var adminEndpoints = new (string Action, string DisplayName)[]
 		{
 	("Index", "Home"),
-	("AddMatch", "Add Future Matches"),
-	("GameEditor", "Edit Past Matches"),
+	("AddMatch", "Add Matches"),
+	("GameEditor", "Past Matches"),
 	("UploadAd", "Upload New Ad"),
-	("Qr", "Generate QR Codes for Point Manager"),
-	("Clubs", "Make new Clubs and Teams"),
+	("Qr", "Point Manager"),
+	("Clubs", "Clubs and Teams"),
 	("Admin", "Start Matches"),
 	("AdminGiveAway", "Giveaways"),
+	("Logout", "Logout"),
 				// Add more endpoints as needed
 		};
 	}
-	@if (isAdminController)
+	@if (isAdminController && !isLoginAction)
 	{
 		<div id="divContent">
 			<header>

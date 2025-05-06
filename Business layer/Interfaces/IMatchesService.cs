@@ -17,5 +17,7 @@ namespace Business.Interfaces
         Task StartMatch(int matchId, bool server, int fieldId);
         Task UndoMatchPoint(int matchId);
         Task UpdateMatchScore(int matchId, bool pointWinner);
-    }
+        Task<IEnumerable<Match>> GetTodaysMatchesWithScore();
+        
+        }
 }
