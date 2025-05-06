@@ -65,22 +65,14 @@ namespace Business.Models
                     if (matchScore.PointsHome == "0" || matchScore.PointsHome == null) matchScore.PointsHome = "15";
                     else if (matchScore.PointsHome == "15") matchScore.PointsHome = "30";
                     else if (matchScore.PointsHome == "30") matchScore.PointsHome = "40";
-                    else if (matchScore.PointsHome == "40")
-                    {
-                        if (matchScore.PointsAway == "Advantage") matchScore.PointsAway = "40";
-                        matchScore.PointsHome = "Advantage";
-                    }
+                    
                 }
                 else
                 {
                     if (matchScore.PointsAway == "0" || matchScore.PointsAway == null) matchScore.PointsAway = "15";
                     else if (matchScore.PointsAway == "15") matchScore.PointsAway = "30";
                     else if (matchScore.PointsAway == "30") matchScore.PointsAway = "40";
-                    else if (matchScore.PointsAway == "40")
-                    {
-                        if (matchScore.PointsHome == "Advantage") matchScore.PointsHome = "40";
-                        matchScore.PointsAway = "Advantage";
-                    }
+                    
                 }
             }
         }
@@ -179,65 +171,48 @@ namespace Business.Models
                     var newSet = new Set();
                     newSet.Games.Add(new Game() { Server = latestGame.Server, Number = 20 });
                     match.Score.Sets.Add(newSet);
-                } else match.Status = Status.Finished;
+                }
+                else match.Status = Status.Finished;
             }
             return match;
         }
 
         private static void CalculatePoints(bool homeWins, ref GameScore score)
         {
-            // Checks different scenarios
-
-            // Checks for deuce win
-            if (score.homePoints == "Advantage" && score.awayPoints == "40")
+            
+            if (homeWins)
             {
-                if (!homeWins)
+                if (score.homePoints == "40")
                 {
-                    score.homePoints = "40";
-                    score.awayPoints = "Advantage";
+                    score.homePoints = "Won";
                 }
-                else score.homePoints = "Won";
-            }
-            else if (score.awayPoints == "Advantage" && score.homePoints == "40")
-            {
-                if (homeWins)
+                else
                 {
-                    score.homePoints = "Advantage";
-                    score.awayPoints = "40";
+                    score.homePoints = score.homePoints switch
+                    {
+                        "0" => "15",
+                        "15" => "30",
+                        "30" => "40",
+                        _ => score.homePoints
+                    };
                 }
-                else score.awayPoints = "Won";
             }
-
-            //Checks for deuce
-            else if (score.homePoints == "40" && score.awayPoints == "40")
+            else // awayWins
             {
-                if (homeWins) score.homePoints = "Advantage";
-                else score.awayPoints = "Advantage";
-
-            }
-
-            // Checks for win
-            else if (score.homePoints == "40" && score.awayPoints != "40" && homeWins) // Assumption: awayPoints can't be "Advantage" here
-            {
-                score.homePoints = "Won";
-            }
-            else if (score.awayPoints == "40" && score.homePoints != "40" && !homeWins)
-            {
-                score.awayPoints = "Won";
-            }
-
-            // If none of those, just add points to team
-            else if (homeWins)
-            {
-                if (score.homePoints == "0") score.homePoints = "15";
-                else if (score.homePoints == "15") score.homePoints = "30";
-                else if (score.homePoints == "30") score.homePoints = "40";
-            }
-            else if (!homeWins)
-            {
-                if (score.awayPoints == "0") score.awayPoints = "15";
-                else if (score.awayPoints == "15") score.awayPoints = "30";
-                else if (score.awayPoints == "30") score.awayPoints = "40";
+                if (score.awayPoints == "40")
+                {
+                    score.awayPoints = "Won";
+                }
+                else
+                {
+                    score.awayPoints = score.awayPoints switch
+                    {
+                        "0" => "15",
+                        "15" => "30",
+                        "30" => "40",
+                        _ => score.awayPoints
+                    };
+                }
             }
         }
 

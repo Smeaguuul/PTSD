@@ -30,11 +30,11 @@ builder.Services.AddScoped<IRepository<Team>, Repository<Team>>();
 builder.Services.AddScoped<IRepository<Giveaway>, Repository<Giveaway>>();
 builder.Services.AddScoped<IRepository<Contestant>, Repository<Contestant>>();
 builder.Services.AddScoped<IRepository<GiveawayContestant>, Repository<GiveawayContestant>>();
+builder.Services.AddScoped<IRepository<AdminUser>, Repository<AdminUser>>();
 builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<IClubsService, ClubsService>();
 builder.Services.AddScoped<IGiveawayService, GiveawayService>();
-builder.Services.AddScoped<MatchesService>();
-
+builder.Services.AddScoped<AdminUserService>(); 
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>

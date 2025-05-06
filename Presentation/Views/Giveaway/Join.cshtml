@@ -1,0 +1,40 @@
+﻿@using Presentation.Models.Presentation.Models
+@model JoinGiveawayViewModel
+
+<h2>Join a Giveaway</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.JoinModel?.StatusMessage))
+{
+    <div style="color: green; margin-bottom: 20px;">
+        <strong>@Model.JoinModel.StatusMessage</strong>
+    </div>
+}
+
+@if (Model.Giveaways?.Any() == true)
+{
+    foreach (var giveaway in Model.Giveaways)
+    {
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 25px;">
+            <h3>@giveaway.Name</h3>
+            <p>@giveaway.Description</p>
+            <p>From: @giveaway.StartDate.ToShortDateString() - To: @giveaway.EndDate.ToShortDateString()</p>
+
+            <form asp-action="Join" asp-controller="Giveaway" method="post">
+                <input type="hidden" name="JoinModel.GiveawayId" value="@giveaway.Id" />
+                <div>
+                    <label>Name:</label>
+                    <input type="text" name="JoinModel.Name" required />
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="email" name="JoinModel.Email" required />
+                </div>
+                <button type="submit">Join</button>
+            </form>
+        </div>
+    }
+}
+else
+{
+    <p>No giveaways available at the moment.</p>
+}
