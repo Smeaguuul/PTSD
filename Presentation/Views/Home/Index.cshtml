@@ -49,17 +49,36 @@
              </table>
     </div>
     <div>
-    <img src="@Url.Content("~/images/Ad.jpg")" alt="An Ad!" style="margin: 10px;" />
-</div>
+        <div>
+            <img id="adImage" src="@Url.Content("~/images/Ads/" + (ViewBag.AdImages?[0] ?? "default.jpg"))" alt="An Ad!" style="margin: 10px;" />
 
+        </div>
 
+        <script>
+            const adImages = [
+            @foreach (var img in ViewBag.AdImages as List<string>)
+            {
+                @Html.Raw($"'{Url.Content("~/images/Ads/" + img)}',")
+            }
+            ];
 
+            // Start med at hente sidste viste indeks fra localStorage
+            let currentAdIndex = parseInt(localStorage.getItem("currentAdIndex")) || 0;
 
-<script>
-    function refreshPage() {
-        location.reload(); // Reload the current page
-    }
-    // Refresh the page every 5 seconds (5000 milliseconds)
-    setInterval(refreshPage, 5000);
+            // Vis billedet ved load
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("adImage").src = adImages[currentAdIndex];
+            });
 
-</script>
+            // Skift billede hvert 5. sekund
+            setInterval(function () {
+                currentAdIndex = (currentAdIndex + 1) % adImages.length;
+                document.getElementById("adImage").src = adImages[currentAdIndex];
+                localStorage.setItem("currentAdIndex", currentAdIndex); // Gem det
+            }, 5000);
+
+            // Reload hele siden hvert 5. sekund (efter billedet er opdateret)
+            setInterval(function () {
+                location.reload();
+            }, 5000);
+        </script>

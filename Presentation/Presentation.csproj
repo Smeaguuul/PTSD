@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\Ad.png" />
+    <Content Remove="wwwroot\images\Ad1.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\images\Ad.png" />
+    <None Include="wwwroot\images\Ad1.png" />
   </ItemGroup>
 
 </Project>
