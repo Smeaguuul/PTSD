@@ -1,0 +1,76 @@
+﻿.giveaway-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.giveaway-admin {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.giveaway-list {
+    flex: 1;
+}
+
+.scrollable-giveaway-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.giveaway-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.giveaway-details {
+    flex: 1;
+}
+
+.add-contestant {
+    margin-left: 20px;
+    flex-shrink: 0;
+}
+
+h2, h3, h4 {
+    margin: 10px 0;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="number"],
+textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 300px;
+    text-align: left;
+}
+
+.form-button {
+    padding: 10px 20px;
+    background-color: #003A29;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .form-button:hover {
+        background-color: #005B4D;
+    }

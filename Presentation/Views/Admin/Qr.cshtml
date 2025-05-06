@@ -1,16 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<div class="qr-view">
+	<h2 class="title">QR med ID</h2>
+	<div class="form-div">
+		<form class="qr-form" method="get" action="@Url.Action("Qr","Admin")">
+			<label class="form-label" for="id">Indtast ID:</label>
+			<input class="form-input" type="number" id="id" name="id" required />
+			<button class="form-button" type="submit">Lav QR Kode</button>
+		</form>
+	</div>
 
-<h2>QR med ID</h2>
-<form method="get", action="@Url.Action("Qr","Admin")">
-    <label for="id">Indtast ID:</label>
-    <input type="number" id="id" name="id" required/>
-    <button type="submit">Lav QR Kode</button>
-</form>
+	@if (ViewBag.QrImageUrl != null)
+	{
+		<div class="qr-div">
+			<img class="qr-image" src="@ViewBag.QrImageUrl" alt="QR Code" />
+		</div>
+	}
 
-@if(ViewBag.QrImageUrl != null){
-<img src="@ViewBag.QrImageUrl" alt="QR Code" />
-}
+
+</div>

@@ -1,23 +1,4 @@
-﻿.admin-links {
-    margin: 20px; 
-}
-
-.admin-link {
-    display: inline-block; 
-    padding: 10px 15px;
-    margin: 5px;
-    background-color: #007bff;
-    color: white; 
-    text-decoration: none; 
-    border-radius: 5px; 
-    transition: background-color 0.3s;
-}
-
-.admin-link:hover {
-    background-color: #0056b3;
-}
-
-.match-overview {
+﻿.match-overview {
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;

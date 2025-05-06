@@ -1,89 +1,89 @@
 ﻿@model List<DTO.Club>
 
 <div class="form-container">
-	<div class="form-wrapper">
-		<h2>Create Club</h2>
-		@using (Html.BeginForm("CreateClub", "Admin", FormMethod.Post, new { @class = "form-create-club" }))
-		{
-			<div class="form-group">
-				<label for="ClubName">Club Name:</label>
-				<input type="text" id="ClubName" name="ClubName" placeholder="Enter Club Name" required class="form-control" />
-			</div>
-			<div class="form-group">
-				<label for="Location">Location:</label>
-				<input type="text" id="Location" name="Location" placeholder="Enter Location" required class="form-control" />
-			</div>
-			<div class="form-group">
-				<label for="Abbreviation">Abbreviation:</label>
-				<input type="text" id="Abbreviation" name="Abbreviation" placeholder="Enter Abbreviation" required class="form-control" />
-			</div>
+    <div class="form-wrapper">
+        <h2 class="title">Create Club</h2>
+        @using (Html.BeginForm("CreateClub", "Admin", FormMethod.Post, new { @class = "form-create-club" }))
+        {
+            <div class="form-group">
+                <label class="form-label" for="ClubName">Club Name:</label>
+                <input type="text" id="ClubName" name="ClubName" placeholder="Enter Club Name" required class="form-input" />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Location">Location:</label>
+                <input type="text" id="Location" name="Location" placeholder="Enter Location" required class="form-input" />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Abbreviation">Abbreviation:</label>
+                <input type="text" id="Abbreviation" name="Abbreviation" placeholder="Enter Abbreviation" required class="form-input" />
+            </div>
 
-			<div>
-				<input type="submit" value="Create Club" class="btn-submit" />
-			</div>
-		}
-		@if (ViewBag.ClubMessage != null)
-		{
-			<div class="message success">
-				@ViewBag.ClubMessage
-			</div>
-		}
-		else if (ViewBag.ClubErrorMessage != null)
-		{
-			<div class="message error">
-				@ViewBag.ClubErrorMessage
-			</div>
-		}
-	</div>
+            <div>
+                <input type="submit" value="Create Club" class="form-button" />
+            </div>
+        }
+        @if (ViewBag.ClubMessage != null)
+        {
+            <div class="message success">
+                @ViewBag.ClubMessage
+            </div>
+        }
+        else if (ViewBag.ClubErrorMessage != null)
+        {
+            <div class="message error">
+                @ViewBag.ClubErrorMessage
+            </div>
+        }
+    </div>
 
-	<div class="form-wrapper">
-		<h2>Create Team</h2>
-		@using (Html.BeginForm("AddTeamToClub", "Admin", FormMethod.Post, new { @class = "form-create-team" }))
-		{
-			<div class="form-group">
-				<label for="TeamName">Team Name:</label>
-				<input type="text" id="TeamName" name="TeamName" placeholder="Enter Team Name" required class="form-control" />
-			</div>
+    <div class="form-wrapper">
+        <h2 class="title">Create Team</h2>
+        @using (Html.BeginForm("AddTeamToClub", "Admin", FormMethod.Post, new { @class = "form-create-team" }))
+        {
+            <div class="form-group">
+                <label class="form-label" for="TeamName">Team Name:</label>
+                <input type="text" id="TeamName" name="TeamName" placeholder="Enter Team Name" required class="form-input" />
+            </div>
 
-			<div class="form-group">
-				<label for="ClubAbbreviation">Select Club:</label>
-				<select name="ClubAbbreviation" id="ClubAbbreviation" required class="form-control">
-					<option value="">Select a Club</option>
-					@foreach (var club in Model)
-					{
-						<option value="@club.Abbreviation">@club.Name</option>
-					}
-				</select>
-			</div>
+            <div class="form-group">
+                <label class="form-label" for="ClubAbbreviation">Select Club:</label>
+                <select name="ClubAbbreviation" id="ClubAbbreviation" required class="form-input">
+                    <option value="">Select a Club</option>
+                    @foreach (var club in Model)
+                    {
+                        <option value="@club.Abbreviation">@club.Name</option>
+                    }
+                </select>
+            </div>
 
-			<h3>Players</h3>
+            <h3>Players</h3>
 
-			<!-- Input fields for two players -->
-			<div class="form-group">
-				<label for="Player1Name">Player 1 Name:</label>
-				<input type="text" id="Player1Name" name="Player1Name" placeholder="Enter Player Name" required class="form-control" />
-			</div>
+            <!-- Input fields for two players -->
+            <div class="form-group">
+                <label class="form-label" for="Player1Name">Player 1 Name:</label>
+                <input type="text" id="Player1Name" name="Player1Name" placeholder="Enter Player Name" required class="form-input" />
+            </div>
 
-			<div class="form-group">
-				<label for="Player2Name">Player 2 Name:</label>
-				<input type="text" id="Player2Name" name="Player2Name" placeholder="Enter Player Name" required class="form-control" />
-			</div>
+            <div class="form-group">
+                <label class="form-label" for="Player2Name">Player 2 Name:</label>
+                <input type="text" id="Player2Name" name="Player2Name" placeholder="Enter Player Name" required class="form-input" />
+            </div>
 
-			<div>
-				<input type="submit" value="Create Team" class="btn-submit" />
-			</div>
-		}
-		@if (ViewBag.TeamMessage != null)
-		{
-			<div class="message success">
-				@ViewBag.TeamMessage
-			</div>
-		}
-		else if (ViewBag.TeamErrorMessage != null)
-		{
-			<div class="message error">
-				@ViewBag.TeamErrorMessage
-			</div>
-		}
-	</div>
+            <div>
+                <input type="submit" value="Create Team" class="form-button" />
+            </div>
+        }
+        @if (ViewBag.TeamMessage != null)
+        {
+            <div class="message success">
+                @ViewBag.TeamMessage
+            </div>
+        }
+        else if (ViewBag.TeamErrorMessage != null)
+        {
+            <div class="message error">
+                @ViewBag.TeamErrorMessage
+            </div>
+        }
+    </div>
 </div>

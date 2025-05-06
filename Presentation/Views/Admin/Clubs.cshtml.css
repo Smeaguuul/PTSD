@@ -1,82 +1,74 @@
-﻿body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-
-.form-container {
+﻿.form-container {
     display: flex;
-    justify-content: space-between; /* Space between the forms */
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
 }
 
 .form-wrapper {
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
     padding: 20px;
-    margin-right: 20px; /* Space between the two forms */
-    flex: 1; /* Allow forms to grow equally */
 }
 
-    .form-wrapper:last-child {
-        margin-right: 0; /* Remove margin from the last form */
-    }
-
-h2 {
-    color: #333;
+.title {
+    text-align: center;
+    margin: 0 0 20px 0;
 }
 
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 
-label {
-    display: block;
+.form-label {
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.form-control {
-    width: 100%;
+.form-input {
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
 }
 
-    .form-control:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-
-.btn-submit {
-    background-color: #007bff;
+.form-button {
+    padding: 10px 20px;
+    background-color: #003A29;
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-    .btn-submit:hover {
-        background-color: #0056b3;
+    .form-button:hover {
+        background-color: #005B4D;
     }
 
 .message {
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
 }
 
-    .message.success {
-        color: green;
-        background-color: #e7f9e7;
-        border: 1px solid #c3e6cb;
-    }
-    .message.error {
-        color: red; /* Text color for error messages */
-        background-color: #f8d7da; /* Light red background */
-        border: 1px solid #f5c6cb; /* Border color for error messages */
-    }
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

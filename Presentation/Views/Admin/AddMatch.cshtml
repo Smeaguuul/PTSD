@@ -20,7 +20,6 @@
         <label for="awayTeam" class="form-label">Select Away Team:</label>
         <select id="awayTeam" name="SelectedAwayTeamId" class="form-select" disabled>
             <option value="">Select Away Team</option>
-            @* Will be populated based on the selected Club *@
         </select>
     </div>
 
@@ -57,9 +56,10 @@
     </div>
 
     <div>
-        <button type="submit" class="btn btn-primary">Create Match</button>
+        <button type="submit" class="btn">Create Match</button>
     </div>
 </form>
+
 
 <script>
     const clubs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Clubs));

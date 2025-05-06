@@ -387,11 +387,11 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(string oldPassword, string newPassword)
+        public async Task<ActionResult> ChangePasswordAsync(string oldPassword, string newPassword)
         {
             try
             {
-                adminUserService.changePassword("admin", oldPassword, newPassword);
+                await adminUserService.changePassword("admin", oldPassword, newPassword);
                 ViewBag.Message = "Password changed successfully!";
             }
             catch (Exception e)
