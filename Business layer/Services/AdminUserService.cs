@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
+using BCrypt.Net;
+using Business.Interfaces;
+using DataAccess.Interfaces;
+using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Business.Services
+{
+    public class AdminUserService : IAdminUserService
+    {
+        private readonly IRepository<AdminUser> AdminUser;
+        IMapper mapper;
+
+        public AdminUserService(IRepository<AdminUser> adminUserRepository, IMapper mapper)
+        {
+            this.AdminUser = adminUserRepository;
+            this.mapper = mapper;
+        }
+
+        public async Task<DTO.AdminUser> getAdminUser(string username)
+        {
+            var user = await AdminUser.FirstOrDefaultAsync(u => u.Username == username);
+
+            return mapper.Map<DTO.AdminUser>(user);
+        }
+
+        public async Task changePassword(string username, string password)
+        {
+            var adminUser = await AdminUser.FirstOrDefaultAsync(u => u.Username == username);
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            adminUser.PasswordHash = hashedPassword;
+
+            await AdminUser.UpdateAndSaveAsync(adminUser);
+        }
+    }
+}
