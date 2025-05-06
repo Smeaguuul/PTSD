@@ -30,11 +30,13 @@ namespace Business.Services
             return mapper.Map<DTO.AdminUser>(user);
         }
 
-        public async Task changePassword(string username, string password)
+        public async Task changePassword(string username, string oldPassword, string newPassword)
         {
             var adminUser = await AdminUser.FirstOrDefaultAsync(u => u.Username == username);
 
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, adminUser.PasswordHash)) throw new ArgumentException("Old password incorrect!");
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
             adminUser.PasswordHash = hashedPassword;
 
             await AdminUser.UpdateAndSaveAsync(adminUser);

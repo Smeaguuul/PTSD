@@ -390,11 +390,12 @@ namespace Presentation.Controllers
         {
             try
             {
-
+                adminUserService.changePassword("admin", oldPassword, newPassword);
+                ViewBag.Message = "Password changed successfully!";
             }
-            catch
+            catch (Exception e)
             {
-
+                ViewBag.Error = "Error: " + e.Message;
             }
             return View();
         }
