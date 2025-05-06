@@ -12,6 +12,7 @@
 <body>
 	@{
 		var isAdminController = ViewContext.RouteData.Values["controller"].ToString().ToLower() == "admin";
+		var isLoginAction = ViewContext.RouteData.Values["action"].ToString().ToLower() == "login";
 
 		// Define a list of endpoints for the Admin controller
 		var adminEndpoints = new (string Action, string DisplayName)[]
@@ -28,7 +29,7 @@
 				// Add more endpoints as needed
 		};
 	}
-	@if (isAdminController)
+	@if (isAdminController && !isLoginAction)
 	{
 		<div id="divContent">
 			<header>
