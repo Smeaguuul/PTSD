@@ -376,5 +376,24 @@ namespace Presentation.Controllers
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string oldPassword, string newPassword)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+            return View();
+        }
     }
 }
