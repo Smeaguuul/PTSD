@@ -1,4 +1,4 @@
-﻿using Business.Services;
+﻿using Business.Interfaces;
 using DTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +6,9 @@ namespace Presentation.Controllers
 {
     public class PointTællerController : Controller
     {
-        private readonly MatchesService matchesService;
+        private readonly IMatchesService matchesService;
 
-        public PointTællerController(MatchesService matchesService)
+        public PointTællerController(IMatchesService matchesService)
         {
             this.matchesService = matchesService;
         }

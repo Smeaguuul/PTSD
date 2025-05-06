@@ -34,9 +34,7 @@ builder.Services.AddScoped<IRepository<AdminUser>, Repository<AdminUser>>();
 builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<IClubsService, ClubsService>();
 builder.Services.AddScoped<IGiveawayService, GiveawayService>();
-builder.Services.AddScoped<AdminUserService>();
-builder.Services.AddScoped<MatchesService>();
-
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>

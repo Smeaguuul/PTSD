@@ -25,11 +25,12 @@ namespace Presentation.Controllers
         private readonly IGiveawayService giveawayService;
         private readonly IAdminUserService adminUserService;
 
-        public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
+        public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService, IAdminUserService adminUserService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
             this.giveawayService = giveawayService;
+            this.adminUserService = adminUserService;
         }
 
         [HttpGet]
