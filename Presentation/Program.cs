@@ -33,6 +33,8 @@ builder.Services.AddScoped<IRepository<GiveawayContestant>, Repository<GiveawayC
 builder.Services.AddScoped<IMatchesService, MatchesService>();
 builder.Services.AddScoped<IClubsService, ClubsService>();
 builder.Services.AddScoped<IGiveawayService, GiveawayService>();
+builder.Services.AddScoped<MatchesService>();
+
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
