@@ -23,6 +23,8 @@ namespace Presentation.Controllers
         private readonly IMatchesService matchesService;
         private readonly IClubsService clubsService;
         private readonly IGiveawayService giveawayService;
+        private readonly IAdminUserService adminUserService;
+
         public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
@@ -41,8 +43,9 @@ namespace Presentation.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            if (username == "admin" && password == "password") // Replace with real validation
-            {
+            var user = await adminUserService.getAdminUser(username);
+            
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash)){
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
@@ -61,7 +64,7 @@ namespace Presentation.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult Generate(string url, string password, int id)
+        public ActionResult Generate(string url)
         {
             //if (password != "Johans sista")
             //{
@@ -79,8 +82,7 @@ namespace Presentation.Controllers
         {
 
             string url = $"http://localhost:5023/pointmanager?Id={id}";
-            string password = "Johans sista";
-            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url, id = id, password = password });
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
             ViewBag.OriginalUrl = url;
             return View();
         }
@@ -183,12 +185,10 @@ namespace Presentation.Controllers
 
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
-
-            //var scheduledMatches = await matchesService.ScheduledMatches();
-
-            await matchesService.StartMatch(matchId, true, fieldId);
-
-            return RedirectToAction("Admin");
+            string url = $"http://localhost:5023/Pointmanager/PickServer?matchId={matchId}&fieldId={fieldId}";
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
+            ViewBag.OriginalUrl = url;
+            return View("StartGame");
         }
 
         public async Task<ActionResult> StartGame(int fieldId)
@@ -378,6 +378,26 @@ namespace Presentation.Controllers
         {
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string oldPassword, string newPassword)
+        {
+            try
+            {
+                adminUserService.changePassword("admin", oldPassword, newPassword);
+                ViewBag.Message = "Password changed successfully!";
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = "Error: " + e.Message;
+            }
+            return View();
         }
     }
 }

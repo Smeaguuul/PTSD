@@ -55,6 +55,9 @@ namespace Business.Mappers
             CreateMap<GiveawayDto, Giveaway>();
             CreateMap<CreateGiveawayDto, Giveaway>();
 
+            CreateMap<AdminUser, DTO.AdminUser>();
+            CreateMap<DTO.AdminUser, AdminUser>();
+
 
             CreateMap<Giveaway, GiveawayDto>()
                 .ForMember(dest => dest.Contestants, opt => opt.MapFrom(src => src.GiveawayContestants.Select(gc => gc.contestant)))
