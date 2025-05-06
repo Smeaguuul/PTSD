@@ -16,7 +16,7 @@
                     {
                         var homeTeamWins = match.Score.Sets.Count(s => s.Winner == true);
                         var winner = (homeTeamWins == 2) ? match.HomeTeam.Name : match.AwayTeam.Name;
-                        <button class="match-button">
+                        <a href="@Url.Action("GameEditor", "Admin", new { id = match.Id })" class="match-button">
                             <div class="match-info">
                                 <div class="team-info">
                                     <strong>@match.HomeTeam.Name</strong> vs <strong>@match.AwayTeam.Name</strong>
@@ -41,7 +41,7 @@
                                     <strong>Winner:</strong> @winner
                                 </div>
                             </div>
-                        </button>
+                        </a>
                     }
                 </div>
             </div>

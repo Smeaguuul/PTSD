@@ -1,0 +1,18 @@
+﻿@model DTO.Giveaway.GiveawayDto
+
+<h2>Contestants for @Model.Name</h2>
+
+@if (Model?.Contestants?.Any() == true)
+{
+    <ul>
+        @foreach (var contestant in Model.Contestants)
+        {
+            <li>@contestant.Name - @contestant.Email</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No contestants have been added yet.</p>
+}
+<a href="@Url.Action("AdminGiveaway", "Admin")">Back to Giveaways</a>

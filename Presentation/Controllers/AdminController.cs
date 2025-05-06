@@ -1,27 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DTO;
-using Business.Services;
+using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
 using QRCoder;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using DTO.Giveaway;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly MatchesService matchesService;
-        private readonly ClubsService clubsService;
-        public AdminController(MatchesService matchesService, ClubsService clubsService)
+        private readonly IMatchesService matchesService;
+        private readonly IClubsService clubsService;
+        private readonly IGiveawayService giveawayService;
+        public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
+            this.giveawayService = giveawayService;
         }
 
-        public ActionResult Generate(string url)
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            if (username == "admin" && password == "password") // Replace with real validation
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return RedirectToAction("Index", "admin");
+            }
+
+            ViewBag.Error = "Invalid credentials";
+            return View();
+        }
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult Generate(string url, string password, int id)
+        {
+            //if (password != "Johans sista")
+            //{
+            //    return Forbid();
+            //}
+
             var qrGenerator = new QRCodeGenerator();
             var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
             var qrCode = new PngByteQRCode(qrCodeData);
@@ -29,22 +75,98 @@ namespace Presentation.Controllers
 
             return File(qrCodeAsPng, "image/png");
         }
-        public ActionResult Qr()
+        public ActionResult Qr(int id)
         {
-            string url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url });
+
+            string url = $"http://localhost:5023/pointmanager?Id={id}";
+            string password = "Johans sista";
+            ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url, id = id, password = password });
             ViewBag.OriginalUrl = url;
             return View();
         }
+        [HttpPost]
+        public ActionResult CreateGiveaway(CreateGiveawayDto newGiveaway)
+        {
+            if (!ModelState.IsValid)
+            {
+                // You can return the same page with current model to show errors
+                var model = new AdminGiveawayPageViewModel
+                {
+                    Giveaways = giveawayService.GetGiveaways().Result.ToList(),
+                    NewGiveaway = newGiveaway
+                };
+                return View("AdminGiveaway", model);
+            }
 
+            giveawayService.CreateGiveawayAsync(newGiveaway);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddContestant(int giveawayId, string name, string email)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email))
+            {
+                TempData["Error"] = "Name and Email are required.";
+                return RedirectToAction("AdminGiveaway");
+            }
+
+            await giveawayService.AddContestantToGiveawayAsync(giveawayId, name, email);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+
+        public async Task<IActionResult> ViewContestants(int giveawayId)
+        {
+            var giveaway = (await giveawayService.GetGiveaways()).FirstOrDefault(g => g.Id == giveawayId);
+            if (giveaway == null)
+            {
+                return NotFound();
+            }
+
+            return View(giveaway); // Pass GiveawayDto which includes Contestants
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EndGiveaway(int giveawayId)
+        {
+            await giveawayService.DeleteGiveaway(giveawayId);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PickWinners(int giveawayId, int numberOfWinners)
+        {
+            await giveawayService.PickWinner(giveawayId, numberOfWinners);
+            return RedirectToAction("AdminGiveaway");
+        }
+
+
+        public async Task<ActionResult> AdminGiveaway()
+        {
+            var giveaways = await giveawayService.GetGiveaways();
+
+            var model = new AdminGiveawayPageViewModel
+            {
+                Giveaways = giveaways.ToList() // Ensure this is not null
+            };
+
+            return View(model); // strongly typed
+        }
+
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var matches = await matchesService.ScheduledMatches();
             AdminHomepage model = new AdminHomepage() { Matches = [.. matches] };
             return View(model);
         }
+
+        [Authorize]
         public async Task<ActionResult> Admin()
         {
+           
             Field[] fields = { new Field(1), new Field(2), new Field(3) };
             var ongoingMatches = await matchesService.OngoingMatches();
             foreach (var field in fields)
@@ -62,7 +184,8 @@ namespace Presentation.Controllers
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
 
-            var scheduledMatches = await matchesService.ScheduledMatches();
+            //var scheduledMatches = await matchesService.ScheduledMatches();
+
             await matchesService.StartMatch(matchId, true, fieldId);
 
             return RedirectToAction("Admin");
@@ -146,19 +269,20 @@ namespace Presentation.Controllers
             }
         }
 
-        public async Task<IActionResult> EditGame(int Id)
+        public async Task<IActionResult> EditGame(int matchId, int setsHome, int setsAway)
         {
-            Match match;
             try
             {
-                match = await matchesService.GetMatch(Id);
+                await matchesService.ChangeFinishedGameScore(matchId, setsHome, setsAway);
+                ViewBag.Result = "Game score updated successfully!";
+                var match = await matchesService.GetMatch(matchId);
                 var matchScore = await matchesService.GetMatchScore(match.Id);
                 var model = new MatchInfo() { Match = match, MatchScore = matchScore };
                 return View("GameEditorIndividual", model);
             }
-            catch
+            catch (Exception e)
             {
-                ViewBag.Message = "Something went wrong :(";
+                ViewBag.Message = "Something went wrong: " + e.Message;
                 return View("GameEditorIndividual");
             }
         }
@@ -223,6 +347,37 @@ namespace Presentation.Controllers
             }
 
             return View();
+        }
+        public async Task<ActionResult> EndMatchBtn(int matchId)
+        {
+
+            await matchesService.EndMatch(matchId);
+            return RedirectToAction("Admin");
+        }
+
+
+        public async Task<IActionResult> Clubs()
+        {
+            var TeamMessage = TempData["TeamMessage"] as string;
+            var ClubMessage = TempData["ClubMessage"] as string;
+            ViewBag.ClubMessage = ClubMessage;
+            ViewBag.TeamMessage = TeamMessage;
+            var clubs = await clubsService.GetAll();
+            return View(clubs);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        {
+            TempData["TeamMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
+        }
+
+        [HttpPost]
+        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
+        {
+            TempData["ClubMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
         }
     }
 }

@@ -30,10 +30,17 @@ builder.Services.AddScoped<IRepository<Team>, Repository<Team>>();
 builder.Services.AddScoped<IRepository<Giveaway>, Repository<Giveaway>>();
 builder.Services.AddScoped<IRepository<Contestant>, Repository<Contestant>>();
 builder.Services.AddScoped<IRepository<GiveawayContestant>, Repository<GiveawayContestant>>();
-builder.Services.AddScoped<MatchesService>();
-builder.Services.AddScoped<ClubsService>();
-builder.Services.AddScoped<GiveawayService>();
 builder.Services.AddScoped<IMatchesService, MatchesService>();
+builder.Services.AddScoped<IClubsService, ClubsService>();
+builder.Services.AddScoped<IGiveawayService, GiveawayService>();
+
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Admin/Login";
+    });
+
+builder.Services.AddAuthorization();
 
 
 
@@ -47,6 +54,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -55,7 +64,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
 

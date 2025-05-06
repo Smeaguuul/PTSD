@@ -1,4 +1,4 @@
-﻿
+﻿<a class="admin-link" href="@Url.Action("AdminGiveaway", "Admin")">Manage Giveaways</a>
 @{
 	ViewData["Title"] = "Admin";
 }
@@ -16,7 +16,7 @@
 			else
 			{
 				<p>Status: Optaget</p>
-				<a asp-action="EndMatchBtn" id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
+				<a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
 			}
 
 		</div>
