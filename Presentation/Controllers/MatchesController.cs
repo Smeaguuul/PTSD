@@ -1,4 +1,4 @@
-﻿using Business.Services;
+﻿using Business.Interfaces;
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +10,9 @@ namespace Presentation.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
-        private readonly MatchesService matchesService;
+        private readonly IMatchesService matchesService;
 
-        public MatchesController(MatchesService matchesService)
+        public MatchesController(IMatchesService matchesService)
         {
             this.matchesService = matchesService;
         }

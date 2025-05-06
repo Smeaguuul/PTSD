@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Interfaces;
 using Business.Mappers;
+using Business.Models;
 using DataAccess.Context;
 using DataAccess.Interfaces;
 using DataAccess.Models;

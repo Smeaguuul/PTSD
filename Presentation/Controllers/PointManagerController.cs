@@ -1,4 +1,4 @@
-﻿using Business.Services;
+﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -6,9 +6,9 @@ namespace Presentation.Controllers
     public class PointManagerController : Controller
     {
 
-        private readonly MatchesService _matchesService;
+        private readonly IMatchesService _matchesService;
 
-        public PointManagerController(MatchesService matchesService)
+        public PointManagerController(IMatchesService matchesService)
         {
             _matchesService = matchesService;
         }

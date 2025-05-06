@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DTO;
-using Business.Services;
+using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
 using QRCoder;
@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using DTO.Giveaway;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
@@ -314,6 +315,53 @@ namespace Presentation.Controllers
             await matchesService.EndMatch(matchId);
             return RedirectToAction("Admin");
         }
+<<<<<<< HEAD
         
+=======
+
+        public async Task<IActionResult> Clubs()
+        {
+            var TeamMessage = TempData["TeamMessage"] as string;
+            var ClubMessage = TempData["ClubMessage"] as string;
+            var TeamErrorMessage = TempData["TeamErrorMessage"] as string;
+            var ClubErrorMessage = TempData["ClubErrorMessage"] as string;
+            ViewBag.ClubMessage = ClubMessage;
+            ViewBag.TeamMessage = TeamMessage;
+            ViewBag.TeamErrorMessage = TeamErrorMessage;
+            ViewBag.ClubErrorMessage = ClubErrorMessage;
+            var clubs = await clubsService.GetAll();
+            return View(clubs);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddTeamToClubAsync(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        {
+            try
+            {
+                await clubsService.AddTeamToClub(TeamName, ClubAbbreviation, Player1Name, Player2Name, ClubAbbreviation);
+            }
+            catch (Exception ex)
+            {
+                TempData["TeamErrorMessage"] = ex.Message;
+            }
+            TempData["TeamMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateClub(string ClubName, string Location, string Abbreviation)
+        {
+            try
+            {
+                await clubsService.CreateClub(ClubName, Abbreviation, Location);
+            }
+            catch (Exception ex)
+            {
+                TempData["ClubErrorMessage"] = ex.Message;
+            }
+            TempData["ClubMessage"] = "Creation Successful";
+            return RedirectToAction("Clubs");
+        }
+>>>>>>> master
     }
 }
