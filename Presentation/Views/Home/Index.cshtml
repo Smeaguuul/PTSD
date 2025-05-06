@@ -1,5 +1,9 @@
 ﻿@model Presentation.Models.Matches
 
+<a class="btn btn-primary" href="@Url.Action("Join", "Giveaway")">Join a Giveaway</a>
+
+
+
 <div style="display: flex; justify-content: space-around; align-items: flex-start;">
     <div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
         @foreach (DTO.MatchScore score in @Model.MatchScores)
