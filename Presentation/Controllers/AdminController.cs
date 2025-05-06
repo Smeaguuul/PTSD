@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DTO;
-using Business.Services;
+using Business.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Models;
 using QRCoder;
@@ -9,19 +9,56 @@ using System.Drawing.Imaging;
 using System.IO;
 using DTO.Giveaway;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace Presentation.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly MatchesService matchesService;
-        private readonly ClubsService clubsService;
-        private readonly GiveawayService giveawayService;
-        public AdminController(MatchesService matchesService, ClubsService clubsService, GiveawayService giveawayService)
+        private readonly IMatchesService matchesService;
+        private readonly IClubsService clubsService;
+        private readonly IGiveawayService giveawayService;
+        public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
             this.clubsService = clubsService;
             this.giveawayService = giveawayService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            if (username == "admin" && password == "password") // Replace with real validation
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                return RedirectToAction("Index", "admin");
+            }
+
+            ViewBag.Error = "Invalid credentials";
+            return View();
+        }
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Generate(string url, string password, int id)
@@ -118,12 +155,15 @@ namespace Presentation.Controllers
             return View(model); // strongly typed
         }
 
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var matches = await matchesService.ScheduledMatches();
             AdminHomepage model = new AdminHomepage() { Matches = [.. matches] };
             return View(model);
         }
+
+        [Authorize]
         public async Task<ActionResult> Admin()
         {
            

@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Business.Services;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
 
@@ -7,9 +7,9 @@ namespace Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly MatchesService matchesService;
-        private readonly GiveawayService giveawayService;
-        public HomeController(MatchesService matchesService, GiveawayService giveawayService)
+        private readonly IMatchesService matchesService;
+        private readonly IGiveawayService giveawayService;
+        public HomeController(IMatchesService matchesService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
             this.giveawayService = giveawayService;
