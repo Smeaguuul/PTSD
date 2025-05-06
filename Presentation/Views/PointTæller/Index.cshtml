@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Presentation.Models.MatchViewModel>
+﻿@model IEnumerable<DTO.MatchScore>
 
 @{
     ViewData["Title"] = "Aktive kampe";
@@ -14,25 +14,24 @@
     @foreach (var match in Model)
     {
         <div class="score-container">
-            <h3 style="margin-bottom: 20px;">Bane @match.Match.Field?.Id</h3>
+            <h3 style="margin-bottom: 20px;">Bane @match.FieldId</h3>
 
-            <!-- Hold og VS layout -->
             <div class="team-columns">
                 <div class="team-block">
-                    <div class="team-name">@match.Match.HomeTeam?.Name</div>
-                    @foreach (var player in match.Match.HomeTeam?.Players ?? new List<DTO.Player>())
+                    <div class="team-name">@match.NameHome</div>
+                    @foreach (var player in match.HomePlayers ?? Array.Empty<string>())
                     {
-                        <div>@player.Name</div>
+                        <div>@player</div>
                     }
                 </div>
 
                 <div class="vs-label">VS</div>
 
                 <div class="team-block">
-                    <div class="team-name">@match.Match.AwayTeam?.Name</div>
-                    @foreach (var player in match.Match.AwayTeam?.Players ?? new List<DTO.Player>())
+                    <div class="team-name">@match.NameAway</div>
+                    @foreach (var player in match.AwayPlayers ?? Array.Empty<string>())
                     {
-                        <div>@player.Name</div>
+                        <div>@player</div>
                     }
                 </div>
             </div>
@@ -40,20 +39,37 @@
             <!-- Score -->
             <div style="margin-top: 20px;">
                 <h4>Sætscore</h4>
-                @for (int i = 0; i < match.SetScores.Count; i++)
-                {
-                    var sæt = match.SetScores[i];
-                    <div class="score-line">
-                        Sæt @(i + 1): @sæt.TeamOneScore - @sæt.TeamTwoScore
-                    </div>
-                }
+                <div class="score-line">
+                    Sæt 1: @match.SetsHome - @match.SetsAway
+                </div>
+                <div class="score-line">
+                    Games i dette sæt: @match.GamesThisSetHome - @match.GamesThisSetAway
+                </div>
+                <div class="score-line">
+                    Point: @match.PointsHome - @match.PointsAway
+                </div>
             </div>
         </div>
     }
 </div>
 
-<!-- QR-kode til hele siden -->
+<!-- QR-kode nederst på siden -->
 <div class="qr-footer">
-    <p>Scan for at åbne denne pointtællerside:</p>
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=@Context.Request.Scheme://@Context.Request.Host@Url.Action("Index", "PointTæller")&size=130x130" alt="QR-kode" />
+    <p>Scan for at dele denne livescore-side:</p>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=@Context.Request.Scheme://@Context.Request.Host@Url.Action("Index", "PointTæller")&size=150x150" alt="QR-kode" />
 </div>
+
+<style>
+    .qr-footer {
+        text-align: center;
+        margin-top: 50px;
+        padding: 20px 0;
+        border-top: 2px solid #ddd;
+        font-family: 'Orbitron', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+        .qr-footer img {
+            margin-top: 10px;
+        }
+</style>

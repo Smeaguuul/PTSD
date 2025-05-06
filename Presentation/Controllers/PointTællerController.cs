@@ -1,96 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Services;
 using DTO;
-using Business.Interfaces;
-using Presentation.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
     public class PointTællerController : Controller
     {
-        private readonly IMatchesService _matchesService;
+        private readonly MatchesService matchesService;
 
-        public PointTællerController(IMatchesService matchesService)
+        public PointTællerController(MatchesService matchesService)
         {
-            _matchesService = matchesService;
+            this.matchesService = matchesService;
         }
 
-        // 👉 NYT: Viser ALLE aktive kampe
         public async Task<IActionResult> Index()
         {
-            var kampe = await _matchesService.OngoingMatches();
+            var ongoingMatches = await matchesService.OngoingMatches();
 
-            var viewModels = new List<MatchViewModel>();
-
-            foreach (var kamp in kampe)
+            List<MatchScore> matchScores = new List<MatchScore>();
+            foreach (var match in ongoingMatches)
             {
-                var setScores = new List<(int TeamOneScore, int TeamTwoScore)>();
-
-                foreach (var set in kamp.Score.Sets)
-                {
-                    int teamOneScore = 0;
-                    int teamTwoScore = 0;
-
-                    foreach (var game in set.Games)
-                    {
-                        int teamOnePoints = game.PointHistory.Count(p => p);
-                        int teamTwoPoints = game.PointHistory.Count(p => !p);
-
-                        if (teamOnePoints > teamTwoPoints)
-                            teamOneScore++;
-                        else if (teamTwoPoints > teamOnePoints)
-                            teamTwoScore++;
-                    }
-
-                    setScores.Add((teamOneScore, teamTwoScore));
-                }
-
-                viewModels.Add(new MatchViewModel
-                {
-                    Match = kamp,
-                    SetScores = setScores
-                });
+                var score = await matchesService.GetMatchScore(match.Id);
+                matchScores.Add(score);
             }
 
-            return View(viewModels); // Går til Index.cshtml med flere kampe
-        }
-
-        // 👉 Tilføj denne for enkelt kamp-visning (fx ved QR-scan)
-        public async Task<IActionResult> Details(int id)
-        {
-            var kampe = await _matchesService.OngoingMatches();
-            var kamp = kampe.FirstOrDefault(k => k.Id == id);
-
-            if (kamp == null)
-                return NotFound();
-
-            var setScores = new List<(int TeamOneScore, int TeamTwoScore)>();
-
-            foreach (var set in kamp.Score.Sets)
-            {
-                int teamOneScore = 0;
-                int teamTwoScore = 0;
-
-                foreach (var game in set.Games)
-                {
-                    int teamOnePoints = game.PointHistory.Count(p => p);
-                    int teamTwoPoints = game.PointHistory.Count(p => !p);
-
-                    if (teamOnePoints > teamTwoPoints)
-                        teamOneScore++;
-                    else if (teamTwoPoints > teamOnePoints)
-                        teamTwoScore++;
-                }
-
-                setScores.Add((teamOneScore, teamTwoScore));
-            }
-
-            var viewModel = new MatchViewModel
-            {
-                Match = kamp,
-                SetScores = setScores
-            };
-
-            return View("Details", viewModel);
+            return View(matchScores); // View forventer IEnumerable<MatchScore>
         }
     }
 }
