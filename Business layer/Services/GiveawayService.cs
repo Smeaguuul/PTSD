@@ -62,11 +62,14 @@ namespace Business.Services
 
         private static ValidationResult CheckDateValidity(DateTime start, DateTime end)
         {
+            if(start < DateTime.Now.AddDays(-1))
+                return ValidationResult.Fail("Start date cannot be in the past");
+
             if (start > end)
-                return ValidationResult.Fail("Start date cannot be after end date.");
+                return ValidationResult.Fail("End date cannot be before start date");
 
             if (start < DateTime.Now)
-                return ValidationResult.Fail("Start date cannot be in the past.");
+                return ValidationResult.Fail("Start date cannot be in the past");
 
             return ValidationResult.Success();
         }
@@ -126,8 +129,9 @@ namespace Business.Services
                 include: query => query.Include(gc => gc.contestant));
 
             if (alreadyInGiveaway != null)
+            {
                 return false; // Contestant already entered
-
+            }
             // Step 4: Check if the contestant exists by email
             var contestant = await ContestantRepository.FirstOrDefaultAsync(c => c.Email == email);
 
@@ -215,7 +219,9 @@ namespace Business.Services
             var rng = new Random();
             var shuffled = contestants.OrderBy(_ => rng.Next()).Take(amountOfWinners);
 
-            return shuffled;
+
+
+            return shuffled.Take(amountOfWinners);
         }
 
         public async Task<DTO.Giveaway.ContestantDto> PickWinner(int giveawayId)
