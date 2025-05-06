@@ -24,6 +24,7 @@ namespace DataAccess.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdminUser>().HasKey(c => c.Id);
             modelBuilder.Entity<Club>().HasKey(c => c.Abbreviation);
             modelBuilder.Entity<Game>().HasKey(g => g.Id);
             modelBuilder.Entity<Match>().HasKey(m => m.Id);

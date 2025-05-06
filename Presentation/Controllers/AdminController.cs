@@ -23,6 +23,8 @@ namespace Presentation.Controllers
         private readonly IMatchesService matchesService;
         private readonly IClubsService clubsService;
         private readonly IGiveawayService giveawayService;
+        private readonly IAdminUserService adminUserService;
+
         public AdminController(IMatchesService matchesService, IClubsService clubsService, IGiveawayService giveawayService)
         {
             this.matchesService = matchesService;
@@ -41,8 +43,9 @@ namespace Presentation.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string username, string password)
         {
-            if (username == "admin" && password == "password") // Replace with real validation
-            {
+            var user = await adminUserService.getAdminUser(username);
+            
+            if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash)){
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
