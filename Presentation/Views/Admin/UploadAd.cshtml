@@ -1,20 +1,53 @@
 ﻿@{
     ViewData["Title"] = "File Upload";
+    var adImages = ViewBag.AdImages as List<string>;
 }
 
-<h2>File Upload</h2>
+<h2>Upload ny annonce</h2>
 
-<form asp-controller="admin" asp-action="UploadAd" method="post" enctype="multipart/form-data">
+<form asp-controller="Admin" asp-action="UploadAd" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="file">Select a file to upload:</label>
+        <label for="file">Vælg billede:</label>
         <input type="file" name="file" id="file" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
+    <button type="submit" class="btn btn-primary mt-2">Upload</button>
 </form>
 
 @if (ViewBag.Message != null)
 {
-    <div class="alert alert-info">
-        @ViewBag.Message
+    <div class="alert alert-info mt-3">@ViewBag.Message</div>
+}
+
+<hr />
+
+<h3>Eksisterende annoncer</h3>
+
+@if (adImages != null && adImages.Any())
+{
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        @foreach (var img in adImages)
+        {
+            <div style="text-align: center;">
+                <img src="@Url.Content("~/images/Ads/" + img)" alt="Ad" style="width: 200px; border: 1px solid #ccc;" />
+                <form asp-controller="Admin" asp-action="DeleteAd" method="post" class="mt-2">
+                    <input type="hidden" name="fileName" value="@img" />
+                    <button type="submit" class="btn btn-danger btn-sm">Slet</button>
+                </form>
+            </div>
+        }
     </div>
+}
+else
+{
+    <p>Ingen billeder fundet.</p>
+
+
+
+    <script>
+        // Tjek om vi allerede har reloadet én gang i denne session
+        if (!localStorage.getItem("hasRefreshedOnce")) {
+            localStorage.setItem("hasRefreshedOnce", "true");
+            location.reload();
+        }
+    </script>
 }

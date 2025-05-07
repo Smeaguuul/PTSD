@@ -287,68 +287,103 @@ namespace Presentation.Controllers
                 return View("GameEditorIndividual");
             }
         }
-        public ActionResult UploadAd()
+        
+
+        [Authorize]
+        public IActionResult UploadAd()
         {
+            var adDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Ads");
+            if (!Directory.Exists(adDir))
+                Directory.CreateDirectory(adDir);
+
+            var adImages = Directory.GetFiles(adDir)
+                .Select(Path.GetFileName)
+                .Where(f => f.EndsWith(".jpg") || f.EndsWith(".png"))
+                .ToList();
+
+            ViewBag.AdImages = adImages;
             return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> UploadAd(IFormFile file)
+        [Authorize, HttpPost]
+        public async Task<IActionResult> UploadAd(IFormFile file)
         {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Ads");
+
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
             try
             {
                 if (file != null && file.Length > 0)
                 {
-                    string fileExtension = Path.GetExtension(file.FileName);
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
                     string[] allowedExtensions = { ".jpg", ".png" };
 
                     if (allowedExtensions.Contains(fileExtension))
                     {
-                        var maxFileSize = 20 * 1024 * 1024;
-                        if (file.Length > maxFileSize)
-                        {
-                            ViewBag.Message = "File size exceeds the maximum limit of 20MB.";
-                            return View();
-                        }
+                        var uniqueFileName = Path.GetFileName(file.FileName); // evt. tilføj timestamp hvis du vil undgå dubletter
+                        var path = Path.Combine(uploadsFolder, uniqueFileName);
 
-                        // Define the path to save the uploaded file
-                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-
-                        // Ensure the uploads directory exists
-                        if (!Directory.Exists(uploadsFolder))
-                        {
-                            Directory.CreateDirectory(uploadsFolder);
-                        }
-
-                        // Save the file to the server
-                        //var fileName = Path.GetFileName(file.FileName);
-                        var path = Path.Combine(uploadsFolder, "Ad" + fileExtension);
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await file.CopyToAsync(stream);
                         }
 
-                        // Display success message
-                        ViewBag.Message = "File uploaded successfully!";
+                        ViewBag.Message = "Filen blev uploadet!";
                     }
                     else
                     {
-                        ViewBag.Message = "Only jpg, and png files are allowed.";
+                        ViewBag.Message = "Kun JPG og PNG filer er tilladt.";
                     }
                 }
                 else
                 {
-                    // Display error message
-                    ViewBag.Message = "Please select a file to upload.";
+                    ViewBag.Message = "Vælg venligst en fil.";
                 }
             }
             catch (Exception ex)
             {
-                ViewBag.Message = ex.Message;
+                ViewBag.Message = "Fejl: " + ex.Message;
             }
 
+            var adImages = Directory.GetFiles(uploadsFolder)
+                .Select(Path.GetFileName)
+                .Where(f => f.EndsWith(".jpg") || f.EndsWith(".png"))
+                .ToList();
+
+            ViewBag.AdImages = adImages;
             return View();
         }
+
+        [Authorize, HttpPost]
+        public IActionResult DeleteAd(string fileName)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Ads", fileName);
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                ViewBag.Message = "Filen blev slettet.";
+            }
+            else
+            {
+                ViewBag.Message = "Filen blev ikke fundet.";
+            }
+
+            var adImages = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Ads"))
+                .Select(Path.GetFileName)
+                .Where(f => f.EndsWith(".jpg") || f.EndsWith(".png"))
+                .ToList();
+
+            ViewBag.AdImages = adImages;
+            return View("UploadAd");
+        }
+
+
+
+
+
+
         public async Task<ActionResult> EndMatchBtn(int matchId)
         {
 

@@ -17,7 +17,6 @@ namespace Presentation.Controllers
 
         public async Task<IActionResult> Index()
         {
-
             var ongoingMatches = await matchesService.OngoingMatches();
 
             Matches matches = new Matches();
@@ -26,6 +25,7 @@ namespace Presentation.Controllers
                 var matchScore = await matchesService.GetMatchScore(match.Id);
                 matches.MatchScores.Add(matchScore);
             }
+
             var matchesToday = await matchesService.GetTodaysMatchesWithScore();
             ViewBag.homeWins = 0;
             ViewBag.awayWins = 0;
@@ -36,9 +36,22 @@ namespace Presentation.Controllers
                     ViewBag.homeWins++;
                 }
                 if (match.Score.Sets.Count(s => s.Winner == false) == 2)
-                { ViewBag.awayWins++; }
+                {
+                    ViewBag.awayWins++;
+                }
             }
+
+            // ?? Tilføjelse: hent reklamebilleder fra /wwwroot/images/Ads
+            var adDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Ads");
+            var adImages = Directory.GetFiles(adDir)
+                .Select(Path.GetFileName)
+                .Where(f => f.EndsWith(".jpg") || f.EndsWith(".png"))
+                .ToList();
+
+            ViewBag.AdImages = adImages;
+
             return View(matches);
         }
     }
 }
+
