@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Business.Services;
 
 
 
@@ -236,7 +237,7 @@ namespace Presentation.Controllers
                     Fields = fields
                 };
 
-                return View(viewModel);
+                return RedirectToAction("AddMatch");
             }
             await matchesService.CreateMatch(model.SelectedHomeTeamId, model.SelectedAwayTeamId, model.Date, model.Status);
 
@@ -374,8 +375,9 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
+        public async Task<ActionResult> CreateClub(string ClubName, string Location, string Abbreviation)
         {
+            await clubsService.CreateClub(ClubName, Location, Abbreviation);
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
