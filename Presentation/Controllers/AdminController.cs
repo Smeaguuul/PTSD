@@ -228,12 +228,11 @@ namespace Presentation.Controllers
         {
             if (model.SelectedHomeTeamId <= 0 || model.SelectedAwayTeamId <= 0 || model.Date == default || string.IsNullOrEmpty(model.Status.ToString()))
             {
-                // If model state is invalid, repopulate the ViewModel
                 var clubs = await clubsService.GetAll();
                 List<Field> fields = [new DTO.Field(1), new DTO.Field(2), new DTO.Field(3)];
                 var viewModel = new AddMatchModel()
                 {
-                    Clubs = clubs.ToList(), // Fetch clubs and their teams
+                    Clubs = clubs.ToList(),
                     Fields = fields
                 };
 
@@ -241,7 +240,7 @@ namespace Presentation.Controllers
             }
             await matchesService.CreateMatch(model.SelectedHomeTeamId, model.SelectedAwayTeamId, model.Date, model.Status);
 
-            return RedirectToAction("StartGame"); // Redirect to a suitable action
+            return RedirectToAction("AddMatch");
 
         }
 
@@ -422,11 +421,11 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(string oldPassword, string newPassword)
+        public async Task<ActionResult> ChangePasswordAsync(string oldPassword, string newPassword)
         {
             try
             {
-                adminUserService.changePassword("admin", oldPassword, newPassword);
+                await adminUserService.changePassword("admin", oldPassword, newPassword);
                 ViewBag.Message = "Password changed successfully!";
             }
             catch (Exception e)

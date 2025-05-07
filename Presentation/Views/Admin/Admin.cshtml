@@ -1,23 +1,26 @@
-﻿<a class="admin-link" href="@Url.Action("AdminGiveaway", "Admin")">Manage Giveaways</a>
-@{
+﻿@{
 	ViewData["Title"] = "Admin";
 }
-<div>
-	<h1>Redigér kampe</h1>
-	@foreach (var i in ViewBag.fields)
-	{
-		<div style="margin-left: 40px; border: 1px solid gray; padding: 5px">
-			<h4>Bane @i.Id</h4>
-			@if (@i.CurrentMatch == null)
-			{
-				<p>Status: Ledig</p>
-				<a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
-			}
-			else
-			{
-				<p>Status: Optaget</p>
-				<a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
-			}
-
-		</div>
-	}
+<div style="text-align: center;">
+    <h1>Redigér kampe</h1>
+    @foreach (var i in ViewBag.fields)
+    {
+        <div style="margin: 20px auto; border: 2px solid gray; border-radius: 5px; padding: 20px; width: 50vh;">
+            <h4>Bane @i.Id</h4>
+            @if (@i.CurrentMatch == null)
+            {
+                <p>Status: Ledig</p>
+                <div class="button-container">
+                    <a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
+                </div>
+            }
+            else
+            {
+                <p>Status: Optaget</p>
+                <div class="button-container">
+                    <a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
+                </div>
+            }
+        </div>
+    }
+</div>
