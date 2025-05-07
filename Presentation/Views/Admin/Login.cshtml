@@ -1,7 +1,7 @@
 ﻿<form method="post">
-    <input type="text" name="username" placeholder="Username" />
-    <input type="password" name="password" placeholder="Password" />
-    <button type="submit">Login</button>
+    <input type="text" name="username" placeholder="Username" id="username"/>
+    <input type="password" name="password" placeholder="Password" id="password"/>
+    <button type="submit" id="login-button">Login</button>
     @if (ViewBag.Error != null)
     {
         <p style="color:red;">@ViewBag.Error</p>
