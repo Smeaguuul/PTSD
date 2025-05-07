@@ -37,9 +37,9 @@ namespace Business.Services
             await Clubs.AddAsync(Club);
         }
 
-        public async Task AddTeamToClub(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name, string clubAbbreviation)
+        public async Task AddTeamToClub(string TeamName, string Player1Name, string Player2Name, string ClubAbbreviation)
         {
-            var club = await Clubs.FirstOrDefaultAsync(c => c.Abbreviation.Equals(clubAbbreviation));
+            var club = await Clubs.FirstOrDefaultAsync(c => c.Abbreviation.Equals(ClubAbbreviation));
             if (club == null) throw new ArgumentException("Club doesn't exist.");
             var playerList = new List<Player>();
             playerList.Add(new Player() { Name = Player1Name });

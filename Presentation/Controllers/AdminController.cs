@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Business.Services;
+using System.Threading.Tasks;
 
 
 
@@ -403,8 +404,9 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        public async Task<ActionResult> AddTeamToClub(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
         {
+            await clubsService.AddTeamToClub(TeamName, Player1Name, Player2Name, ClubAbbreviation);
             TempData["TeamMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
