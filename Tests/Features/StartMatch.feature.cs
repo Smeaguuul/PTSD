@@ -173,15 +173,15 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("End User Scans QR Code and Starts Game")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Admin Starts a Game")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StartMatch")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MatchManagement")]
-        public async global::System.Threading.Tasks.Task EndUserScansQRCodeAndStartsGame()
+        public async global::System.Threading.Tasks.Task AdminStartsAGame()
         {
             string[] tagsOfScenario = new string[] {
                     "MatchManagement"};
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("End User Scans QR Code and Starts Game", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Admin Starts a Game", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -193,15 +193,54 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 21
- await testRunner.GivenAsync("Given the end user has a QR code for the point manager of a new match", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+  await testRunner.GivenAsync("I am on the admin dashboard and logged in", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 22
- await testRunner.WhenAsync("the end user scans the QR code and enters the link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+  await testRunner.WhenAsync("I navigate to the start match page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 23
- await testRunner.ThenAsync("the first view should be the selection of who serves first", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+  await testRunner.AndAsync("I select a field to start a game", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
 #line 24
+  await testRunner.AndAsync("I select a match to start", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 25
+  await testRunner.ThenAsync("I should receive a QR code that refers to the point manager", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("End User Scans QR Code and Starts Game")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StartMatch")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MatchManagement")]
+        public async global::System.Threading.Tasks.Task EndUserScansQRCodeAndStartsGame()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "MatchManagement"};
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("End User Scans QR Code and Starts Game", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 28
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 29
+ await testRunner.GivenAsync("Given the end user has a QR code for the point manager of a new match", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 30
+ await testRunner.WhenAsync("the end user scans the QR code and enters the link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 31
+ await testRunner.ThenAsync("the first view should be the selection of who serves first", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+#line 32
  await testRunner.AndAsync("the next view should be the point manager", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }

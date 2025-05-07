@@ -1,6 +1,7 @@
 using Business.Interfaces;
 using Business.Services;
 using DTO;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox; // or the browser you are using
 using Reqnroll;
@@ -40,12 +41,12 @@ public class AdminSteps
     [Given(@"I navigate to the login page")]
     public void GivenINavigateToTheLoginPage()
     {
-        _driver = new FirefoxDriver(); // or the browser you are using
-        _driver.Navigate().GoToUrl("http://localhost:5023/Admin/Login"); // Replace with actual login URL
+        _driver = new FirefoxDriver();
+        _driver.Navigate().GoToUrl("http://localhost:5023/Admin/Login");
     }
 
     [When(@"I enter my credentials")]
-    public void WhenIEnterMyCredentials(Table table)
+    public void WhenIEnterMyCredentials(Reqnroll.Table table)
     {
         var data = table.Rows.ToDictionary(r => r["Field"], r => r["Value"]);
         _driver.FindElement(By.Id("username")).SendKeys(data["Username"]);
@@ -57,6 +58,17 @@ public class AdminSteps
     {
         _driver.FindElement(By.Id("login-button")).Click();
     }
+
+    [Given("I am on the admin dashboard and logged in")]
+    public void GivenIAmOnTheAdminDashboardAndLoggedIn()
+    {
+        _driver = new FirefoxDriver();
+        _driver.Navigate().GoToUrl("http://localhost:5023/Admin/Login");
+        _driver.FindElement(By.Id("username")).SendKeys("admin");
+        _driver.FindElement(By.Id("password")).SendKeys("1234");
+        _driver.FindElement(By.Id("login-button")).Click();
+    }
+
 
     [Then(@"I should be on the dashboard")]
     public void ThenIShouldBeOnTheDashboard()
