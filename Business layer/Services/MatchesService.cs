@@ -160,7 +160,7 @@ namespace Business.Services
             // Gets the match and updates the status and field
             var match = await Matches.FirstOrDefaultAsync(m => m.Id == matchId, query => query.Include(m => m.Score).ThenInclude(s => s.Sets).ThenInclude(s => s.Games));
             if (match == null) throw new ArgumentException("Match does not exist!");
-            if (match.Status != Status.Scheduled || match.Score.Sets.Count != 0) throw new ArgumentException("Match already ongoing!");
+            if (match.Status != Status.Scheduled) throw new ArgumentException("Match already ongoing!");
             match.Status = Status.Ongoing;
             match.Field = fieldId;
             var firstSet = new Set();
