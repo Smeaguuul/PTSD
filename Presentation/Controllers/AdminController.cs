@@ -81,13 +81,15 @@ namespace Presentation.Controllers
 
             return File(qrCodeAsPng, "image/png");
         }
-        public ActionResult Qr(int id)
+        public async Task<ActionResult> Qr(int id)
         {
-
+            var ongoingMatches = await matchesService.OngoingMatches();
+            ViewBag.Matches = ongoingMatches;
             string url = $"http://localhost:5023/pointmanager?Id={id}";
             ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
             ViewBag.OriginalUrl = url;
             return View();
+
         }
         [HttpPost]
         public ActionResult CreateGiveaway(CreateGiveawayDto newGiveaway)

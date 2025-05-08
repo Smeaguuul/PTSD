@@ -15,3 +15,13 @@
 		</div>
 	}
 </div>
+<div>
+	@if (ViewBag.Matches != null)
+	{
+		@foreach (var i in ViewBag.Matches)
+		{
+			<p>@i.HomeTeam.Players[0].Name og @i.HomeTeam.Players[1].Name har id'et: @i.Id;</p>
+			<br />
+		}
+	}
+</div>
