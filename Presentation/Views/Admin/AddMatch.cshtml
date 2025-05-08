@@ -6,9 +6,9 @@
 
 <form asp-action="AddMatch" method="post" class="container mt-4">
     <div class="mb-3">
-        <label for="club" class="form-label">Select Opponent Team Club:</label>
+        <label for="club" class="form-label">Vælg udeklub:</label>
         <select id="club" name="SelectedClubAbbreviation" class="form-select" onchange="updateAwayTeams()">
-            <option value="">Select Opponent Team Club</option>
+            <option value="">Vælg udehold</option>
             @foreach (var club in Model.Clubs.FindAll(club => !club.Name.Equals("Pakhus77")))
             {
                 <option value="@club.Abbreviation">@club.Abbreviation</option>
@@ -17,16 +17,16 @@
     </div>
 
     <div class="mb-3">
-        <label for="awayTeam" class="form-label">Select Away Team:</label>
+        <label for="awayTeam" class="form-label">Vælg udehold:</label>
         <select id="awayTeam" name="SelectedAwayTeamId" class="form-select" disabled>
-            <option value="">Select Away Team</option>
+            <option value="">Vælg udehold</option>
         </select>
     </div>
 
     <div class="mb-3">
-        <label for="homeTeam" class="form-label">Select Home Team:</label>
+        <label for="homeTeam" class="form-label">Vælg hjemmehold:</label>
         <select id="homeTeam" name="SelectedHomeTeamId" class="form-select">
-            <option value="">Select Home Team</option>
+            <option value="">Vælg hjemmehold</option>
             @foreach (var club in Model.Clubs)
             {
                 if (club.Name.Equals("Pakhus77"))
@@ -41,22 +41,22 @@
     </div>
 
     <div class="mb-3">
-        <label for="matchDate" class="form-label">Match Date:</label>
+        <label for="matchDate" class="form-label">Kamp Dato:</label>
         <input type="date" id="matchDate" name="Date" class="form-control" required />
     </div>
 
     <div class="mb-3">
-        <label for="status" class="form-label">Match Status:</label>
+        <label for="status" class="form-label">Kamp dato:</label>
         <select id="status" name="Status" class="form-select" required>
-            <option value="">Select Status</option>
-            <option value="Scheduled">Scheduled</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Finished">Finished</option>
+            <option value="">Vælg status</option>
+            <option value="Scheduled">Planlagt</option>
+            <option value="Ongoing">I gang</option>
+            <option value="Finished">Færdig</option>
         </select>
     </div>
 
     <div>
-        <button type="submit" class="btn">Create Match</button>
+        <button type="submit" class="btn">Opret kamp</button>
     </div>
 </form>
 
