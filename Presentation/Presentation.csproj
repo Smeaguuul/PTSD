@@ -25,8 +25,4 @@
     <ProjectReference Include="..\DTO\DTO.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\images\Ad1.png" />
-  </ItemGroup>
-
 </Project>
