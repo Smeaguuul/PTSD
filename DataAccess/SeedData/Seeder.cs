@@ -40,7 +40,7 @@ namespace DataAccess.SeedData
             var adminUser = new AdminUser()
             {
                 Username = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("My69")
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234")
             };
 
             await _adminUserRepository.AddAsync(adminUser);
