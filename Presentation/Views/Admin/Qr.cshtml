@@ -11,9 +11,17 @@
 	@if (ViewBag.QrImageUrl != null)
 	{
 		<div class="qr-div">
-			<img class="qr-image" src="@ViewBag.QrImageUrl" alt="QR Code" />
+			<img class="qr-image" src="@ViewBag.QrImageUrl" alt="QR Kode" />
 		</div>
 	}
-
-
+</div>
+<div>
+	@if (ViewBag.Matches != null)
+	{
+		@foreach (var i in ViewBag.Matches)
+		{
+			<p>@i.HomeTeam.Players[0].Name og @i.HomeTeam.Players[1].Name har id'et: @i.Id;</p>
+			<br />
+		}
+	}
 </div>

@@ -1,23 +1,23 @@
 ﻿@model AdminHomepage
 
 <div class="match-overview">
-    <h2>Match Overview</h2>
+    <h2>Kampoversigt</h2>
 
     @if (Model != null && Model.Matches.Any())
     {
-        // Group matches by date
+        // Sorts after match date
         var groupedMatches = Model.Matches.GroupBy(m => m.Date).ToList();
 
         foreach (var group in groupedMatches)
         {
             <div class="match-list">
-                <h3>@group.Key.ToString("MMMM dd, yyyy")</h3>
+                <h3>@group.Key.ToString("dd. MMMM yyyy")</h3>
                 <div class="match-row">
                     @foreach (var match in group)
                     {
                         <div class="match-item">
                             <div class="match-date">
-                                <strong>Date:</strong> @match.Date.ToString("MMMM dd, yyyy")
+                                <strong>Dato:</strong> @match.Date.ToString("dd. MMMM yyyy")
                             </div>
                             <div class="match-details">
                                 <div class="team-info">
@@ -35,8 +35,8 @@
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Home Team Players</th>
-                                            <th>Away Team Players</th>
+                                            <th>Hjemmeholdspillere</th>
+                                            <th>Udeholdspillere</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,6 +69,6 @@
     }
     else
     {
-        <p>No matches available.</p>
+        <p>Ingen kampe tilgængelige.</p>
     }
 </div>

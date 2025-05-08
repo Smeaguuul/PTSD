@@ -1,7 +1,7 @@
 ﻿@using Presentation.Models.Presentation.Models
 @model JoinGiveawayViewModel
 
-<h2>Join a Giveaway</h2>
+<h2>Tilslut dig en konkurrence</h2>
 
 @if (!string.IsNullOrWhiteSpace(Model.JoinModel?.StatusMessage))
 {
@@ -17,24 +17,24 @@
         <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 25px;">
             <h3>@giveaway.Name</h3>
             <p>@giveaway.Description</p>
-            <p>From: @giveaway.StartDate.ToShortDateString() - To: @giveaway.EndDate.ToShortDateString()</p>
+            <p>Fra: @giveaway.StartDate.ToShortDateString() - Til: @giveaway.EndDate.ToShortDateString()</p>
 
             <form asp-action="Join" asp-controller="Giveaway" method="post">
                 <input type="hidden" name="JoinModel.GiveawayId" value="@giveaway.Id" />
                 <div>
-                    <label>Name:</label>
+                    <label>Navn:</label>
                     <input type="text" name="JoinModel.Name" required />
                 </div>
                 <div>
                     <label>Email:</label>
                     <input type="email" name="JoinModel.Email" required />
                 </div>
-                <button type="submit">Join</button>
+                <button type="submit">Deltag</button>
             </form>
         </div>
     }
 }
 else
 {
-    <p>No giveaways available at the moment.</p>
+    <p>Ingen konkurrencer tilgængelige i øjeblikket.</p>
 }

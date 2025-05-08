@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Business.Services;
+using System.Threading.Tasks;
 
 
 
@@ -79,13 +81,15 @@ namespace Presentation.Controllers
 
             return File(qrCodeAsPng, "image/png");
         }
-        public ActionResult Qr(int id)
+        public async Task<ActionResult> Qr(int id)
         {
-
+            var ongoingMatches = await matchesService.OngoingMatches();
+            ViewBag.Matches = ongoingMatches;
             string url = $"http://localhost:5023/pointmanager?Id={id}";
             ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
             ViewBag.OriginalUrl = url;
             return View();
+
         }
         [HttpPost]
         public ActionResult CreateGiveaway(CreateGiveawayDto newGiveaway)
@@ -236,7 +240,7 @@ namespace Presentation.Controllers
                     Fields = fields
                 };
 
-                return View(viewModel);
+                return RedirectToAction("AddMatch");
             }
             await matchesService.CreateMatch(model.SelectedHomeTeamId, model.SelectedAwayTeamId, model.Date, model.Status);
 
@@ -402,15 +406,17 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateTeam(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
+        public async Task<ActionResult> AddTeamToClub(string TeamName, string ClubAbbreviation, string Player1Name, string Player2Name)
         {
+            await clubsService.AddTeamToClub(TeamName, Player1Name, Player2Name, ClubAbbreviation);
             TempData["TeamMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }
 
         [HttpPost]
-        public ActionResult CreateClub(string ClubName, string Location, string Abbreviation)
+        public async Task<ActionResult> CreateClub(string ClubName, string Location, string Abbreviation)
         {
+            await clubsService.CreateClub(ClubName, Location, Abbreviation);
             TempData["ClubMessage"] = "Creation Successful";
             return RedirectToAction("Clubs");
         }

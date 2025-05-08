@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "File Upload";
+    ViewData["Title"] = "Fil Upload";
     var adImages = ViewBag.AdImages as List<string>;
 }
 
@@ -28,7 +28,7 @@
         @foreach (var img in adImages)
         {
             <div style="text-align: center;">
-                <img src="@Url.Content("~/images/Ads/" + img)" alt="Ad" style="width: 200px; border: 1px solid #ccc;" />
+                <img src="@Url.Content("~/images/Ads/" + img)" alt="Annonce" style="width: 200px; border: 1px solid #ccc;" />
                 <form asp-controller="Admin" asp-action="DeleteAd" method="post" class="mt-2">
                     <input type="hidden" name="fileName" value="@img" />
                     <button type="submit" class="btn btn-danger btn-sm">Slet</button>
@@ -40,14 +40,12 @@
 else
 {
     <p>Ingen billeder fundet.</p>
-
-
-
-    <script>
-        // Tjek om vi allerede har reloadet én gang i denne session
-        if (!localStorage.getItem("hasRefreshedOnce")) {
-            localStorage.setItem("hasRefreshedOnce", "true");
-            location.reload();
-        }
-    </script>
 }
+
+<script>
+    // Tjek om vi allerede har reloadet én gang i denne session
+    if (!localStorage.getItem("hasRefreshedOnce")) {
+        localStorage.setItem("hasRefreshedOnce", "true");
+        location.reload();
+    }
+</script>

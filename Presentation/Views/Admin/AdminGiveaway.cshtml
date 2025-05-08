@@ -2,30 +2,30 @@
 
 <div class="giveaway-container">
 	<div class="giveaway-admin">
-		<h2>Create New Giveaway</h2>
+		<h2>Opret ny konkurrence</h2>
 		<form action="@Url.Action("CreateGiveaway")" method="post">
 			<div>
-				<label>Name</label>
+				<label>Navn</label>
 				<input type="text" name="NewGiveaway.Name" required />
 			</div>
 			<div>
-				<label>Description</label>
+				<label>Beskrivelse</label>
 				<textarea name="NewGiveaway.Description" required></textarea>
 			</div>
 			<div>
-				<label>Start Date</label>
+				<label>Startdato</label>
 				<input type="date" name="NewGiveaway.StartDate" required />
 			</div>
 			<div>
-				<label>End Date</label>
+				<label>Slutdato</label>
 				<input type="date" name="NewGiveaway.EndDate" required />
 			</div>
-			<button type="submit" class="form-button">Create Giveaway</button>
+			<button type="submit" class="form-button">Opret konkurrence</button>
 		</form>
 	</div>
 
 	<div class="giveaway-list">
-		<h2>Existing Giveaways</h2>
+		<h2>Eksisterende konkurrencer</h2>
 		@if (Model.Giveaways?.Any() == true)
 		{
 			<div class="scrollable-giveaway-list">
@@ -35,46 +35,46 @@
 						<div class="giveaway-details">
 							<h3>@giveaway.Name (@giveaway.Status)</h3>
 							<p>@giveaway.Description</p>
-							<p>From: @giveaway.StartDate.ToShortDateString() To: @giveaway.EndDate.ToShortDateString()</p>
-							<p>Participants: @giveaway.Contestants.Count</p>
+							<p>Fra: @giveaway.StartDate.ToShortDateString() Til: @giveaway.EndDate.ToShortDateString()</p>
+							<p>Deltagere: @giveaway.Contestants.Count</p>
 
 							<div class="button-container">
 								<form action="@Url.Action("ViewContestants")" method="get" style="display:inline;">
 									<input type="hidden" name="giveawayId" value="@giveaway.Id" />
-									<button type="submit" class="form-button">View Contestants</button>
+									<button type="submit" class="form-button">Se deltagere</button>
 								</form>
 
 								<form action="@Url.Action("EndGiveaway")" method="post" style="display:inline;">
 									<input type="hidden" name="giveawayId" value="@giveaway.Id" />
-									<button type="submit" class="form-button">End Giveaway</button>
+									<button type="submit" class="form-button">Afslut konkurrence</button>
 								</form>
 							</div>
 						</div>
 
 						<div class="add-contestant">
-							<h4>Add Contestant</h4>
+							<h4>Tilføj deltager</h4>
 							<form action="@Url.Action("AddContestant")" method="post">
 								<input type="hidden" name="giveawayId" value="@giveaway.Id" />
 								<div>
-									<label>Name</label>
+									<label>Navn</label>
 									<input type="text" name="name" required />
 								</div>
 								<div>
 									<label>Email</label>
 									<input type="email" name="email" required />
 								</div>
-								<button type="submit" class="form-button">Add</button>
+								<button type="submit" class="form-button">Tilføj</button>
 							</form>
 						</div>
 					</div>
 
 					<div class="pick-winner">
-						<h4>Pick Winner(s)</h4>
+						<h4>Vælg vinder(e)</h4>
 						<form action="@Url.Action("PickWinners")" method="post">
 							<input type="hidden" name="giveawayId" value="@giveaway.Id" />
-							<label>Number of Winners:</label>
+							<label>Antal vindere:</label>
 							<input type="number" name="numberOfWinners" min="1" max="@giveaway.Contestants.Count" required />
-							<button type="submit" class="form-button">Pick</button>
+							<button type="submit" class="form-button">Vælg</button>
 						</form>
 					</div>
 				}
@@ -82,7 +82,7 @@
 		}
 		else
 		{
-			<p>No giveaways created yet.</p>
+			<p>Ingen konkurrencer er oprettet endnu.</p>
 		}
 	</div>
 </div>

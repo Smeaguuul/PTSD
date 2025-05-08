@@ -1,5 +1,5 @@
 ﻿@{
-	ViewData["Title"] = "Admin";
+    ViewData["Title"] = "Admin";
 }
 <div style="text-align: center;">
     <h1>Redigér kampe</h1>
@@ -11,14 +11,14 @@
             {
                 <p>Status: Ledig</p>
                 <div class="button-container">
-                    <a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn+@i.Id" class="btn btn-primary">Start Kamp</a>
+                    <a asp-action="StartGame" asp-route-fieldId=@i.Id id="startMatchBtn_@i.Id" class="btn btn-primary">Start kamp</a>
                 </div>
             }
             else
             {
                 <p>Status: Optaget</p>
                 <div class="button-container">
-                    <a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn+@i.Id" class="btn btn-primary">Slut Kamp</a>
+                    <a asp-action="EndMatchBtn" asp-route-matchId=@i.CurrentMatch.Id id="endMatchBtn_@i.Id" class="btn btn-primary">Slut kamp</a>
                 </div>
             }
         </div>
