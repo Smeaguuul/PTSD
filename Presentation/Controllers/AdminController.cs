@@ -87,7 +87,7 @@ namespace Presentation.Controllers
             IPAddress[] ipAddresses = Dns.GetHostAddresses(hostName);
             foreach (var ip in ipAddresses)
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork) // IPv4 address
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     localIP = ip.ToString();
                     break;
@@ -198,7 +198,19 @@ namespace Presentation.Controllers
 
         public async Task<ActionResult> AdminBtn(int fieldId, int matchId)
         {
-            string url = $"http://localhost:5023/Pointmanager/PickServer?matchId={matchId}&fieldId={fieldId}";
+            string localIP = "localhost";
+            string hostName = Dns.GetHostName();
+            IPAddress[] ipAddresses = Dns.GetHostAddresses(hostName);
+            foreach (var ip in ipAddresses)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    localIP = ip.ToString();
+                    break;
+                }
+            }
+            string url = $"http://{localIP}:5023/Pointmanager/PickServer?matchId={matchId}&fieldId={fieldId}";
+            
             ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
             ViewBag.OriginalUrl = url;
             return View("StartGame");
