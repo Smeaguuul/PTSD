@@ -1,84 +1,62 @@
-﻿@model Presentation.Models.Matches
+﻿<a class="btn btn-primary" href="@Url.Action("Join", "Giveaway")">Tilmeld Konkurrence</a>
 
-<a class="btn btn-primary" href="@Url.Action("Join", "Giveaway")">Tilmeld Konkurrence</a>
-
-
-
-<div style="display: flex; justify-content: space-around; align-items: flex-start;">
-    <div style="width: 33%; height: 90vh; overflow-y: auto; margin: 10px; border: 1px solid #ccc;">
+<div class="container">
+    <div class="match-score">
+        <h1>Live Kampe</h1>
         @foreach (DTO.MatchScore score in @Model.MatchScores)
         {
-            <div style="display: flex; justify-content: space-between; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <div class="match-item">
                 <div style="text-align: center; width: 30%;">
-                    <h5 style="font-size: 1.2em;">@score.NameHome</h5>
-                    <p style="font-size: 0.9em;">Sets: @score.SetsHome</p>
-                    <p style="font-size: 0.9em;">Parti: @score.GamesThisSetHome</p>
-                    <p style="font-size: 0.9em;">Point: @score.PointsHome</p>
+                    <h5>@score.NameHome</h5>
+                    <p>Sets: @score.SetsHome</p>
+                    <p>Parti: @score.GamesThisSetHome</p>
+                    <p>Point: @score.PointsHome</p>
                 </div>
                 <div style="text-align: center; width: 30%;">
-                    <h6 style="font-size: 1em;">Bane @score.FieldId</h6>
-                    <p style="font-size: 0.9em;">vs</p>
+                    <h6>Bane @score.FieldId</h6>
+                    <p>vs</p>
                 </div>
                 <div style="text-align: center; width: 30%;">
-                    <h5 style="font-size: 1.2em;">@score.NameAway</h5>
-                    <p style="font-size: 0.9em;">Sets: @score.SetsAway</p>
-                    <p style="font-size: 0.9em;">Parti: @score.GamesThisSetAway</p>
-                    <p style="font-size: 0.9em;">Point: @score.PointsAway</p>
+                    <h5>@score.NameAway</h5>
+                    <p>Sets: @score.SetsAway</p>
+                    <p>Parti: @score.GamesThisSetAway</p>
+                    <p>Point: @score.PointsAway</p>
                 </div>
             </div>
         }
     </div>
-    <div>
-            <table>
-                <tr>
-                    <td>
-                        <h2>P77</h2>
-                    </td>
-                    <td>
-                        <h2>Gæst</h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    <h3>@ViewBag.homeWins</h3>
-                    </td>
-                    <td>
-                    <h3>@ViewBag.awayWins</h3>
-                    </td>
-                </tr>
-             </table>
+    <div class="table-container">
+        <div class="table-item">
+            <h2>P77</h2>
+            <h3>@ViewBag.homeWins</h3>
+        </div>
+        <div class="table-item">
+            <h2>Gæst</h2>
+            <h3>@ViewBag.awayWins</h3>
+        </div>>
     </div>
     <div>
-        <div>
-            <img id="adImage" src="@Url.Content("~/images/Ads/" + (ViewBag.AdImages?[0] ?? "default.jpg"))" alt="An Ad!" style="margin: 10px;" />
+        <img id="adImage" src="@Url.Content("~/images/Ads/" + (ViewBag.AdImages?[0] ?? "default.jpg"))" alt="An Ad!" />
+    </div>
+</div>
 
-        </div>
+<script>
+    const adImages = [
+    @foreach (var img in ViewBag.AdImages as List<string>)
+    {
+        @Html.Raw($"'{Url.Content("~/images/Ads/" + img)}',")
+    }
+    ];
 
-        <script>
-            const adImages = [
-            @foreach (var img in ViewBag.AdImages as List<string>)
-            {
-                @Html.Raw($"'{Url.Content("~/images/Ads/" + img)}',")
-            }
-            ];
+    let currentAdIndex = parseInt(localStorage.getItem("currentAdIndex")) || 0;
 
-            // Start med at hente sidste viste indeks fra localStorage
-            let currentAdIndex = parseInt(localStorage.getItem("currentAdIndex")) || 0;
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("adImage").src = adImages[currentAdIndex];
+    });
 
-            // Vis billedet ved load
-            document.addEventListener("DOMContentLoaded", function () {
-                document.getElementById("adImage").src = adImages[currentAdIndex];
-            });
-
-            // Skift billede hvert 5. sekund
-            setInterval(function () {
-                currentAdIndex = (currentAdIndex + 1) % adImages.length;
-                document.getElementById("adImage").src = adImages[currentAdIndex];
-                localStorage.setItem("currentAdIndex", currentAdIndex); // Gem det
-            }, 5000);
-
-            // Reload hele siden hvert 5. sekund (efter billedet er opdateret)
-            setInterval(function () {
-                location.reload();
-            }, 5000);
-        </script>
+    setInterval(function () {
+        currentAdIndex = (currentAdIndex + 1) % adImages.length;
+        document.getElementById("adImage").src = adImages[currentAdIndex];
+        localStorage.setItem("currentAdIndex", currentAdIndex); // Save the current index
+    }, 5000);
+</script>
