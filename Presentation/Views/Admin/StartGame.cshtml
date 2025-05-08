@@ -1,63 +1,62 @@
 ﻿@using DTO
 
 @{
-	ViewData["Title"] = "Start Kamp";
+    ViewData["Title"] = "Start Kamp";
 }
 <div class="text-center">
-	<h1 class="display-4">Start kamp på bane @ViewBag.FieldId</h1>
+    <h1 class="display-4">Start kamp på bane @ViewBag.FieldId</h1>
 </div>
-
 
 @if (ViewBag.Matches != null)
 {
-	@foreach (var i in ViewBag.Matches)
-	{
+    @foreach (var i in ViewBag.Matches)
+    {
 
-		<a asp-action="AdminBtn" asp-route-fieldId=@ViewBag.FieldId asp-route-matchId=@i.Id class="btn btn-primary" id="link_@i.Id">
-			<table>
-				<tr>
-					<td>
-						@i.HomeTeam.Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.AwayTeam.Name
-					</td>
-				</tr>
-				<tr>
-					<td>
-						@i.HomeTeam.Players[0].Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.AwayTeam.Players[0].Name
-					</td>
-				</tr>
-				<tr>
-					<td>
-						@i.HomeTeam.Players[1].Name
-					</td>
-					<td>
-						-
-					</td>
-					<td>
-						@i.AwayTeam.Players[1].Name
-					</td>
-				</tr>
-			</table>
-		</a>
-	}
+        <a asp-action="AdminBtn" asp-route-fieldId=@ViewBag.FieldId asp-route-matchId=@i.Id class="btn btn-primary" id="link_@i.Id">
+            <table>
+                <tr>
+                    <td>
+                        @i.HomeTeam.Name
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        @i.AwayTeam.Name
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @i.HomeTeam.Players[0].Name
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        @i.AwayTeam.Players[0].Name
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @i.HomeTeam.Players[1].Name
+                    </td>
+                    <td>
+                        -
+                    </td>
+                    <td>
+                        @i.AwayTeam.Players[1].Name
+                    </td>
+                </tr>
+            </table>
+        </a>
+    }
 }
 else if (ViewBag.QrImageUrl != null)
 {
-	<a href="@ViewBag.OriginalUrl"> Link </a>
-	<img src="@ViewBag.QrImageUrl" alt="QR Code" id="qr-code" />
+    <a href="@ViewBag.OriginalUrl">Link</a>
+    <img src="@ViewBag.QrImageUrl" alt="QR Kode" id="qr-code" />
 }
 else
 {
-	<h2>Ingen kampe tilgængelige</h2>
+    <h2>Ingen kampe tilgængelige</h2>
 }

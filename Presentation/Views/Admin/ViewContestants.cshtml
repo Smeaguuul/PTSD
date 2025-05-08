@@ -1,6 +1,6 @@
 ﻿@model DTO.Giveaway.GiveawayDto
 
-<h2>Contestants for @Model.Name</h2>
+<h2>Deltagere for @Model.Name</h2>
 
 @if (Model?.Contestants?.Any() == true)
 {
@@ -13,6 +13,6 @@
 }
 else
 {
-    <p>No contestants have been added yet.</p>
+    <p>Der er endnu ikke tilføjet deltagere.</p>
 }
-<a href="@Url.Action("AdminGiveaway", "Admin")">Back to Giveaways</a>
+<a href="@Url.Action("AdminGiveaway", "Admin")">Tilbage til konkurrencer</a>

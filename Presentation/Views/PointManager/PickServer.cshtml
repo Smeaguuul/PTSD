@@ -2,70 +2,69 @@
 
 @if (Model != null)
 {
-	<h1>Pick Which Side Serves First</h1>
-	<div class="match-info">
-		<div class="match-item">
-			<div class="match-date">
-				<strong>Date:</strong> @Model.Match.Date.ToString("MMMM dd, yyyy")
-			</div>
-			<div class="match-details">
-				<div class="team-info">
-					<h4>@Model.Match.HomeTeam.Name</h4>
-				</div>
-				<div class="vs-text">vs</div>
-				<div class="team-info">
-					<h4>@Model.Match.AwayTeam.Name</h4>
-				</div>
-			</div>
-			<div class="match-status">
-				<strong>Status:</strong> @Model.Match.Status.ToString()
-			</div>
-			<div class="players-table">
-				<table>
-					<thead>
-						<tr>
-							<th>Home Team Players</th>
-							<th>Away Team Players</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<div class="home-team-players">
-									@foreach (var player in Model.Match.HomeTeam.Players)
-									{
-										<div>@player.Name</div>
-									}
-								</div>
-							</td>
-							<td>
-								<div class="away-team-players">
-									@foreach (var player in Model.Match.AwayTeam.Players)
-									{
-										<div>@player.Name</div>
-									}
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<form method="post" action="@Url.Action("StartMatch", "PointManager")">
-			<input type="hidden" name="matchId" value="@Model.Match.Id" />
-			<input type="hidden" name="fieldId" value="@Model.FieldId" />
+    <h1>Vælg Hvilket Hold, der Server Først</h1>
+    <div class="match-info">
+        <div class="match-item">
+            <div class="match-date">
+                <strong>Dato:</strong> @Model.Match.Date.ToString("dd MMMM yyyy")
+            </div>
+            <div class="match-details">
+                <div class="team-info">
+                    <h4>@Model.Match.HomeTeam.Name</h4>
+                </div>
+                <div class="vs-text">vs</div>
+                <div class="team-info">
+                    <h4>@Model.Match.AwayTeam.Name</h4>
+                </div>
+            </div>
+            <div class="match-status">
+                <strong>Status:</strong> @Model.Match.Status.ToString()
+            </div>
+            <div class="players-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hjemmehold Spillere</th>
+                            <th>Udehold Spillere</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="home-team-players">
+                                    @foreach (var player in Model.Match.HomeTeam.Players)
+                                    {
+                                        <div>@player.Name</div>
+                                    }
+                                </div>
+                            </td>
+                            <td>
+                                <div class="away-team-players">
+                                    @foreach (var player in Model.Match.AwayTeam.Players)
+                                    {
+                                        <div>@player.Name</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form method="post" action="@Url.Action("StartMatch", "PointManager")">
+            <input type="hidden" name="matchId" value="@Model.Match.Id" />
+            <input type="hidden" name="fieldId" value="@Model.FieldId" />
 
-			<div class="buttonsDiv">
-				<button id="home-serve-btn" type="submit" class="serverButton" name="server" value="true">Home Team Serves</button>
-				<button id="away-serve-btn" type="submit" class="serverButton" name="server" value="false">Away Team Serves</button>
-			</div>
-		</form>
-	</div>
+            <div class="buttonsDiv">
+                <button id="home-serve-btn" type="submit" class="serverButton" name="server" value="true">Hjemmeholdet Serverer</button>
+                <button id="away-serve-btn" type="submit" class="serverButton" name="server" value="false">Udeholdet Serverer</button>
+            </div>
+        </form>
+    </div>
 }
 else
 {
-	<div>
-		<a><b>No match selected!</b></a>
-	</div>
+    <div>
+        <a><b>Ingen match valgt!</b></a>
+    </div>
 }
-

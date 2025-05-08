@@ -1,69 +1,86 @@
 ﻿@model DTO.MatchScore
 @{
-	var id = Context.Request.Query["Id"].ToString();
+    var id = Context.Request.Query["Id"].ToString();
 }
+
 <div class="container">
-	<h1>Match Details</h1>
-	<div class="card">
-		<div class="card-header">
-			<h2>@Model.NameHome vs @Model.NameAway</h2>
-			<small class="text-muted">Field ID: @Model.FieldId</small>
-		</div>
-		<div class="card-body">
-			<h3>Players</h3>
-			<div class="row">
-				<div class="col-md-6">
-					<h4>Home Team Players</h4>
-					<ul>
-						@foreach (var player in Model.HomePlayers)
-						{
-							<li>@player</li>
-						}
-					</ul>
-				</div>
-				<div class="col-md-6">
-					<h4>Away Team Players</h4>
-					<ul>
-						@foreach (var player in Model.AwayPlayers)
-						{
-							<li>@player</li>
-						}
-					</ul>
-				</div>
-			</div>
+    <h1>Matchdetaljer</h1>
 
-			<h3>Match Stats</h3>
-			<table>
-				<thead>
-					<tr>
-						<th>Sets</th>
-						<th>Games This Set</th>
-						<th>Points</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>@Model.SetsHome - @Model.SetsAway</td>
-						<td>@Model.GamesThisSetHome - @Model.GamesThisSetAway</td>
-						<td class="points">@Model.PointsHome - @Model.PointsAway</td>
-					</tr>
-				</tbody>
-			</table>
+    <div class="card">
+        <div class="card-header">
+            <h2>@Model.NameHome vs @Model.NameAway</h2>
+            <small class="text-muted">Bane ID: @Model.FieldId</small>
+        </div>
+        <div class="card-body">
 
-			<form method="post" action="@Url.Action("index", "PointManager")">
-				<input type="hidden" name="matchId" value="@id" />
+            <!-- Spillere Sektion -->
+            <h3>Spillere</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Hjemmehold Spillere</h4>
+                    <ul>
+                        @foreach (var player in Model.HomePlayers)
+                        {
+                            <li>@player</li>
+                        }
+                    </ul>
+                </div>
 
-				<div class="buttonsDiv">
-					<button id="home-scores-btn" type="submit" class="scoreButton" name="pointScorer" value="true">Home Team Scored</button>
-					<button id="away-scores-btn" type="submit" class="scoreButton" name="pointScorer" value="false">Away Team Scored</button>
-				</div>
-			</form>
-			<form method="post" action="@Url.Action("Undo", "PointManager")">
-				<input type="hidden" name="matchId" value="@id" />
-				<div class="buttonsDiv">
-					<button type="submit" class="scoreButton">Undo Point</button>
-				</div>
-			</form>
-		</div>
-	</div>
+                <div class="col-md-6">
+                    <h4>Udehold Spillere</h4>
+                    <ul>
+                        @foreach (var player in Model.AwayPlayers)
+                        {
+                            <li>@player</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Match Stats Sektion -->
+            <h3>Match Stats</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Sæt</th>
+                        <th>Spil i dette sæt</th>
+                        <th>Point</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- Vis score for hjemme- og udehold -->
+                        <td>@Model.SetsHome - @Model.SetsAway</td>
+                        <td>@Model.GamesThisSetHome - @Model.GamesThisSetAway</td>
+                        <td class="points">@Model.PointsHome - @Model.PointsAway</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Formular for at registrere scores -->
+            <form method="post" action="@Url.Action("index", "PointManager")">
+                <input type="hidden" name="matchId" value="@id" />
+
+                <div class="buttonsDiv">
+                    <!-- Knapp for hjemmeholdet -->
+                    <button id="home-scores-btn" type="submit" class="scoreButton" name="pointScorer" value="true">
+                        Hjemmeholdet scorede
+                    </button>
+                    <!-- Knapp for udeholdet -->
+                    <button id="away-scores-btn" type="submit" class="scoreButton" name="pointScorer" value="false">
+                        Udeholdet scorede
+                    </button>
+                </div>
+            </form>
+
+            <!-- Formular for at fortryde sidste point -->
+            <form method="post" action="@Url.Action("Undo", "PointManager")">
+                <input type="hidden" name="matchId" value="@id" />
+                <div class="buttonsDiv">
+                    <button type="submit" class="scoreButton">Fortryd point</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>

@@ -16,14 +16,14 @@ else if (Model != null)
 			<h2 class="team-name">@Model.Match.AwayTeam.Club.Name: @Model.Match.AwayTeam.Name</h2>
 		</div>
 		<div class="winner-div">
-			<h2 class="winner>Winner: @winner</h2>
-	</div>
-	<div class="players-table">
+			<h2 class="winner">Vinder: @winner</h2>
+		</div>
+		<div class="players-table">
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>Player</th>
-						<th>Score</th>
+						<th>Spiller (Hjemme)</th>
+						<th>Spiller (Ude)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,24 +39,24 @@ else if (Model != null)
 			</table>
 		</div>
 		<div class="match-date-div">
-			<h2 class="match-date">Date: @Model.Match.Date.ToString("dd/MM/yyyy")</h2>
+			<h2 class="match-date">Dato: @Model.Match.Date.ToString("dd/MM/yyyy")</h2>
 		</div>
 		<div class="sets-won-div">
-			<h2 class="set-count">Sets won home: @Model.MatchScore.SetsHome</h2>
-			<h2 class="set-count">Sets won away: @Model.MatchScore.SetsAway</h2>
+			<h2 class="set-count">Vundne sæt (Hjemme): @Model.MatchScore.SetsHome</h2>
+			<h2 class="set-count">Vundne sæt (Ude): @Model.MatchScore.SetsAway</h2>
 		</div>
 		<div>
 			@using (Html.BeginForm("EditGame", "Admin", FormMethod.Post))
 			{
 				<input type="hidden" name="matchId" value="@Model.Match.Id" />
-				<textBox>
-					<b>Sets Won Away: </b> @Html.TextBox("setsHome", Model.MatchScore.SetsHome)
-				</textBox>
-				<textBox>
-					<b>Sets Won Away: </b> @Html.TextBox("setsAway", Model.MatchScore.SetsAway)
-			</textBox>
+				<div>
+					<b>Vundne sæt (Hjemme):</b> @Html.TextBox("setsHome", Model.MatchScore.SetsHome)
+				</div>
+				<div>
+					<b>Vundne sæt (Ude):</b> @Html.TextBox("setsAway", Model.MatchScore.SetsAway)
+				</div>
 				<div class="buttonsDiv">
-					<button type="submit" class="scoreButton">Change points</button>
+					<button type="submit" class="scoreButton">Opdater point</button>
 				</div>
 			}
 		</div>
