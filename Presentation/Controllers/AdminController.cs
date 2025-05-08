@@ -15,6 +15,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Business.Services;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 
 
@@ -69,11 +70,6 @@ namespace Presentation.Controllers
 
         public ActionResult Generate(string url)
         {
-            //if (password != "Johans sista")
-            //{
-            //    return Forbid();
-            //}
-
             var qrGenerator = new QRCodeGenerator();
             var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
             var qrCode = new PngByteQRCode(qrCodeData);
@@ -85,7 +81,19 @@ namespace Presentation.Controllers
         {
             var ongoingMatches = await matchesService.OngoingMatches();
             ViewBag.Matches = ongoingMatches;
-            string url = $"http://localhost:5023/pointmanager?Id={id}";
+
+            string localIP = "localhost";
+            string hostName = Dns.GetHostName();
+            IPAddress[] ipAddresses = Dns.GetHostAddresses(hostName);
+            foreach (var ip in ipAddresses)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork) // IPv4 address
+                {
+                    localIP = ip.ToString();
+                    break;
+                }
+            }
+            string url = $"http://{localIP}:5023/pointmanager?Id={id}";
             ViewBag.QrImageUrl = Url.Action("Generate", "Admin", new { url = url});
             ViewBag.OriginalUrl = url;
             return View();
