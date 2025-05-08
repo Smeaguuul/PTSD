@@ -77,6 +77,7 @@ namespace Presentation.Controllers
 
             return File(qrCodeAsPng, "image/png");
         }
+        [Authorize]
         public async Task<ActionResult> Qr(int id)
         {
             var ongoingMatches = await matchesService.OngoingMatches();
@@ -157,7 +158,7 @@ namespace Presentation.Controllers
             return RedirectToAction("AdminGiveaway");
         }
 
-
+        [Authorize]
         public async Task<ActionResult> AdminGiveaway()
         {
             var giveaways = await giveawayService.GetGiveaways();
@@ -216,6 +217,7 @@ namespace Presentation.Controllers
             return View("StartGame");
         }
 
+        [Authorize]
         public async Task<ActionResult> StartGame(int fieldId)
         {
             var scheduledMatches = await matchesService.ScheduledMatches();
@@ -230,6 +232,7 @@ namespace Presentation.Controllers
             return RedirectToAction("Admin");
         }
 
+        [Authorize]
         public async Task<ActionResult> AddMatch()
         {
             var clubs = await clubsService.GetAll();
@@ -267,7 +270,7 @@ namespace Presentation.Controllers
             return RedirectToAction("AddMatch");
 
         }
-
+        [Authorize]
         public async Task<ActionResult> GameEditor()
         {
             var matches = await matchesService.FinishedMatches();
@@ -414,7 +417,7 @@ namespace Presentation.Controllers
             return RedirectToAction("Admin");
         }
 
-
+        [Authorize]
         public async Task<IActionResult> Clubs()
         {
             var TeamMessage = TempData["TeamMessage"] as string;
@@ -441,6 +444,7 @@ namespace Presentation.Controllers
             return RedirectToAction("Clubs");
         }
 
+        [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
