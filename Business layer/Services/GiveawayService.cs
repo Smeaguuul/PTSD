@@ -200,9 +200,9 @@ namespace Business.Services
 
         public async Task<IEnumerable<DTO.Giveaway.ContestantDto>> GetContestants(int giveawayId)
         {
-            var giveawayContestants = await GiveawayContestantRepository.GetAllAsync();
+            var giveawayContestants = await GiveawayContestantRepository.GetAllAsync(
+                predicate: gc => gc.GiveawayId == giveawayId);
             var contestantsInGiveaway = giveawayContestants
-                .Where(gc => gc.GiveawayId == giveawayId)
                 .Select(gc => gc.contestant);
 
             return Mapper.Map<IEnumerable<DTO.Giveaway.ContestantDto>>(contestantsInGiveaway);

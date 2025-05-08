@@ -35,7 +35,6 @@ public class AdminSteps
         await _matchService.CreateMatch(homeTeamId, awayTeamId, DateOnly.FromDateTime(DateTime.Now), Status.Scheduled);
         var scheduledMatches = await _matchService.ScheduledMatches();
         _match = scheduledMatches.FirstOrDefault(match => match.Date.Equals(DateOnly.FromDateTime(DateTime.Now)) && match.HomeTeam.Id == homeTeamId && match.AwayTeam.Id == awayTeamId) ?? throw new Exception("Couldn't create a match.");
-
     }
 
     [Given(@"I navigate to the login page")]
